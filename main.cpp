@@ -9,7 +9,7 @@ int main() {
 
   // Initialize Ogre3D
   Ogre::Root* root = new Ogre::Root();
-  Ogre::RenderWindow* window = root->initialise(true, "My Game Engine");
+  //Ogre::RenderWindow* window = root->initialise(true, "My Game Engine");
   
   // Initialize ReactPhysics3D
   rp3d::PhysicsCommon physicsCommon;
@@ -21,7 +21,7 @@ int main() {
   // Cleanup
   delete soundEngine;
   physicsCommon.destroyPhysicsWorld(physicsWorld);
-  delete window;
+  //delete window;
   delete root;
 
   return 0;
