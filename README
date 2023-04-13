@@ -6,12 +6,12 @@ VIE idea:
 	collect coins to pay the machines 
 
 Code lang: 
-  C++
+	C++
 
 Development environment set up
-  3D library: https://www.ogre3d.org/ 
-  Physics library: https://www.reactphysics3d.com
-  Audio library: https://www.ambiera.com/irrklang/index.html
+	3D library: https://www.ogre3d.org/ 
+	Physics library: https://www.reactphysics3d.com
+	Audio library: https://www.ambiera.com/irrklang/index.html
 
 Download irrklang from [https://www.ambiera.at/downloads/irrKlang-64bit-1.6.0.zip]
 Extract and rename to irrKlang
