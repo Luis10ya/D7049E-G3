@@ -26,7 +26,10 @@ Extract and rename to irrKlang
 - LightManager
 - SoundManager
 - Player
+- FileIOHandler
+- UIHandler
 
 ### Game Classes
 - Coin (GameObject)
 - Experiment (GameObjectManager)
+- MuseumSceneManager (inherits from SceneManager)
