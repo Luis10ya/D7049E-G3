@@ -1,6 +1,0 @@
-[submodule "reactphysics3d"]
-	path = reactphysics3d
-	url = https://github.com/DanielChappuis/reactphysics3d.git
-[submodule "ogre"]
-	path = ogre
-	url = https://github.com/OGRECave/ogre
