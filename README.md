@@ -7,18 +7,10 @@ VIE idea:
 
 Code lang: 
 	JavaScript
-	C++
 
 Development environment set up
 	3D library: https://threejs.org
-	Physics library: 
-
-	3D library: https://www.ogre3d.org/ 
-	Physics library: https://www.reactphysics3d.com
-	Audio library: https://www.ambiera.com/irrklang/index.html
-
-Download irrklang from [https://www.ambiera.at/downloads/irrKlang-64bit-1.6.0.zip]
-Extract and rename to irrKlang
+	Physics library: ammo.js, https://github.com/kripken/ammo.js/
 
 ## Classes
 - MuseumMayham: class that initializes maian objects for used libraries and handles game loop
