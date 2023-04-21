@@ -6,9 +6,13 @@ VIE idea:
 	collect coins to pay the machines 
 
 Code lang: 
+	JavaScript
 	C++
 
 Development environment set up
+	3D library: https://threejs.org
+	Physics library: 
+
 	3D library: https://www.ogre3d.org/ 
 	Physics library: https://www.reactphysics3d.com
 	Audio library: https://www.ambiera.com/irrklang/index.html
