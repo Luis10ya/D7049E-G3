@@ -1,4 +1,3 @@
-/** @author: Ted */ 
 import { Colleague } from "../communication/Colleague.js"
 import * as THREE from 'three';
 import Ammo, * as AMMO from 'ammojs3';
@@ -56,10 +55,10 @@ class GameObject3D extends Colleague {
     }
 
     // // How I want the material thing to work, however the thing above is more simple to start with
-    // setMaterialProperties(material, color, opacity, texture, emission) {
+    // setMaterialProperties(material, color, opacity, map, emission) {
     //     material.color.set(color);
     //     material.opacity.set(opacity);
-    //     material.texture.set(texture);
+    //     material.map.set(map);
     //     material.emission.set(emission);
     // }
 }
