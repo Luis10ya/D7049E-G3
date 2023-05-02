@@ -1,4 +1,4 @@
-class Room {
+export default class Room extends Colleague{
 
     constructor(name){
         this.#name = name;
@@ -8,8 +8,10 @@ class Room {
         this.#exits = [];
         this.#hasGround = false;
         this.#scene.add(this.#generalLight);
+        this.#background = null;
+        this.#isVisited = false;
     }
-
+    
     getName(){
         return this.#name;
     }
@@ -52,6 +54,7 @@ class Room {
     addExit(exit){
         if(this.getPosInExits(exit) == -1){
             this.#exits.push(exit);
+            this.#scene.add(exit);
         }
     }
 
@@ -73,7 +76,9 @@ class Room {
                 return false;
             } 
         }
+        let exitObject = this.#exits[posInExits];
         this.#exits.splice(posInExits, 1);
+        this.#scene.remove(exitObject);
         return true;
     }
 
@@ -120,10 +125,19 @@ class Room {
     }
 
     addBackground(backgroundObejct){
-        let objectExistsInScene = this.#isObjectInScene(backgroundObejct);
-        if(!objectExistsInScene){
-            this.#scene.add(backgroundObejct);
-        }
+        this.addObject3D(backgroundObejct);
+    }
+
+    removeBackground(backgroundObejct){
+        return this.removeObject3D(backgroundObejct);
+    }
+
+    isVisited(){
+        return this.#isVisited;
+    }
+
+    visit(){
+        this.#isVisited = true;
     }
 
 }
