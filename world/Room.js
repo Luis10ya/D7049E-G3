@@ -1,4 +1,4 @@
-class Room {
+export default class Room extends Colleague{
 
     constructor(name){
         this.#name = name;
