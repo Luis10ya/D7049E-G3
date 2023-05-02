@@ -7,7 +7,7 @@
 
 class Message {
 
-    content;
+    #content;
 
     constructor(){
         if (this.constructor == Message) {
@@ -16,11 +16,11 @@ class Message {
     }
 
     getMessage(){
-        return this.content;
+        return this.#content;
     }
 
     setMessage(message){
-        this.content = message;
+        this.#content = message;
     }
 
 

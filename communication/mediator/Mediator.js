@@ -7,7 +7,7 @@
 
 class Mediator {
 
-    recipients = new Array();
+    #recipients = new Array();
     static instance;
 
     constructor(){
@@ -18,7 +18,7 @@ class Mediator {
 
     register(recipentColleague){
         //throw new Error("Method 'register(recipentColleague)' must be implemented.");
-        this.recipients.push(recipentColleague)
+        this.#recipients.push(recipentColleague)
     }
 
     static getInstance(){
