@@ -42,5 +42,6 @@ export default class Exit {
      */
     toggleLock() {
         this.locked = !this.locked;
+        return this.locked;
     }
 }

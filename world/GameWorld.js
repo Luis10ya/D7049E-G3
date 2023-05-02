@@ -143,6 +143,8 @@ export default class GameWorld{
             //Do nothing?
         } else if (msg instanceof MovementMessage) {
             //Do nothing?
+        } else if (msg instanceof GameEventMessage) {
+            //Do stuff?
         } else {
             throw new Error("Argument of type " + Object.prototype.toString.call(msg) + " not supported for action");
         }
