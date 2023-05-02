@@ -1,3 +1,7 @@
+import { Colleague } from "../communication/Colleague.js"
+import {Exit} from "./Exit.js"
+import * as THREE from 'three';
+
 export default class Room extends Colleague{
 
     constructor(name){
@@ -11,7 +15,7 @@ export default class Room extends Colleague{
         this.#background = null;
         this.#isVisited = false;
     }
-    
+
     getName(){
         return this.#name;
     }
@@ -124,12 +128,12 @@ export default class Room extends Colleague{
         return neighbours;
     }
 
-    addBackground(backgroundObejct){
-        this.addObject3D(backgroundObejct);
+    addBackground(backgroundObject){
+        this.addObject3D(backgroundObject);
     }
 
-    removeBackground(backgroundObejct){
-        return this.removeObject3D(backgroundObejct);
+    removeBackground(backgroundObject){
+        return this.removeObject3D(backgroundObject);
     }
 
     isVisited(){
