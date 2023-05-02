@@ -6,5 +6,7 @@
 
 require('./Overlay');
 
+import SettingAffectingMenu from './SettingAffectingMenu';
+
 export default class PauseMenu extends SettingAffectingMenu{
 }
