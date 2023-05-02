@@ -1,13 +1,29 @@
-// @author: Ted
+/** @author: Ted */ 
 import { Colleague } from "../communication/Colleague.js"
 import * as THREE from 'three';
 import Ammo, * as AMMO from 'ammojs3';
 
+/**
+ * @class GameObject3D
+ * @extends {Colleague}
+ * 
+ */
+
 class GameObject3D extends Colleague {
     // Constructor for game Object3D
-    // Setups the dimensions and whatnot for the intended objects¨
-    // It take the position, rotation and scale in vector4 form, the objects mass, its shape,
-    // whether it is able to cast or recieve shadows respectebely and lastly its hitbox, every thing needed for an 3DObject.
+    // Setups the dimensions and whatnot for the intended objects.
+
+    /**
+     * Constructor for the GameObject3D
+     * @param {THREE.Vector3} pos
+     * @param {THREE.Vector3} rot
+     * @param {THREE.Vector3} scale
+     * @param {integer} mass
+     * @param {THREE.shape} shape
+     * @param {boolean} castShadow
+     * @param {boolean} recvShadow
+     * @param {integer} collisionMargin
+     */
     constructor(
       [posX = 0, posY = 0, posZ = 0],
       [rotX = 0, rotY = 0, rotZ = 0],
@@ -31,7 +47,10 @@ class GameObject3D extends Colleague {
       this.collisionMargin = collisionMargin;
     }
   
-    // As of the creating of this comment, it makes the color of the object red. In theory.
+    /**
+     * setProperties for the material the created objects should have. Right now it makes the material red.
+     * @param {THREE.Material} material
+     */
     setMaterialProperties(material) {
         material.color.set(0xff0000);
     }
