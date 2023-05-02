@@ -5,6 +5,5 @@
  */
 
 class GameEventMessage extends Message {
-
-
+    
 }

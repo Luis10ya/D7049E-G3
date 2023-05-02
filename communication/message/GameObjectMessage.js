@@ -5,5 +5,7 @@
  */
 
 class GameObjectMessage extends Message {
-    
+    constructor(){
+        this.#content = "Interaction";
+    }
 }
