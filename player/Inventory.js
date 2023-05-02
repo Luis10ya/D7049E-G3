@@ -23,10 +23,11 @@ export class Inventory {
     removeItem(oldItem) {
         index = this.#items.findIndex((item) => item.constructor.name == oldItem.constructor.name)
         if (index == -1) {
-            return error;
+            return false;
         } else {
             this.#items[index].amount -= newItem.amount;
             this.#mass -= oldItem.totalMass();
+            return true;
         }
     }
 

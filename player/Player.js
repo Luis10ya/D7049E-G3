@@ -33,7 +33,7 @@ export class Player extends GameObject3D {
 
     // Decreases the number of items as specified in the item amount atribute
     #removeInventoryItem(item) {
-        this.#inventory.removeItem(item);
+        return this.#inventory.removeItem(item);
     }
 
     action() {
@@ -41,7 +41,7 @@ export class Player extends GameObject3D {
         // if keybord message...
     }
 
-    #step(axis, distance) {
+    #step(axis, distance, sprint) {
         this.#rep3D.translateOnAxis(axis, distance);
     }
 
