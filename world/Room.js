@@ -1,6 +1,6 @@
-import { Colleague } from "../communication/Colleague.js"
-import { Exit } from "./Exit.js"
-import { GameObject3D } from "./GameObject3D.js"
+import { Colleague } from "../communication/Colleague.js";
+import Exit from "./Exit.js";
+import { GameObject3D } from "./GameObject3D.js";
 import * as THREE from 'three';
 import Ammo, * as AMMO from 'ammojs3';
 
