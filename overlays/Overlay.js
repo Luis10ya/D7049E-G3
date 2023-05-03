@@ -1,27 +1,23 @@
 export default class Overlay {
-    #renderTarget;
-    #overlayDiv;
-    #color;
-    #transparency;
 
     /**
      * 
      * @param {Element} renderTarget 
      */
     constructor(renderTarget) {
-        this.#renderTarget = renderTarget;
-        this.#overlayDiv = document.createElement('div');
-        this.#overlayDiv.style.position = 'absolute';
-        this.#overlayDiv.style.top = '0%';
-        this.#overlayDiv.style.left = '0%';
-        this.#overlayDiv.style.visibility = 'visible';
-        this.#overlayDiv.style.width = '100%'; // 100% of parent element width
-        this.#overlayDiv.style.height = '100%'; // 100% of parent element height
-        this.#color = [0.5, 0.5, 0.5];
-        this.#transparency = 1;
-        this.#overlayDiv.style.backgroundColor = `rgba(${this.#color[0]}, ${this.#color[1]}, ${this.#color[2]}, ${this.#transparency})`;
+        this.renderTarget = renderTarget;
+        this.overlayDiv = document.createElement('div');
+        this.overlayDiv.style.position = 'absolute';
+        this.overlayDiv.style.top = '0%';
+        this.overlayDiv.style.left = '0%';
+        this.overlayDiv.style.visibility = 'visible';
+        this.overlayDiv.style.width = '100%'; // 100% of parent element width
+        this.overlayDiv.style.height = '100%'; // 100% of parent element height
+        this.color = [0.5, 0.5, 0.5];
+        this.transparency = 1;
+        this.overlayDiv.style.backgroundColor = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.transparency})`;
   
-        this.#renderTarget.appendChild(this.#overlayDiv);
+        this.renderTarget.appendChild(this.overlayDiv);
     }
   
     /**
@@ -49,8 +45,8 @@ export default class Overlay {
     }
   
     setGeneralTransparency(transparency) {
-        this.#transparency = transparency;
-        this.overlayDiv.style.backgroundColor = `rgba(${this.#color[0]}, ${this.#color[1]}, ${this.#color[2]}, ${this.#transparency})`;
+        this.transparency = transparency;
+        this.overlayDiv.style.backgroundColor = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.transparency})`;
     }
 
     /**
@@ -58,7 +54,7 @@ export default class Overlay {
      * @param {RGB color} color 
      */
     setColor(color){
-        this.#color = color;
-        this.overlayDiv.style.backgroundColor = `rgba(${this.#color[0]}, ${this.#color[1]}, ${this.#color[2]}, ${this.#transparency})`;
+        this.color = color;
+        this.overlayDiv.style.backgroundColor = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.transparency})`;
     }
   }
