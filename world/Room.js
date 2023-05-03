@@ -15,7 +15,6 @@ export default class Room extends Colleague {
     #scene;
     #isVisited;
     #physicsWorld;
-    #physicsWorld;
     #gameObject3Dlist;
 
     constructor(name) {
