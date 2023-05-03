@@ -7,6 +7,11 @@ require('./MapMenu')
 
 
 export default class Map {
+
+    #nodes;
+    #edges;
+    #network;
+
     /**
      * 
      * @param {Array<Room>} rooms A List of rooms that should not change anymore. If it changes build new Map Object

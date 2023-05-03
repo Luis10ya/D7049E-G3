@@ -20,6 +20,20 @@ import PauseMenu from '../overlays/PauseMenu'
  * It manages all rooms and manages the basic attributes of the entire game world like gravity and the clock
  */
 export default class GameWorld extends Collegue{
+
+    #player;
+    #camera;
+    #clock;
+    #renderer;
+    #physicsWorld;
+    #currentRoom;
+    #rooms;
+    #pauseMenu;
+    #mapMenu;
+    #paused;
+    
+
+
     /**
      * Constructor for the GameWorldClass
      * @param {Player} player 
@@ -56,9 +70,7 @@ export default class GameWorld extends Collegue{
         this.#pauseMenu = new PauseMenu(domElement);
         this.#mapMenu = new MapMenu(domElement, this.#rooms)
 
-        this.#pausedTime = 0.0;
         this.#paused = false;
-        this.#lastPaused = undefined;
         this.#clock.start()
     }
 
@@ -165,7 +177,7 @@ export default class GameWorld extends Collegue{
     #togglePause(){
         this.#paused = !this.#paused;
         if (this.#paused) {
-            this.#lastPaused = this.clock.stop()
+            this.clock.stop()
         } else {
             this.#clock.start()
         }
