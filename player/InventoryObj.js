@@ -4,7 +4,7 @@ import * as THREE from 'three';
 export class InventoryObj {
     name;
     amount;
-    #image;
+    image;
     mass;
     constructor() {
         if (this.constructor == InventoryObj) {

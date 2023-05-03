@@ -42,7 +42,12 @@ export class Player extends GameObject3D {
     }
 
     #step(axis, distance, sprint) {
-        this.#rep3D.translateOnAxis(axis, distance);
+        if (!sprint) {
+            this.#rep3D.translateOnAxis(axis, distance);
+        } else {
+            this.#rep3D.translateOnAxis(axis, distance+1); // ? 
+        }
+        
     }
 
     #jump() {
