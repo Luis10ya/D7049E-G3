@@ -32,17 +32,11 @@ export class Inventory {
     }
 
     getRenderableInventoryElement() { // Creates a one-row table with the info of the objects of the inventory
-        var inventory = document.createElement('table');
-        var inventoryContent = document.createElement('tbody');
-        var row = document.createElement('tr');
+        var inv = new Array();
         for (const item of this.#items) {
-            var cell = document.createElement('td');
-            cell.appendChild(document.createElement(item)); // This is probably wrong, should probably convert the item to something before getting it directly into the cell
-            row.appendChild(cell);
+            inv.push(item.getRenderableInventoryObjectElement());
         }
-        inventoryContent.appendChild(row);
-        inventory.appendChild(inventoryContent);
-        return inventory;
+        return inv;
     }
 
     getMass() {
