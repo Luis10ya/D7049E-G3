@@ -12,7 +12,6 @@ export default class Room extends Colleague {
     #generalLight;
     #exits;
     #hasGround;
-    #scene;
     #isVisited;
     #physicsWorld;
     #gameObject3Dlist;
