@@ -12,7 +12,7 @@ export class Player extends GameObject3D {
     #playerMass;
     #jumpAcceleration;
     constructor(pos=[posX, posY, posZ], rot=[rotX, rotY, rotZ], scale=[scaleX, scaleY, scaleZ], mass, shape,
-                castShadow, recvShadow, colissionMargin, velocity, velocityTurbo, jumpAcceleration, eyeHeight) {
+                castShadow, recvShadow, collisionMargin, velocity, velocityTurbo, jumpAcceleration, eyeHeight) {
         this.#rep3D = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
         this.#rep3D.matrix.setRotationFromEuler(rot);
         this.#rep3D.matrix.setPosition(pos);
