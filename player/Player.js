@@ -51,10 +51,8 @@ export class Player extends GameObject3D {
     }
 
     #jump() {
-        // calculate jump velocity with mass and acceleration
-        // change position depending on this
         this.#jumpVelocity = this.getMass() * this.#jumpAcceleration;
-        // TODO
+        this.#rep3D.translateOnAxis(THREE.Vector3(0,1,0), distance*this.#jumpVelocity); // ?
     }
 
     getRenderableInventoryElement() {
