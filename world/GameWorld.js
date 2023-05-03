@@ -25,7 +25,6 @@ export default class GameWorld extends Collegue{
     #camera;
     #clock;
     #renderer;
-    #physicsWorld;
     #currentRoom;
     #rooms;
     #pauseMenu;
@@ -54,16 +53,6 @@ export default class GameWorld extends Collegue{
         this.#renderer.setSize(window.innerWidth, window.innerHeight);
         domElement.appendChild(this.#renderer.domElement);
 
-        //initialize Ammo stuff
-        var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
-        var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
-        var overlappingPairCache = new Ammo.btDbvtBroadphase();
-        var solver = new Ammo.btSequentialImpulseConstraintSolver();
-
-        this.#physicsWorld = new Ammo.btDiscreteDynamicsWorld(
-            dispatcher, overlappingPairCache, solver, collisionConfiguration);
-        this.#physicsWorld.setGravity(new Ammo.btVector3(0,-10,0));
-        
         this.#currentRoom = undefined;
         this.#rooms = new Array();
 
@@ -140,14 +129,6 @@ export default class GameWorld extends Collegue{
     }
 
     /**
-     * Sets the gravitational constant in the game world (default is 10)
-     * @param {Number} gravity 
-     */
-    setGravity(gravity) {
-        this.#physicsWorld.setGravity(new Ammo.btVector3(0, -1*gravity,0));
-    }
-
-    /**
      * This **private** Method is used to load a room, so set the scene in the renderer
      * @param {Number} id 
      */
@@ -168,7 +149,7 @@ export default class GameWorld extends Collegue{
         } else if (msg instanceof MovementMessage) {
             //Do nothing?
         } else if (msg instanceof GameEventMessage) {
-            //Do stuff?
+            //Do nothing
         } else {
             throw new Error("Argument of type " + Object.prototype.toString.call(msg) + " not supported for action");
         }
@@ -177,15 +158,16 @@ export default class GameWorld extends Collegue{
     #togglePause(){
         this.#paused = !this.#paused;
         if (this.#paused) {
-            this.clock.stop()
+            this.#pauseMenu.setVisibility(true);
+            this.clock.stop();
         } else {
-            this.#clock.start()
+            this.#pauseMenu.setVisibility(false);
+            this.#clock.start();
         }
     }
 
     update() {
         const deltaTime = this.#clock.deltaTime();
-        this.#physicsWorld.stepSimulation(deltaTime, 10);
         this.#currentRoom.updatePhysics();
     }
 }
