@@ -1,4 +1,9 @@
 export default class Overlay {
+    #renderTarget;
+    #overlayDiv;
+    #color;
+    #transparency;
+
     /**
      * 
      * @param {Element} renderTarget 

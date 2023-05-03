@@ -1,10 +1,24 @@
 import { Colleague } from "../communication/Colleague.js"
-import {Exit} from "./Exit.js"
+import { Exit } from "./Exit.js"
+import { GameObject3D } from "./GameObject3D.js"
 import * as THREE from 'three';
+import Ammo, * as AMMO from 'ammojs3';
 
-export default class Room extends Colleague{
+export default class Room extends Colleague {
 
-    constructor(name){
+    #name;
+    #lights;
+    #scene;
+    #generalLight;
+    #exits;
+    #hasGround;
+    #scene;
+    #isVisited;
+    #physicsWorld;
+    #physicsWorld;
+    #gameObject3Dlist;
+
+    constructor(name) {
         this.#name = name;
         this.#lights = [];
         this.#scene = new THREE.Scene();
@@ -12,36 +26,55 @@ export default class Room extends Colleague{
         this.#exits = [];
         this.#hasGround = false;
         this.#scene.add(this.#generalLight);
-        this.#background = null;
         this.#isVisited = false;
+        this.#gameObject3Dlist = [];
+
+        //initialize Ammo stuff
+        var collisionConfiguration = new Ammo.btDefaultCollisionConfiguration();
+        var dispatcher = new Ammo.btCollisionDispatcher(collisionConfiguration);
+        var overlappingPairCache = new Ammo.btDbvtBroadphase();
+        var solver = new Ammo.btSequentialImpulseConstraintSolver();
+
+        this.#physicsWorld = new Ammo.btDiscreteDynamicsWorld(
+            dispatcher, overlappingPairCache, solver, collisionConfiguration);
+        this.#physicsWorld.setGravity(new Ammo.btVector3(0,-10,0));
     }
 
-    getName(){
+    getName() {
         return this.#name;
     }
 
-    getScene(){
+    getScene() {
         return this.#scene;
     }
 
-    setColorOfGeneralLight(color){
+    setColorOfGeneralLight(color) {
         this.#generalLight.color = color;
     }
 
-    setIntensityOfGeneralLight(intensity){
+    setIntensityOfGeneralLight(intensity) {
         this.#generalLight.intensity = intensity;
     }
 
-    addLight(light){
-        let lightExistsInScene = this.#isObjectInScene(light)
+    /**
+     * 
+     * @param {TJS Object3D} light 
+     */
+    addLight(light) {
+        let lightExistsInScene = this.#isObjectInScene(light);
         if(!lightExistsInScene){
             this.#lights.push(light);
             this.#scene.add(light);
         }
     }
 
+    /**
+     * 
+     * @param {TJS Object3D} light 
+     * 
+     */
     removeLight(light) {
-        posInLights = this.getPosInLights(light);
+        let posInLights = this.indexOfLight(light);
         if(posInLights == -1){
             return false;
         }
@@ -50,23 +83,43 @@ export default class Room extends Colleague{
         return true; 
     }
 
-    getPosInLights(light){
+    /**
+     * 
+     * @param {TJS Object3D} light 
+     * @returns Index of lightObject in lighths array
+     */
+    indexOfLight(light) {
         const isLight = (element) => element === light;
         return this.#lights.findIndex(isLight);
     }
 
-    addExit(exit){
-        if(this.getPosInExits(exit) == -1){
+    /**
+     * 
+     * @param {Exit} exit 
+     */
+    addExit(exit) {
+        if(this.indexOfExit(exit) == -1){
             this.#exits.push(exit);
-            this.#scene.add(exit);
+            this.#scene.add(exit.getObject3D().getObject3D());
+            this.#physicsWorld.addRigidBody(exit.getObject3D().getRigidBody());
         }
     }
 
-    getPosInExits(exit){
+    /**
+     * 
+     * @param {Exit} exit 
+     * @returns Index of exitObject in exits array
+     */
+    indexOfExit(exit) {
         const isExit = (element) => element === exit;
         return this.#exits.findIndex(isExit);
     }
 
+    /**
+     * 
+     * @param {Exit or integer} exit 
+     *
+     */
     removeExit(exit) {
         var posInExits = -1;
         if (typeof exit === 'number') {
@@ -75,34 +128,60 @@ export default class Room extends Colleague{
                 return false;
             }
         } else if (exit === 'Exit') {
-            posInExits = this.getPosInExits(exit)
+            posInExits = this.indexOfExit(exit);
             if(posInExits == -1){
                 return false;
-            } 
+            }
         }
         let exitObject = this.#exits[posInExits];
+        let ridigBody = exitObject.getObject3D().getRigidBody();
         this.#exits.splice(posInExits, 1);
-        this.#scene.remove(exitObject);
+        this.#scene.remove(exitObject.getObject3D().getObject3D());
+        this.#physicsWorld.removeRigidBody(ridigBody);
+        Ammo.destroy(ridigBody);
         return true;
     }
 
-    addObject3D(object){
-        let objectExistsInScene = this.#isObjectInScene(object);
-        if(!objectExistsInScene){
+    /**
+     * 
+     * @param {GameObject3D} object 
+     */
+    addObject3D(...objects) {
+        for (let i = 0; i < objects.length; i++) {
+          let object = objects[i];
+          let objectExistsInScene = this.#isObjectInScene(object);
+          if (!objectExistsInScene) {
             this.#scene.add(object);
+            this.#physicsWorld.addRigidBody(object.getRigidBody());
+            this.#gameObject3Dlist.push(object);
+          }
         }
-    }
+      }
 
-    removeObject3D(object){
+    /**
+     * 
+     * @param {GameObject3D} object 
+     * 
+     */
+    removeObject3D(object) {
         let objectExistsInScene = this.#isObjectInScene(object);
         if(!objectExistsInScene){
             return false;
         }
-        this.#scene.remove(object)
+        this.#scene.remove(object.getObject3D());
+        this.#gameObject3Dlist.splice(indexOfGameObject3D(object), 1);
+        let ridigBody = object.getRigidBody();
+        this.#physicsWorld.removeRigidBody(ridigBody);
+        Ammo.destroy(ridigBody);
         return true;
     }
 
-    #isObjectInScene(object){
+    indexOfGameObject3D(object) {
+        const isObject = (element) => element === object;
+        return this.#gameObject3Dlist.findIndex(isObject);
+    }
+
+    #isObjectInScene(object) {
         let objectExistsInScene = false;
         this.#scene.children.forEach(child => {
             if (child === object) {
@@ -112,36 +191,76 @@ export default class Room extends Colleague{
         return objectExistsInScene;
     }
 
-    createGround(groundShape){
+    /**
+     * 
+     * @param {GameObject3D} groundShape 
+     */
+    createGround(groundShape) {
         let objectExistsInScene = this.#isObjectInScene(groundShape);
         if(!this.#hasGround && !objectExistsInScene){
             this.#hasGround = true;
-            this.#scene.add(groundShape);
+            this.#scene.add(groundShape.getObject3D());
         }
     }
 
-    getNeighbours(){
+    /**
+     * 
+     * @returns array of Room objects
+     */
+    getNeighbours() {
         let neighbours = [];
         this.#exits.forEach(exit => {
-            neighbours.push(exit.getRoom())
+            neighbours.push(exit.getRoom());
         });
         return neighbours;
     }
 
-    addBackground(backgroundObject){
+    /**
+     * 
+     * @param {TJS Object3D} backgroundObject 
+     */
+    addBackground(backgroundObject) {
         this.addObject3D(backgroundObject);
     }
 
-    removeBackground(backgroundObject){
+    /**
+     * 
+     * @param {TJS Object3D} backgroundObject 
+     * 
+     */
+    removeBackground(backgroundObject) {
         return this.removeObject3D(backgroundObject);
     }
 
-    isVisited(){
+    isVisited() {
         return this.#isVisited;
     }
 
-    visit(){
+    visit() {
         this.#isVisited = true;
+    }
+
+    /**
+     * 
+     * @param {Number} timeDelta 
+     */
+    updateGameObjects(timeDelta){
+        this.#physicsWorld.stepSimulation( deltaTime, 10 );
+        this.#gameObject3Dlist.forEach(object => {
+            object.updateMotion();
+        });
+    }
+
+    /**
+     * Sets the gravitational constant in the game world (default is 10)
+     * @param {Number} gravity 
+     */
+    setGravity(gravity) {
+        this.#physicsWorld.setGravity(new Ammo.btVector3(0, -1*gravity,0));
+    }
+
+    getGameObject3DList() {
+        return this.#gameObject3Dlist;
     }
 
 }
