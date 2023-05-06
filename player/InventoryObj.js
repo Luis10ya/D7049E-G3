@@ -12,6 +12,11 @@ export class InventoryObj {
         }
     }
 
+    getRenderableInventoryObjectElement() { // Creates a one-row table with the info of the objects of the inventory
+        var inventoryObject = document.createElement('');
+        return inventoryObject;
+    }
+
     totalMass() {
         return this.mass * this.amount;
     }
