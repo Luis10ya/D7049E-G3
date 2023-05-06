@@ -25,7 +25,7 @@ export default class Setting {
             setting: this.#displayName,
             value: this.#value
         }
-        message = new PlayerMessage(JSON.stringify(messageObj));
+        message = new OverlayMessage(JSON.stringify(messageObj));
         this.#mediator.notify(message);
     }
 }
