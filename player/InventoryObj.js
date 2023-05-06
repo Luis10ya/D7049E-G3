@@ -13,7 +13,7 @@ export class InventoryObj {
     }
 
     getRenderableInventoryObjectElement() {
-        var inventoryObject = document.createElement('');
+        const inventoryObject = document.createElement('div');
         return inventoryObject;
     }
 
