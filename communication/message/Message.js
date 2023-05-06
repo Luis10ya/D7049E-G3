@@ -9,10 +9,13 @@ class Message {
 
     content;
 
-    constructor(){
+    constructor(message){
         if (this.constructor == Message) {
             throw new Error("Abstract classes can't be instantiated.");
         }
+
+        this.content = message;
+
     }
 
     getMessage(){

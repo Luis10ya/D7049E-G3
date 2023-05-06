@@ -1,3 +1,5 @@
+import Mediator from './Mediator'
+
 /**
  * @class MenuMediator
  * @extends {Mediator}
