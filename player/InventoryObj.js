@@ -12,7 +12,7 @@ export class InventoryObj {
         }
     }
 
-    getRenderableInventoryObjectElement() { // Creates a one-row table with the info of the objects of the inventory
+    getRenderableInventoryObjectElement() {
         var inventoryObject = document.createElement('');
         return inventoryObject;
     }
