@@ -1,6 +1,6 @@
 import { Colleague } from "../communication/Colleague.js"
 import * as THREE from 'three';
-import {Ammo} from 'ammojs3';
+import { Ammo } from 'ammojs3';
 
 /**
  * @class GameObject3D
@@ -22,7 +22,7 @@ class GameObject3D extends Colleague {
    * @param {Array} pos
    * @param {Array} rot
    * @param {integer} mass
-   * @param {THREE.shape} shape //toDo: This is wrong, it should be some sort of object format / link to this
+   * @param {string} shape //toDo: This is wrong, it should be some sort of object format / link to this. So a string for now. Was: THREE:Shape
    * @param {boolean} castShadow
    * @param {boolean} recvShadow
    */
@@ -58,9 +58,9 @@ class GameObject3D extends Colleague {
       rotation_quaternion.z,
       rotation_quaternion.w));
     let defaultMotionState = new Ammo.btDefaultMotionState(this.#transform);
-    
+
     let structColShape = new Ammo.btConvexHullShape(); //Make the shape the same as the Three Mesh
-    let localInertia = new Ammo.btVector3(0,0,0);
+    let localInertia = new Ammo.btVector3(0, 0, 0);
 
     let RBody_Info = new Ammo.btRigidBodyConstructionInfo(mass, defaultMotionState, structColShape, localInertia);
     this.#body = new Ammo.btRigidBody(RBody_Info);

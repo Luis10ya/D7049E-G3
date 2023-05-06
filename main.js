@@ -1,2 +1,3 @@
-import * as THREE from 'three';
+import GameWorld from "./world/GameWorld";
 
+foo = new GameWorld();
