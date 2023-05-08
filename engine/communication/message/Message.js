@@ -5,7 +5,7 @@
  * 
  */
 
-class Message {
+export default class Message {
 
     content;
 

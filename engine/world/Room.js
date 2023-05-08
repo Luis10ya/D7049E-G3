@@ -1,6 +1,6 @@
-import { Colleague } from "../communication/Colleague.js";
+import Colleague from "../communication/Colleague.js";
 import Exit from "./Exit.js";
-import { GameObject3D } from "./GameObject3D.js";
+import GameObject3D from "./GameObject3D.js";
 import * as THREE from 'three';
 import Ammo, * as AMMO from 'ammojs3';
 
@@ -259,6 +259,27 @@ export default class Room extends Colleague {
 
     getGameObject3DList() {
         return this.#gameObject3Dlist;
+    }
+
+    /**
+     * Static method to create a room with static elements in it.
+     * @param {string} roomName 
+     * @param {string} pathToGLTF 
+     */
+    static createFromGLTFScene(roomName, pathToGLTF) {
+        const loader = new GLTFLoader();
+        const room = new Room(roomName);
+
+        loader.load(pathToGLTF, (gltf) => {
+            for (const asset of gltf.scene.children) {
+                const geometry = object.geometry;
+
+                const positionArray = object.position.toArray();
+                const rotationArray = object.rotation.toVector3().toArray();
+
+                const gameObject = new GameObject3D(positionArray, rotationArray, 0, geometry);
+            }
+        });
     }
 
 }

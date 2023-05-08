@@ -1,9 +1,5 @@
 //@author Malte
 
-require('./Room')
-require('./GameObject3D')
-
-
 /**
  * Exits manage the exit from a room
  */

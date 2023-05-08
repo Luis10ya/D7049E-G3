@@ -4,7 +4,7 @@
  * 
  */
 
-class Colleague {
+export default class Colleague {
 
     constructor(mediator){
         this.mediator = mediator

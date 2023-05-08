@@ -2,9 +2,6 @@
 
 import { Network } from "vis-network";
 
-require('../world/Room');
-require('./MapMenu')
-
 
 export default class Map {
 

@@ -1,8 +1,8 @@
 //@author: Luis
 import * as THREE from 'three';
-import {InventoryObj} from './InventoryObj.js'
+//<import {InventoryObj} from './InventoryObj.js'
 
-export class Inventory {
+export default class Inventory {
     #mass = 0;
     #items;
 
@@ -43,3 +43,4 @@ export class Inventory {
         return this.#mass;
     }
 }
+
