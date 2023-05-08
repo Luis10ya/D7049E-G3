@@ -43,6 +43,9 @@ export class Player extends GameObject3D {
         // if keybord message == "wasd", "SHIFT", or "SPACE", proceed, else do nothing 
         // get message that alters the FOV, from the menu mediator
         // get message to move (call step/jump)
+        // if keyPressed = shift {go to srpint}
+        // else if keyPressed = space {go to jump}
+        // else {go to step}
     }
 
     #sprint() {
@@ -63,6 +66,7 @@ export class Player extends GameObject3D {
 
         switch (keyPressed) {
             case "w":
+                movement.x = 
                 this.rep3d.position.x -= Math.sin(this.rep3d.rotation.y) * vel;
                 this.rep3d.position.z -= -Math.cos(this.rep3d.rotation.y) * vel;
                 break;
@@ -98,20 +102,5 @@ export class Player extends GameObject3D {
     }
 
 }
-
-if (keyboard[32] && jump_can==1) {// space
-    jump_can = 0;
-    velocity_y = 16;
-  }
-camera.position.y+=velocity_y*delta;
-    if(jump_can==0){
-        velocity_y-=9.8*2*delta;
-        if(camera.position.y<=-0.5){
-            jump_can = 1;
-            velocity_y=0;
-            camera.position.y=-0.0;
-        }
-    }
-};
 
 this.initMovement
