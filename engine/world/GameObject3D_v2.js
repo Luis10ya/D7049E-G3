@@ -23,32 +23,34 @@ class GameObject3D extends Colleague {
    * @param {Array} rot
    * @param {integer} mass
    * @param {string} shape //toDo: This is wrong, it should be some sort of object format / link to this. So a string for now. Was: THREE:Shape
-   * @param {boolean} castShadow
+   * @param {boole}
    * @param {boolean} recvShadow
    */
   constructor(
     [posX = 0, posY = 0, posZ = 0],
     [rotX = 0, rotY = 0, rotZ = 0],
     mass = 0,
-    shape = null,
+    geometry = null,
+    material = new THREE.MeshStandardMaterial({ color: 0xff0000 }),
     castShadow = true,
     recvShadow = true,
   ) {
-    let rotation = THREE.Euler(rotX, rotY, rotZ);
-    let rotation_quaternion = new THREE.Quaternion()
-    rotation_quaternion.setFromEuler(rotation)
-
-    //Initialize Graphic Represenation
-    this.#rep3d = new THREE.Object3D(); //ToDo: Load the shape from the constructor
+    super();
+  
+    let rotation = new THREE.Euler(rotX, rotY, rotZ);
+    let rotation_quaternion = new THREE.Quaternion();
+    rotation_quaternion.setFromEuler(rotation);
+  
+    // Create the THREE.Mesh using the given geometry and material
+    this.#rep3d = new THREE.Mesh(geometry, material);
     let translation = new THREE.Vector3(posX, posY, posZ);
     let translationistance = translation.length();
     let translationDirection = translation.normalize();
     this.#rep3d.translateOnAxis(translationDirection, translationistance);
     this.#rep3d.castShadow = castShadow;
-    this.#rep3d.recvShadow = recvShadow;
-
-
-    //Initialize Physics Representation
+    this.#rep3d.receiveShadow = recvShadow;
+  
+    // Initialize Physics Representation
     this.#transform = new Ammo.btTransform();
     this.#transform.setIdentity();
     this.#transform.setOrigin(new Ammo.btVector3(posX, posY, posZ));
@@ -58,16 +60,17 @@ class GameObject3D extends Colleague {
       rotation_quaternion.z,
       rotation_quaternion.w));
     let defaultMotionState = new Ammo.btDefaultMotionState(this.#transform);
-
-    let structColShape = new Ammo.btConvexHullShape(); //Make the shape the same as the Three Mesh
+  
+    // Create an Ammo shape based on the given geometry
+    let structColShape = this.createAmmoShape(geometry);
     let localInertia = new Ammo.btVector3(0, 0, 0);
-
+  
     let RBody_Info = new Ammo.btRigidBodyConstructionInfo(mass, defaultMotionState, structColShape, localInertia);
     this.#body = new Ammo.btRigidBody(RBody_Info);
-
+  
     this.#rep3d.userData.physicsBody = this.#body;
   }
-
+  
   /**
    * setProperties for the material the created objects should have. Right now it makes the material red.
    * @param {THREE.Material} material
