@@ -1,15 +1,15 @@
 /**
- * @class GameEventMessage
+ * @class GameEventMsg
  * @extends {Message}
  * 
  */
 
-class GameEventMessageContent {
+class GameEventMsgContent {
     eventType = "";
     eventResponsible;
 }
 
-class GameEventMessage extends Message {
+class GameEventMsg extends Message {
     constructor(eventType, eventResponsible) {
         this.eventType = eventType;
         this.eventResponsible = eventResponsible;

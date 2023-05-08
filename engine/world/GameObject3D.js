@@ -1,6 +1,7 @@
 import Colleague from "../communication/Colleague.js"
 import * as THREE from 'three';
-import Ammo from 'ammojs3/builds/ammo.js'
+import { Ammo } from 'ammojs3';
+import ObjInteractionMsg from '../communication/message/ObjInteractMsg.js'
 
 /**
  * @class GameObject3D
@@ -71,6 +72,18 @@ export default class GameObject3D extends Colleague {
     this.#body = new Ammo.btRigidBody(RBody_Info);
   
     this.rep3d.userData.physicsBody = this.#body;
+  }
+
+  action(message) {
+    if (message instanceof ObjInteractionMsg) {
+      this.#interaction();
+    }
+  }
+
+  #interaction() {
+      if (this.constructor == InventoryObj) {
+        throw new Error("Interaction not implemented for base class.");
+    }
   }
 
   /**
