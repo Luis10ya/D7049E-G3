@@ -39,7 +39,7 @@ export class Player extends GameObject3D {
         return this.#inventory.removeItem(item);
     }
 
-    action() {
+    action(message) {
         // TODO
         // if keybord message == "wasd", "SHIFT", or "SPACE", proceed, else do nothing 
         // get message that alters the FOV, from the menu mediator
@@ -57,7 +57,7 @@ export class Player extends GameObject3D {
         }
     }
 
-    #step(keyPressed, distance) {
+    #step(keyPressed) {
         vel = 0;
         if (this.#isSprinting) {
             vel = this.#velocityTurbo;
@@ -67,7 +67,7 @@ export class Player extends GameObject3D {
 
         switch (keyPressed) {
             case "w":
-                movement.x = 
+                movement.x = 1; 
                 this.rep3d.position.x -= Math.sin(this.rep3d.rotation.y) * vel;
                 this.rep3d.position.z -= -Math.cos(this.rep3d.rotation.y) * vel;
                 break;
@@ -82,7 +82,21 @@ export class Player extends GameObject3D {
             case "a":
                 this.rep3d.position.x += vel * Math.sin(this.rep3d.rotation.y - Math.PI / 2);
                 this.rep3d.position.z += vel * -Math.cos(this.rep3d.rotation.y - Math.PI / 2);
-        }        
+        }
+
+        let scalingFactor = 20;
+
+        let moveX =  moveDirection.right - moveDirection.left;
+        let moveZ =  moveDirection.back - moveDirection.forward;
+        let moveY =  0; 
+
+        if( moveX == 0 && moveY == 0 && moveZ == 0) return;
+
+        let resultantImpulse = new Ammo.btVector3( moveX, moveY, moveZ )
+        resultantImpulse.op_mul(scalingFactor);
+
+        let physicsBody = ballObject.userData.physicsBody;
+        physicsBody.setLinearVelocity( resultantImpulse );     
     }
 
     #jump() {
