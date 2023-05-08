@@ -14,6 +14,11 @@ export class InventoryObj {
 
     getRenderableInventoryObjectElement() {
         const inventoryObject = document.createElement('div');
+        const invObjectImage = document.createElement('img');
+        invObjectImage.src = this.image;
+        inventoryObject.appendChild(invObjectImage);
+        const invObjectName = document.createTextNode(this.name);
+        inventoryObject.appendChild(invObjectName);
         return inventoryObject;
     }
 
