@@ -1,6 +1,6 @@
 import Colleague from "../communication/Colleague.js"
 import * as THREE from 'three';
-import { Ammo } from 'ammojs3/dist/ammo.js'
+import * as Ammo from 'ammo.js'
 import ObjInteractionMsg from '../communication/message/ObjInteractMsg.js'
 
 /**
@@ -24,7 +24,7 @@ export default class GameObject3D extends Colleague {
    * @param {Array} rot Rotation of the object
    * @param {integer} mass
    * @param {THREE.BufferGeometry} geometry
-   * @param {boole}
+   * @param {boolean}
    * @param {boolean} recvShadow
    */
   constructor(
@@ -38,11 +38,11 @@ export default class GameObject3D extends Colleague {
   ) {
 
     super();
-  
+
     let rotation = new THREE.Euler(rotX, rotY, rotZ);
     let rotation_quaternion = new THREE.Quaternion();
     rotation_quaternion.setFromEuler(rotation);
-  
+
     // Create the THREE.Mesh using the given geometry and material
     this.rep3d = new THREE.Mesh(geometry, material);
     let translation = new THREE.Vector3(posX, posY, posZ);
@@ -51,26 +51,25 @@ export default class GameObject3D extends Colleague {
     this.rep3d.translateOnAxis(translationDirection, translationDistance);
     this.rep3d.castShadow = castShadow;
     this.rep3d.receiveShadow = recvShadow;
-  
+
     // Initialize Physics Representation
-    console.log(Ammo.toString());
     this.#transform = new Ammo.btTransform();
     this.#transform.setIdentity();
-    this.#transform.setOrigin(new Ammo.btVector3(posX, posY, posZ));
+    let position = new Ammo.btVector3(posX, posY, posZ)
+    this.#transform.setOrigin(position);
     this.#transform.setRotation(new Ammo.btQuaternion(
       rotation_quaternion.x,
       rotation_quaternion.y,
       rotation_quaternion.z,
       rotation_quaternion.w));
     let defaultMotionState = new Ammo.btDefaultMotionState(this.#transform);
-  
+
     // Create an Ammo shape based on the given geometry
     let structColShape = this.createAmmoShape(geometry);
     let localInertia = new Ammo.btVector3(0, 0, 0);
-  
+
     let RBody_Info = new Ammo.btRigidBodyConstructionInfo(mass, defaultMotionState, structColShape, localInertia);
     this.#body = new Ammo.btRigidBody(RBody_Info);
-  
     this.rep3d.userData.physicsBody = this.#body;
   }
 
@@ -81,8 +80,8 @@ export default class GameObject3D extends Colleague {
   }
 
   #interaction() {
-      if (this.constructor == InventoryObj) {
-        throw new Error("Interaction not implemented for base class.");
+    if (this.constructor == InventoryObj) {
+      throw new Error("Interaction not implemented for base class.");
     }
   }
 
@@ -100,7 +99,7 @@ export default class GameObject3D extends Colleague {
     }
     return shape;
   }
-  
+
   /**
    * setProperties for the material the created objects should have. Right now it makes the material red.
    * @param {THREE.Material} material
@@ -113,7 +112,7 @@ export default class GameObject3D extends Colleague {
    * 
    * @returns {THREE.Object3D} The 3D representation of the gameobject
    */
-  getObject3d() {
+  getObject3D() {
     return this.rep3d;
   }
 

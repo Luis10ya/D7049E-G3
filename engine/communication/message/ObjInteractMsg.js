@@ -1,3 +1,5 @@
+import KeyboardMsg from './KeyboardMsg'
+
 /**
  * @class ObjInteractMsg
  * @extends {KeyboardMsg}
@@ -6,7 +8,7 @@
 
 // contain what key is pressed and 
 // what is interacted with ???
-class ObjInteractMsg extends KeyboardMsg {
+export default class ObjInteractMsg extends KeyboardMsg {
 
     //interactedObj;
     

@@ -1,3 +1,5 @@
+import Message from "./Message";
+
 /**
  * @class KeyboardMsg
  * @extends {Message}
@@ -5,7 +7,7 @@
  */
 
 // Message containing the key code
-class KeyboardMsg extends Message {
+export default class KeyboardMsg extends Message {
 
     keyCode;
 

@@ -16,7 +16,7 @@ export default class Overlay {
         this.color = [0.5, 0.5, 0.5];
         this.transparency = 1;
         this.overlayDiv.style.backgroundColor = `rgba(${this.color[0]}, ${this.color[1]}, ${this.color[2]}, ${this.transparency})`;
-  
+
         this.renderTarget.appendChild(this.overlayDiv);
     }
   

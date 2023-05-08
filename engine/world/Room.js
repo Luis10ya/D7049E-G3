@@ -2,7 +2,8 @@ import Colleague from "../communication/Colleague.js";
 import Exit from "./Exit.js";
 import GameObject3D from "./GameObject3D.js";
 import * as THREE from 'three';
-import { Ammo } from 'ammojs3/dist/ammo.js';
+import * as Ammo from 'ammo.js';
+import {GLTFLoader} from 'three/addons/loaders/GLTFLoader.js'
 
 export default class Room extends Colleague {
 
@@ -17,6 +18,8 @@ export default class Room extends Colleague {
     #gameObject3Dlist;
 
     constructor(name) {
+        super();
+
         this.#name = name;
         this.#lights = [];
         this.#scene = new THREE.Scene();
@@ -149,7 +152,7 @@ export default class Room extends Colleague {
           let object = objects[i];
           let objectExistsInScene = this.#isObjectInScene(object);
           if (!objectExistsInScene) {
-            this.#scene.add(object);
+            this.#scene.add(object.getObject3D());
             this.#physicsWorld.addRigidBody(object.getRigidBody());
             this.#gameObject3Dlist.push(object);
           }
@@ -271,14 +274,15 @@ export default class Room extends Colleague {
         const room = new Room(roomName);
 
         loader.load(pathToGLTF, (gltf) => {
-            for (const asset of gltf.scene.children) {
-                const geometry = object.geometry;
-
-                const positionArray = object.position.toArray();
-                const rotationArray = object.rotation.toVector3().toArray();
-
-                const gameObject = new GameObject3D(positionArray, rotationArray, 0, geometry);
-            }
+            gltf.scene.traverse((node) => {
+                if (node.isMesh) {
+                    const geometry = node.geometry;
+                    const positionArray = node.position.toArray();
+                    const rotationArray = node.rotation.toArray();
+                    const gameObject = new GameObject3D(positionArray, rotationArray, 0, geometry);
+                    room.addObject3D(gameObject);
+                }
+            });
         });
     }
 

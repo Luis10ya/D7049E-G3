@@ -9,7 +9,8 @@ import Setting from './Setting';
  */
 export default class SettingAffectingMenu extends FullscreenMenu{
 
-    constructor(){
+    constructor(renderTarget){
+        super(renderTarget);
         this.affectableSettings = new Array();
     }
     

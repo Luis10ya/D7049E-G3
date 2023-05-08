@@ -2,8 +2,9 @@
 import * as THREE from 'three';
 import Inventory from './Inventory.js';
 import GameObject3D from '../world/GameObject3D.js';
-import MovementMsg from '../communication/message/MovementMsg.js'
-import InventoryMsg from '../communication/message/InventoryMsg.js'
+import MovementMsg from '../communication/message/MovementMsg.js';
+import InventoryMsg from '../communication/message/InventoryMsg.js';
+import InventoryOverlay from '../overlays/InventoryOverlay.js';
 
 export class Player extends GameObject3D {
     #inventory;
@@ -23,8 +24,11 @@ export class Player extends GameObject3D {
         const geometry = new THREE.BoxGeometry( 1, 1, 1 ); 
         super([0,eyeHeight,0], [0,0,0], mass, geometry);
 
+        let width = window.screen.width;
+        let height = window.screen.height;
+
         this.rep3d = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
-        this.rep3d.matrix.setRotationFromEuler((0,0,0));
+        this.rep3d.matrix.makeRotationFromEuler([0,0,0]);
         this.rep3d.matrix.setPosition((0,0,0));
         this.rep3d.scale.set((1,1,1));
         this.rep3d.matrixAutoUpdate = false;
@@ -35,7 +39,8 @@ export class Player extends GameObject3D {
         this.#jumpAcceleration = jumpAcceleration;
         this.#isSprinting = false;
         this.#eyeHeight = eyeHeight;
-        this.#playerMass = rep3D.body.info.m_mass;
+        //this.#playerMass = this.rep3d.body.info.m_mass; //@Luis Please explain?
+        this.#playerMass = mass; //Maybe like this?
     }
 
     // If the item already exists in the inventory, adds the item.amount quantity to the amount.
@@ -103,7 +108,7 @@ export class Player extends GameObject3D {
             movementVelocity.op_mul(this.#velocity);
         }
         
-        this.#rep3D.initMovement(movementVelocity);
+        this.rep3d.initMovement(movementVelocity);
     }
 
     #jump() {

@@ -1,7 +1,7 @@
 //@author: Malte
 
 import * as THREE from 'three';
-import { Ammo } from 'ammojs3/dist/ammo.js'
+import * as Ammo from 'ammo.js';
 import MapMenu from '../overlays/MapMenu';
 import PauseMenu from '../overlays/PauseMenu'
 import Colleague from '../communication/Colleague';
@@ -30,13 +30,16 @@ export default class GameWorld extends Colleague{
      * @param {Element} domElement 
      */
     constructor(player, domElement) {
+
+        super();
+
         //Set constructor arguments
         this.#player = player;
 
         //initialize ThreeJS stuff
         this.#camera = player.getCamera();
         this.#clock = new THREE.Clock();
-        this.#renderer = new THREE.WebGLBufferRenderer({
+        this.#renderer = new THREE.WebGLRenderer({
             antialias: true,
             alpha: true,
         });

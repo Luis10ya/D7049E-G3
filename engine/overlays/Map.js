@@ -47,11 +47,11 @@ export default class Map {
         }
 
         this.#network = new Network(renderTarget, {
-            nodes: nodes,
-            edges: edges,
+            nodes: this.#nodes,
+            edges: this.#edges,
         }, {
             nodes: {
-                borderwidth:2,
+                borderWidth:2,
             },
         });
     }
