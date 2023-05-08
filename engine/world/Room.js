@@ -2,7 +2,7 @@ import Colleague from "../communication/Colleague.js";
 import Exit from "./Exit.js";
 import GameObject3D from "./GameObject3D.js";
 import * as THREE from 'three';
-import Ammo, * as AMMO from 'ammojs3';
+import { Ammo } from 'ammojs3/dist/ammo.js';
 
 export default class Room extends Colleague {
 

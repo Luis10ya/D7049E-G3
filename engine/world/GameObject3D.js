@@ -1,6 +1,6 @@
 import Colleague from "../communication/Colleague.js"
 import * as THREE from 'three';
-import { Ammo } from 'ammojs3/builds/ammo.js';
+import { Ammo } from 'ammojs3/dist/ammo.js'
 import ObjInteractionMsg from '../communication/message/ObjInteractMsg.js'
 
 /**

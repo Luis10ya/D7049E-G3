@@ -1,7 +1,7 @@
 //@author: Malte
 
 import * as THREE from 'three';
-import Ammo, * as AMMO from 'ammojs3';
+import { Ammo } from 'ammojs3/dist/ammo.js'
 import MapMenu from '../overlays/MapMenu';
 import PauseMenu from '../overlays/PauseMenu'
 import Colleague from '../communication/Colleague';
