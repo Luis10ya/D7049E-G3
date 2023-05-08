@@ -12,6 +12,10 @@ export class Player extends GameObject3D {
     #jumpAcceleration;
     #isSprinting;
     #inventoryOverlay;
+    #movementForward = 0;
+    #movementBackward = 0;
+    #movementRight = 0;
+    #movementLeft = 0;
     constructor(velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
         this.rep3d = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
         this.rep3d.matrix.setRotationFromEuler((0,0,0));
@@ -46,6 +50,22 @@ export class Player extends GameObject3D {
         // if keyPressed = shift {go to srpint}
         // else if keyPressed = space {go to jump}
         // else {go to step}
+
+        if (message instanceof MovementMessage) {
+            if (message.keyCode == 14) {
+                this.#sprint();
+            } else if (message.keyCode == 32) {
+                this.#jump();
+            } else {
+                this.#step(message.keyCode);
+            }
+        } else if (message instanceof Inventory) {
+            if (message.remove) {
+                this.#removeInventoryItem(this.item);
+            } else {
+                this.addInventoryItem(this.item);
+            }
+        } else return
     }
 
     #sprint() {
@@ -57,50 +77,40 @@ export class Player extends GameObject3D {
     }
 
     #step(keyPressed) {
-        vel = 0;
-        if (this.#isSprinting) {
-            vel = this.#velocityTurbo;
-        } else {
-            vel = this.#velocity;
-        }
-
         switch (keyPressed) {
             case "w":
-                movement.x = 1; 
-                this.rep3d.position.x -= Math.sin(this.rep3d.rotation.y) * vel;
-                this.rep3d.position.z -= -Math.cos(this.rep3d.rotation.y) * vel;
+                this.#movementForward = 1; 
                 break;
             case "s":
-                this.rep3d.position.x += Math.sin(this.rep3d.rotation.y) * vel;
-                this.rep3d.position.z += -Math.cos(this.rep3d.rotation.y) * vel;
+                this.#movementBackward = 1;
                 break;
             case "d":
-                this.rep3d.position.x += vel * Math.sin(this.rep3d.rotation.y + Math.PI / 2);
-                this.rep3d.position.z += vel * -Math.cos(this.rep3d.rotation.y + Math.PI / 2);
+                this.#movementRight = 1;
                 break;
             case "a":
-                this.rep3d.position.x += vel * Math.sin(this.rep3d.rotation.y - Math.PI / 2);
-                this.rep3d.position.z += vel * -Math.cos(this.rep3d.rotation.y - Math.PI / 2);
+                this.#movementLeft = 1;
+                break;
         }
 
-        let scalingFactor = 20;
+        moveX =  this.#movementRight - this.#movementLeft;
+        moveZ =  this.#movementBackward - this.#movementForward;
+        moveY =  0;
 
-        let moveX =  moveDirection.right - moveDirection.left;
-        let moveZ =  moveDirection.back - moveDirection.forward;
-        let moveY =  0; 
+        if (moveX == 0 && moveY == 0 && moveZ == 0) return;
 
-        if( moveX == 0 && moveY == 0 && moveZ == 0) return;
-
-        let resultantImpulse = new Ammo.btVector3( moveX, moveY, moveZ )
-        resultantImpulse.op_mul(scalingFactor);
-
-        let physicsBody = ballObject.userData.physicsBody;
-        physicsBody.setLinearVelocity( resultantImpulse );     
+        movementVelocity = new Ammo.btVector3(moveX, moveY, moveZ);
+        if (this.#isSprinting) {
+            movementVelocity.op_mul(this.#velocityTurbo);
+        } else  {
+            movementVelocity.op_mul(this.#velocity);
+        }
+        
+        this.#rep3D.initMovement(movementVelocity);
     }
 
     #jump() {
-        this.#jumpVelocity = this.getMass() * this.#jumpAcceleration;
-        this.rep3d.translateOnAxis(THREE.Vector3(0,1,0), distance*this.#jumpVelocity); // ?
+        /*this.#jumpVelocity = this.getMass() * this.#jumpAcceleration;
+        this.rep3d.translateOnAxis(THREE.Vector3(0,1,0), distance*this.#jumpVelocity); // ?*/
     }
 
     #updateInventoryOverlay() { // Creates a one-row table with the info of the objects of the inventory
