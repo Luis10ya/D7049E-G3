@@ -1,3 +1,3 @@
-import GameWorld from "./world/GameWorld";
+import GameWorld from "./engine/world/GameWorld";
 
 foo = new GameWorld();
