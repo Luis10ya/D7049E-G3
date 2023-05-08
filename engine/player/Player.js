@@ -1,6 +1,7 @@
 //@author: Luis
 import * as THREE from 'three';
-import {Inventory} from './Inventory.js';
+import Inventory from './Inventory.js';
+import GameObject3D from '../world/GameObject3D.js';
 
 export class Player extends GameObject3D {
     #inventory;
@@ -103,4 +104,4 @@ export class Player extends GameObject3D {
 
 }
 
-this.initMovement
+//this.initMovement
