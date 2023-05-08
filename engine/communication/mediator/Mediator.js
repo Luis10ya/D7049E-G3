@@ -8,7 +8,7 @@ import Message from '../message/Message';
  * 
  */
 
-class Mediator {
+export default class Mediator {
 
     recipients = new Array();
     static instance;

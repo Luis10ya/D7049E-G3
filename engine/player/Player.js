@@ -11,6 +11,7 @@ export class Player extends GameObject3D {
     #eyeHeight;
     #playerMass;
     #jumpAcceleration;
+    #inventoryOverlay;
     constructor(pos=[posX, posY, posZ], rot=[rotX, rotY, rotZ], scale=[scaleX, scaleY, scaleZ], mass, shape,
                 castShadow, recvShadow, collisionMargin, velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
         this.#rep3D = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
@@ -75,7 +76,7 @@ export class Player extends GameObject3D {
     }
 
     #updateInventoryOverlay() { // Creates a one-row table with the info of the objects of the inventory
-        this.#inventoryOverlay(this.#inventory.getRenderableInventoryElement());
+        this.#inventoryOverlay.update(this.#inventory.getRenderableInventoryElement());
     }
 
     getCamera() {
@@ -85,4 +86,5 @@ export class Player extends GameObject3D {
     getMass() {
         return this.#playerMass + this.#inventory.getMass();
     }
+
 }
