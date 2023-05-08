@@ -2,6 +2,8 @@
 import * as THREE from 'three';
 import Inventory from './Inventory.js';
 import GameObject3D from '../world/GameObject3D.js';
+import MovementMsg from '../communication/message/MovementMsg.js'
+import InventoryMsg from '../communication/message/InventoryMsg.js'
 
 export class Player extends GameObject3D {
     #inventory;
@@ -44,15 +46,7 @@ export class Player extends GameObject3D {
     }
 
     action(message) {
-        // TODO
-        // if keybord message == "wasd", "SHIFT", or "SPACE", proceed, else do nothing 
-        // get message that alters the FOV, from the menu mediator
-        // get message to move (call step/jump)
-        // if keyPressed = shift {go to srpint}
-        // else if keyPressed = space {go to jump}
-        // else {go to step}
-
-        if (message instanceof MovementMessage) {
+        if (message instanceof MovementMsg) {
             if (message.keyCode == 14) {
                 this.#sprint();
             } else if (message.keyCode == 32) {
@@ -60,7 +54,7 @@ export class Player extends GameObject3D {
             } else {
                 this.#step(message.keyCode);
             }
-        } else if (message instanceof Inventory) {
+        } else if (message instanceof InventoryMsg) {
             if (message.remove) {
                 this.#removeInventoryItem(this.item);
             } else {
