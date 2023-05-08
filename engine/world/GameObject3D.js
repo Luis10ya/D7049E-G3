@@ -1,6 +1,6 @@
 import Colleague from "../communication/Colleague.js"
 import * as THREE from 'three';
-import { Ammo } from 'ammojs3';
+import Ammo from 'ammojs3/builds/ammo.js'
 
 /**
  * @class GameObject3D
@@ -35,6 +35,7 @@ export default class GameObject3D extends Colleague {
     castShadow = true,
     recvShadow = true,
   ) {
+
     super();
   
     let rotation = new THREE.Euler(rotX, rotY, rotZ);
@@ -51,6 +52,7 @@ export default class GameObject3D extends Colleague {
     this.rep3d.receiveShadow = recvShadow;
   
     // Initialize Physics Representation
+    console.log(Ammo.toString());
     this.#transform = new Ammo.btTransform();
     this.#transform.setIdentity();
     this.#transform.setOrigin(new Ammo.btVector3(posX, posY, posZ));

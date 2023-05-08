@@ -13,7 +13,10 @@ export class Player extends GameObject3D {
     #jumpAcceleration;
     #isSprinting;
     #inventoryOverlay;
-    constructor(velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
+    constructor(mass, velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
+        const geometry = new THREE.BoxGeometry( 1, 1, 1 ); 
+        super([0,eyeHeight,0], [0,0,0], mass, geometry);
+
         this.rep3d = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
         this.rep3d.matrix.setRotationFromEuler((0,0,0));
         this.rep3d.matrix.setPosition((0,0,0));

@@ -6,9 +6,7 @@
 
 export default class Colleague {
 
-    constructor(mediator){
-        this.mediator = mediator
-        throw new Error("Interface can't be instantiated.");
+    constructor(){
     }
 
     getState(){
