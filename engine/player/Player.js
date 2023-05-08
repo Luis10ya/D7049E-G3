@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import {Inventory} from './Inventory.js';
 
 export class Player extends GameObject3D {
-    #rep3D;
     #inventory;
     #velocity;
     #velocityTurbo;
@@ -11,19 +10,20 @@ export class Player extends GameObject3D {
     #eyeHeight;
     #playerMass;
     #jumpAcceleration;
+    #isSprinting;
     #inventoryOverlay;
-    constructor(pos=[posX, posY, posZ], rot=[rotX, rotY, rotZ], scale=[scaleX, scaleY, scaleZ], mass, shape,
-                castShadow, recvShadow, collisionMargin, velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
-        this.#rep3D = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
-        this.#rep3D.matrix.setRotationFromEuler(rot);
-        this.#rep3D.matrix.setPosition(pos);
-        this.#rep3D.scale.set(scale);
-        this.#rep3D.matrixAutoUpdate = false;
+    constructor(velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
+        this.rep3d = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
+        this.rep3d.matrix.setRotationFromEuler((0,0,0));
+        this.rep3d.matrix.setPosition((0,0,0));
+        this.rep3d.scale.set((1,1,1));
+        this.rep3d.matrixAutoUpdate = false;
         this.#inventory = new Inventory();
         this.#inventoryOverlay = new InventoryOverlay(renderTarget);
         this.#velocity = velocity;
         this.#velocityTurbo = velocityTurbo;
         this.#jumpAcceleration = jumpAcceleration;
+        this.#isSprinting = false;
         this.#eyeHeight = eyeHeight;
         this.#playerMass = rep3D.body.info.m_mass;
     }
@@ -40,39 +40,49 @@ export class Player extends GameObject3D {
 
     action() {
         // TODO
-        // if keybord message...
+        // if keybord message == "wasd", "SHIFT", or "SPACE", proceed, else do nothing 
         // get message that alters the FOV, from the menu mediator
         // get message to move (call step/jump)
     }
 
-    #step(axis, distance, sprint) {
-        if(keys["w"]) { // forward
-            player.position.x -= Math.sin(player.rotation.y) * moveSpeed
-            player.position.z -= Math.cos(player.rotation.y) * moveSpeed
-        }
-        if(keys["s"]) { // backward
-            player.position.x += Math.sin(player.rotation.y) * moveSpeed
-            player.position.z += Math.cos(player.rotation.y) * moveSpeed
-        }
-        if(keys["d"]) { // right
-            player.position.x += moveSpeed * Math.sin(rotation + Math.PI / 2)
-            player.position.z += moveSpeed * Math.cos(rotation + Math.PI / 2)
-        }
-        if(keys["a"]) { // left
-            player.position.x += moveSpeed * Math.sin(rotation - Math.PI / 2)
-            player.position.z += moveSpeed * Math.cos(rotation - Math.PI / 2)
-        }
-        if (!sprint) {
-            this.#rep3D.translateOnAxis(axis, THREE.Vector3(0,1,0));
+    #sprint() {
+        if (this.#isSprinting) {
+            this.#isSprinting = false;
         } else {
-            this.#rep3D.translateOnAxis(axis, distance+1); // ? 
+            this.#isSprinting = true;
         }
-        
+    }
+
+    #step(keyPressed, distance) {
+        vel = 0;
+        if (this.#isSprinting) {
+            vel = this.#velocityTurbo;
+        } else {
+            vel = this.#velocity;
+        }
+
+        switch (keyPressed) {
+            case "w":
+                this.rep3d.position.x -= Math.sin(this.rep3d.rotation.y) * vel;
+                this.rep3d.position.z -= -Math.cos(this.rep3d.rotation.y) * vel;
+                break;
+            case "s":
+                this.rep3d.position.x += Math.sin(this.rep3d.rotation.y) * vel;
+                this.rep3d.position.z += -Math.cos(this.rep3d.rotation.y) * vel;
+                break;
+            case "d":
+                this.rep3d.position.x += vel * Math.sin(this.rep3d.rotation.y + Math.PI / 2);
+                this.rep3d.position.z += vel * -Math.cos(this.rep3d.rotation.y + Math.PI / 2);
+                break;
+            case "a":
+                this.rep3d.position.x += vel * Math.sin(this.rep3d.rotation.y - Math.PI / 2);
+                this.rep3d.position.z += vel * -Math.cos(this.rep3d.rotation.y - Math.PI / 2);
+        }        
     }
 
     #jump() {
         this.#jumpVelocity = this.getMass() * this.#jumpAcceleration;
-        this.#rep3D.translateOnAxis(THREE.Vector3(0,1,0), distance*this.#jumpVelocity); // ?
+        this.rep3d.translateOnAxis(THREE.Vector3(0,1,0), distance*this.#jumpVelocity); // ?
     }
 
     #updateInventoryOverlay() { // Creates a one-row table with the info of the objects of the inventory
@@ -80,7 +90,7 @@ export class Player extends GameObject3D {
     }
 
     getCamera() {
-        return this.#rep3D;
+        return this.rep3d;
     }
 
     getMass() {
@@ -88,3 +98,20 @@ export class Player extends GameObject3D {
     }
 
 }
+
+if (keyboard[32] && jump_can==1) {// space
+    jump_can = 0;
+    velocity_y = 16;
+  }
+camera.position.y+=velocity_y*delta;
+    if(jump_can==0){
+        velocity_y-=9.8*2*delta;
+        if(camera.position.y<=-0.5){
+            jump_can = 1;
+            velocity_y=0;
+            camera.position.y=-0.0;
+        }
+    }
+};
+
+this.initMovement
