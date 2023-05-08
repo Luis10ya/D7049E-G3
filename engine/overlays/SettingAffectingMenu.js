@@ -1,7 +1,3 @@
-require('./Overlay');
-require('./FullscreenMenu');
-require('./Setting');
-
 import Overlay from './Overlay';
 import FullscreenMenu from './FullscreenMenu';
 import Setting from './Setting';

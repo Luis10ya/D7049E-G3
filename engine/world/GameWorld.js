@@ -1,25 +1,16 @@
 //@author: Malte
 
-require('../player/Player');
-require('./Room');
-require('../communication/message/Message');
-require('../communication/message/GameObjectMessage');
-require('../communication/message/MovementMessage');
-require('../communication/message/PlayerMessage');
-require('../communication/Colleague');
-require('../overlays/PauseMenu');
-require('../overlays/MapMenu');
-
 import * as THREE from 'three';
 import Ammo, * as AMMO from 'ammojs3';
 import MapMenu from '../overlays/MapMenu';
 import PauseMenu from '../overlays/PauseMenu'
+import Colleague from '../communication/Colleague';
 
 /**
  * The GameWorld is the central Element of the players surrounding in the Game.
  * It manages all rooms and manages the basic attributes of the entire game world like gravity and the clock
  */
-export default class GameWorld extends Collegue{
+export default class GameWorld extends Colleague{
 
     #player;
     #camera;

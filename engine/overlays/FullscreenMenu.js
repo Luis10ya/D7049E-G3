@@ -1,14 +1,11 @@
+import Overlay from './Overlay';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+
 /**
  * @class FullscreenMenu
  * @extends {Overlay}
  * 
  */
-
-require('./Overlay');
-
-import Overlay from './Overlay';
-import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
-
 export default class FullscreenMenu extends Overlay{
     constructor(renderTarget) {
         super(renderTarget);

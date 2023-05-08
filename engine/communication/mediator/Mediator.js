@@ -1,4 +1,3 @@
-require('../message/Message');
 import Message from '../message/Message';
 
 /**

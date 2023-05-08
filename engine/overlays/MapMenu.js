@@ -1,8 +1,5 @@
 //@author: Malte
 
-require('./Map');
-require('./Overlay');
-
 import Overlay from './Overlay';
 import Map from './Map';
 

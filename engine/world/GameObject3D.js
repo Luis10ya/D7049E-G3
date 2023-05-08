@@ -1,4 +1,4 @@
-import { Colleague } from "../communication/Colleague.js"
+import Colleague from "../communication/Colleague.js"
 import * as THREE from 'three';
 import { Ammo } from 'ammojs3';
 
@@ -8,48 +8,49 @@ import { Ammo } from 'ammojs3';
  * 
  */
 
-class GameObject3D extends Colleague {
+export default class GameObject3D extends Colleague {
 
-  #rep3d;
+  rep3d;
   #body;
   #transform;
 
   // Constructor for game Object3D
   // Setups the dimensions and whatnot for the intended objects.
-  //TODO: Handle Collision
 
   /**
    * Constructor for the GameObject3D
    * @param {Array} pos
-   * @param {Array} rot
+   * @param {Array} rot Rotation of the object
    * @param {integer} mass
-   * @param {string} shape //toDo: This is wrong, it should be some sort of object format / link to this. So a string for now. Was: THREE:Shape
-   * @param {boolean} castShadow
+   * @param {THREE.BufferGeometry} geometry
+   * @param {boole}
    * @param {boolean} recvShadow
    */
   constructor(
     [posX = 0, posY = 0, posZ = 0],
     [rotX = 0, rotY = 0, rotZ = 0],
     mass = 0,
-    shape = null,
+    geometry = null,
+    material = new THREE.MeshStandardMaterial({ color: 0xff0000 }),
     castShadow = true,
     recvShadow = true,
   ) {
-    let rotation = THREE.Euler(rotX, rotY, rotZ);
-    let rotation_quaternion = new THREE.Quaternion()
-    rotation_quaternion.setFromEuler(rotation)
-
-    //Initialize Graphic Represenation
-    this.#rep3d = new THREE.Object3D(); //ToDo: Load the shape from the constructor
+    super();
+  
+    let rotation = new THREE.Euler(rotX, rotY, rotZ);
+    let rotation_quaternion = new THREE.Quaternion();
+    rotation_quaternion.setFromEuler(rotation);
+  
+    // Create the THREE.Mesh using the given geometry and material
+    this.rep3d = new THREE.Mesh(geometry, material);
     let translation = new THREE.Vector3(posX, posY, posZ);
-    let translationistance = translation.length();
+    let translationDistance = translation.length();
     let translationDirection = translation.normalize();
-    this.#rep3d.translateOnAxis(translationDirection, translationistance);
-    this.#rep3d.castShadow = castShadow;
-    this.#rep3d.recvShadow = recvShadow;
-
-
-    //Initialize Physics Representation
+    this.rep3d.translateOnAxis(translationDirection, translationDistance);
+    this.rep3d.castShadow = castShadow;
+    this.rep3d.receiveShadow = recvShadow;
+  
+    // Initialize Physics Representation
     this.#transform = new Ammo.btTransform();
     this.#transform.setIdentity();
     this.#transform.setOrigin(new Ammo.btVector3(posX, posY, posZ));
@@ -59,22 +60,38 @@ class GameObject3D extends Colleague {
       rotation_quaternion.z,
       rotation_quaternion.w));
     let defaultMotionState = new Ammo.btDefaultMotionState(this.#transform);
-
-    let structColShape = new Ammo.btConvexHullShape(); //Make the shape the same as the Three Mesh
+  
+    // Create an Ammo shape based on the given geometry
+    let structColShape = this.createAmmoShape(geometry);
     let localInertia = new Ammo.btVector3(0, 0, 0);
-
+  
     let RBody_Info = new Ammo.btRigidBodyConstructionInfo(mass, defaultMotionState, structColShape, localInertia);
     this.#body = new Ammo.btRigidBody(RBody_Info);
-
-    this.#rep3d.userData.physicsBody = this.#body;
+  
+    this.rep3d.userData.physicsBody = this.#body;
   }
 
+  /**
+   * 
+   * @param {THREE.BufferGeometry} geometry 
+   * @returns 
+   */
+  createAmmoShape(geometry) {
+    const shape = new Ammo.btConvexHullShape();
+    const vertices = geometry.attributes.position.array;
+    for (let i = 0; i < vertices.length; i += 3) {
+      const vertex = new Ammo.btVector3(vertices[i], vertices[i + 1], vertices[i + 2]);
+      shape.addPoint(vertex, true);
+    }
+    return shape;
+  }
+  
   /**
    * setProperties for the material the created objects should have. Right now it makes the material red.
    * @param {THREE.Material} material
    */
   setMaterialProperties(material) {
-    this.#rep3d.material = material;
+    this.rep3d.material = material;
   }
 
   /**
@@ -82,7 +99,7 @@ class GameObject3D extends Colleague {
    * @returns {THREE.Object3D} The 3D representation of the gameobject
    */
   getObject3d() {
-    return this.#rep3d;
+    return this.rep3d;
   }
 
   /**
@@ -103,8 +120,8 @@ class GameObject3D extends Colleague {
       motionState.getWorldTransform(this.#transform);
       let newPos = this.#transform.getOrigin();
       let newRotationQuaternion = this.#transform.getRotation();
-      this.#rep3d.position.set(newPos.x(), newPos.y(), newPos.z());
-      this.#rep3d.quaternion.set(
+      this.rep3d.position.set(newPos.x(), newPos.y(), newPos.z());
+      this.rep3d.quaternion.set(
         newRotationQuaternion.x(),
         newRotationQuaternion.y(),
         newRotationQuaternion.z(),
