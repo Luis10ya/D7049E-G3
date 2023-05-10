@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import GameWorld from '../../engine/world/GameWorld.js';
 import Room from '../../engine/world/Room.js';
+import GameObject3D from '../engine/world/GameObject3D.js';
 
 export class GameInit {
 
@@ -37,6 +38,12 @@ export class GameInit {
         room.addObject3D(ceiling, southWall, northWall, westWall, eastWall);
     }
 
+    #createBox(pos, rot, mass, width, height, depth, material, castShadow, recvShadow, room) {
+        var boxGeometry = new THREE.BoxGeometry(width, height, depth);
+        let box = new GameObject3D(pos, rot, mass, boxGeometry, material, castShadow, recvShadow);
+        room.addObject3D(box);
+    }
+
     #buildEntryRoom(){
         let room = new Room("Entry room");
         let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
@@ -47,6 +54,12 @@ export class GameInit {
         let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
 
         this.#createRoomStructure(75, 100, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+        let boxCount = 0;
+        let waterTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/water.jpg");
+        let waterMaterial = new THREE.MeshDepthMaterial({map: waterTexture});
+        while(boxCount < 5) {
+            this.#createBox([0,boxCount+0.5,0], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+        }
 
         return room;
     }
