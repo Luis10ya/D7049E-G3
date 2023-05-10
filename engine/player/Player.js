@@ -35,13 +35,12 @@ export class Player extends GameObject3D {
         this.rep3d.scale.set((1,1,1));
         this.rep3d.matrixAutoUpdate = false;
         this.#inventory = new Inventory();
-        this.#inventoryOverlay = new InventoryOverlay(renderTarget);
+        //this.#inventoryOverlay = new InventoryOverlay(renderTarget);
         this.#velocity = velocity;
         this.#velocityTurbo = velocityTurbo;
         this.#jumpAcceleration = jumpAcceleration;
         this.#isSprinting = false;
         this.#eyeHeight = eyeHeight;
-        //this.#playerMass = this.rep3d.body.info.m_mass; //@Luis Please explain?
         this.#playerMass = mass; //Maybe like this?
 
         PlayerMediator.getInstance().register(this);
