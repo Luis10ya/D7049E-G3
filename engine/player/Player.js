@@ -60,11 +60,11 @@ export class Player extends GameObject3D {
     action(message) {
         if (message instanceof MovementMsg) {
             if (message.keyCode == 14) {
-                this.#sprint();
-            } else if (message.keyCode == 32) {
+                this.#sprint(message.keyDown);
+            } /*else if (message.keyCode == 32) {
                 this.#jump();
-            } else {
-                this.#step(message.keyCode);
+            }*/ else {
+                this.#step(message.keyCode, message.keyDown);
             }
         } else if (message instanceof InventoryMsg) {
             if (message.remove) {
@@ -75,28 +75,58 @@ export class Player extends GameObject3D {
         } else return
     }
 
-    #sprint() {
-        if (this.#isSprinting) {
-            this.#isSprinting = false;
-        } else {
-            this.#isSprinting = true;
-        }
+    #sprint(keyDown) {
+        this.#isSprinting = keyDown;
     }
 
-    #step(keyPressed) {
-        switch (keyPressed) {
-            case "w":
-                this.#movementForward = 1; 
+    #step(keyCode) {
+        switch (keyCode) {
+            case 119:
+            case 87:
+                if (keyDown && this.#movementForward == 0) {
+                    this.#movementForward = 1;
+                } else if (!keyDown && this.#movementForward == 1) {
+                    this.#movementForward = 0;
+                } else {
+                    return;
+                }
                 break;
-            case "s":
-                this.#movementBackward = 1;
+            case 115:
+            case 83:
+                if (keyDown && this.#movementBackward == 0) {
+                    this.#movementBackward = 1;
+                } else if (!keyDown && this.#movementBackward == 1) {
+                    this.#movementBackward = 0;
+                } else {
+                    return;
+                }
                 break;
-            case "d":
-                this.#movementRight = 1;
+            case 100:
+            case 68:
+                if (keyDown && this.#movementRight == 0) {
+                    this.#movementRight = 1;
+                } else if (!keyDown && this.#movementRight == 1) {
+                    this.#movementRight = 0;
+                } else {
+                    return;
+                }
                 break;
-            case "a":
-                this.#movementLeft = 1;
+            case 97:
+            case 65:
+                if (keyDown && this.#movementLeft == 0) {
+                    this.#movementLeft = 1;
+                } else if (!keyDown && this.#movementLeft == 1) {
+                    this.#movementLeft = 0;
+                } else {
+                    return;
+                }
                 break;
+            /*case 32:
+                if (keyDown) {
+                    this.#movementUp = 1;
+                } else {
+                    this.#movementUp = 0;
+                }*/
         }
 
         let moveX =  this.#movementRight - this.#movementLeft;
