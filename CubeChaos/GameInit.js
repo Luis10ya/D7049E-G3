@@ -39,7 +39,15 @@ export class GameInit {
 
     #buildEntryRoom(){
         let room = new Room("Entry room");
-        // fill room here
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
+        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/Blue-Sky.jpg");
+        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/desert.jpg");
+        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+
+        this.#createRoomStructure(75, 100, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+
         return room;
     }
 
