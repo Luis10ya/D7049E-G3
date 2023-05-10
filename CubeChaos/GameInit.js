@@ -44,6 +44,12 @@ export class GameInit {
         room.addObject3D(box);
     }
 
+    #createSphere(pos, rot, mass, radius, widthSegments, heightSegments, material, castShadow, recvShadow, room) {
+        var sphereGeometry = new THREE.SphereGeometry(radius, widthSegments, heightSegments);
+        let sphere = new GameObject3D(pos, rot, mass, sphereGeometry, material, castShadow, recvShadow);
+        room.addObject3D(sphere);
+    }
+
     #buildEntryRoom(){
         let room = new Room("Entry room");
         let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
@@ -61,12 +67,38 @@ export class GameInit {
             this.#createBox([0,boxCount+0.5,0], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
         }
 
+
+
         return room;
     }
 
     #buildZeroGravityRoom(){
         let room = new Room("Zero Gravity room");
-        // fill room here
+        room.setGravity(0.5);
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/spaceship_floor.jpg");
+        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/floating-guy.jpg");
+        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/spaceship-in-space.jpg");
+        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+
+        this.#createRoomStructure(100, 100, 100, groundMaterial, wallMaterial, ceilingMaterial, room);
+
+        let sphereTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/sci-fi-eye.jpg");
+        let sphereMaterial = new THREE.MeshDepthMaterial({map: sphereTexture});
+
+        let sphereCount = 0;
+        while(sphereCount < 25) {
+            this.#createSphere([30,sphereCount+1,-20], [0,0,0], 10, 1,32,32, sphereMaterial, true, true, room);
+        }
+
+        sphereCount = 0;
+        while(sphereCount < 10) {
+            this.#createSphere([-10,sphereCount+4,35], [0,0,0], 5, 4,32,32, sphereMaterial, true, true, room);
+        }
+
+        this.#createSphere()
+
         return room;
     }
 
