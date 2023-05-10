@@ -23,7 +23,7 @@ export default class Room extends Colleague {
         this.#name = name;
         this.#lights = [];
         this.#scene = new THREE.Scene();
-        this.#generalLight = new THREE.AmbientLight();
+        this.#generalLight = new THREE.AmbientLight(0x40FF40);
         this.#exits = [];
         this.#hasGround = false;
         this.#scene.add(this.#generalLight);
@@ -284,8 +284,7 @@ export default class Room extends Colleague {
                 }
             });
         });
-        room.setIntensityOfGeneralLight(100);
+        room.setIntensityOfGeneralLight(1);
         return room;
     }
-
 }

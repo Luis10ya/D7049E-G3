@@ -5,6 +5,8 @@ import GameObject3D from '../world/GameObject3D.js';
 import MovementMsg from '../communication/message/MovementMsg.js';
 import InventoryMsg from '../communication/message/InventoryMsg.js';
 import InventoryOverlay from '../overlays/InventoryOverlay.js';
+import PlayerMediator from '../communication/mediator/PlayerMediator.js';
+import * as Ammo from 'ammo.js';
 
 export class Player extends GameObject3D {
     #inventory;
@@ -41,6 +43,8 @@ export class Player extends GameObject3D {
         this.#eyeHeight = eyeHeight;
         //this.#playerMass = this.rep3d.body.info.m_mass; //@Luis Please explain?
         this.#playerMass = mass; //Maybe like this?
+
+        PlayerMediator.getInstance().register(this);
     }
 
     // If the item already exists in the inventory, adds the item.amount quantity to the amount.
@@ -95,13 +99,13 @@ export class Player extends GameObject3D {
                 break;
         }
 
-        moveX =  this.#movementRight - this.#movementLeft;
-        moveZ =  this.#movementBackward - this.#movementForward;
-        moveY =  0;
+        let moveX =  this.#movementRight - this.#movementLeft;
+        let moveZ =  this.#movementBackward - this.#movementForward;
+        let moveY =  0;
 
         if (moveX == 0 && moveY == 0 && moveZ == 0) return;
 
-        movementVelocity = new Ammo.btVector3(moveX, moveY, moveZ);
+        let movementVelocity = new Ammo.btVector3(moveX, moveY, moveZ);
         if (this.#isSprinting) {
             movementVelocity.op_mul(this.#velocityTurbo);
         } else  {

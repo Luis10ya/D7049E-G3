@@ -16,18 +16,25 @@ window.setInterval(()=>{
     gameWorld.update();
 }, 30);
 
+/**
+ * 
+ * @param {Element} parent 
+ */
 function createListeners (parent) {
-    parent.addEventListener("keydown", (event) => {
+    window.addEventListener("keydown", (event)=> {
+        console.log("pressed down");
+        const message = new KeyboardMsg(event.key);
+        console.log(message);
+        const movementMessage = new MovementMsg(event.key);
+        KeyboardMediator.getInstance().notify(message);
+        PlayerMediator.getInstance().notify(movementMessage);
+    }, true);
+    window.addEventListener("keyup", (event) => {
+        console.log("released");
         const message = new KeyboardMsg(event.key);
         const movementMessage = new MovementMsg(event.key);
         KeyboardMediator.getInstance().notify(message);
         PlayerMediator.getInstance().notify(movementMessage);
-    });
-
-    parent.addEventListener("keyup", (event) => {
-        const message = new KeyboardMsg(event.key);
-        const movementMessage = new MovementMsg(event.key);
-        KeyboardMediator.getInstance().notify(message);
-        PlayerMediator.getInstance().notify(movementMessage);
-    });
+    }, false);
 }
+

@@ -12,6 +12,8 @@ export default class KeyboardMsg extends Message {
     keyCode;
 
     constructor(keyCode){
+        super();
+
         this.keyCode = keyCode;
     }
 }

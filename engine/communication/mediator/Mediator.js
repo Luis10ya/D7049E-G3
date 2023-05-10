@@ -24,7 +24,7 @@ export default class Mediator {
     }
 
     notify(message){
-        for (recipient of this.recipients) {
+        for (const recipient of this.recipients) {
             if (typeof recipient.action === 'function') {
                 recipient.action(message);
             }
@@ -32,7 +32,7 @@ export default class Mediator {
     }
 
     static getInstance(){
-        return instance;
+        return this.instance;
     }
 
 
