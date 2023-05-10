@@ -122,16 +122,16 @@ export class Player extends GameObject3D {
                 }
                 break;
             /*case 32:
-                if (keyDown) {
+                if (keyDown && this.#movementUp == 0) {
                     this.#movementUp = 1;
-                } else {
+                } else if (this.rep3d.velocity == 0) {
                     this.#movementUp = 0;
                 }*/
         }
 
         let moveX =  this.#movementRight - this.#movementLeft;
         let moveZ =  this.#movementBackward - this.#movementForward;
-        let moveY =  0;
+        let moveY =  0; //this.#movementUp;
 
         if (moveX == 0 && moveY == 0 && moveZ == 0) return;
 
