@@ -6,10 +6,12 @@ import Message from "./Message";
  * 
  */
 
-// Sends mouse click?
+// Sends message to the player to lock or unlock the mouse movement
 class MouseMsg extends Message {
+    
+    lockMouse;
 
-    constructor(){
-        //Empty
+    constructor(lockMouse){
+        this.lockMouse = lockMouse;
     }
 }

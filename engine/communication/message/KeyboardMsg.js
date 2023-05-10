@@ -10,10 +10,12 @@ import Message from "./Message";
 export default class KeyboardMsg extends Message {
 
     keyCode;
+    keyDown;
 
-    constructor(keyCode){
+    constructor(keyCode, keyDown){
         super();
 
         this.keyCode = keyCode;
+        this.keyDown = keyDown;
     }
 }

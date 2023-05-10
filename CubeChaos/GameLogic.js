@@ -17,6 +17,7 @@ export class GameInit {
         this.#run = false;
 
         // create overlays and add to renderTarget
+        // create fullscreenmenu for the start menu
     }
 
     startGameLoop(){

@@ -4,8 +4,10 @@ import Inventory from './Inventory.js';
 import GameObject3D from '../world/GameObject3D.js';
 import MovementMsg from '../communication/message/MovementMsg.js';
 import InventoryMsg from '../communication/message/InventoryMsg.js';
+import MouseMsg from '../communication/message/MouseMsg.js';
 import InventoryOverlay from '../overlays/InventoryOverlay.js';
 import PlayerMediator from '../communication/mediator/PlayerMediator.js';
+import PointerLockControls from 'three/addons/controls/PointerLockControls.js';
 import * as Ammo from 'ammo.js';
 
 export class Player extends GameObject3D {
@@ -22,6 +24,7 @@ export class Player extends GameObject3D {
     #movementBackward = 0;
     #movementRight = 0;
     #movementLeft = 0;
+    #controls;
     constructor(mass, velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
         const geometry = new THREE.BoxGeometry( 1, 1, 1 ); 
         super([0,eyeHeight,0], [0,0,0], mass, geometry);
@@ -41,7 +44,9 @@ export class Player extends GameObject3D {
         this.#jumpAcceleration = jumpAcceleration;
         this.#isSprinting = false;
         this.#eyeHeight = eyeHeight;
-        this.#playerMass = mass; //Maybe like this?
+        this.#playerMass = mass;
+        this.#controls = new PointerLockControls(this.rep3d, renderTarget.domElement);
+    
 
         PlayerMediator.getInstance().register(this);
     }
@@ -59,11 +64,11 @@ export class Player extends GameObject3D {
     action(message) {
         if (message instanceof MovementMsg) {
             if (message.keyCode == 14) {
-                this.#sprint();
-            } else if (message.keyCode == 32) {
+                this.#sprint(message.keyDown);
+            } /*else if (message.keyCode == 32) {
                 this.#jump();
-            } else {
-                this.#step(message.keyCode);
+            }*/ else {
+                this.#step(message.keyCode, message.keyDown);
             }
         } else if (message instanceof InventoryMsg) {
             if (message.remove) {
@@ -71,36 +76,72 @@ export class Player extends GameObject3D {
             } else {
                 this.addInventoryItem(this.item);
             }
+        } else if (message instanceof MouseMsg) {
+            if (message.lockMouse) {
+                this.lockMouse();
+            } else {
+                this.unlockMouse();
+            }
         } else return
     }
 
-    #sprint() {
-        if (this.#isSprinting) {
-            this.#isSprinting = false;
-        } else {
-            this.#isSprinting = true;
-        }
+    #sprint(keyDown) {
+        this.#isSprinting = keyDown;
     }
 
-    #step(keyPressed) {
-        switch (keyPressed) {
-            case "w":
-                this.#movementForward = 1; 
+    #step(keyCode) {
+        switch (keyCode) {
+            case 119:
+            case 87:
+                if (keyDown && this.#movementForward == 0) {
+                    this.#movementForward = 1;
+                } else if (!keyDown && this.#movementForward == 1) {
+                    this.#movementForward = 0;
+                } else {
+                    return;
+                }
                 break;
-            case "s":
-                this.#movementBackward = 1;
+            case 115:
+            case 83:
+                if (keyDown && this.#movementBackward == 0) {
+                    this.#movementBackward = 1;
+                } else if (!keyDown && this.#movementBackward == 1) {
+                    this.#movementBackward = 0;
+                } else {
+                    return;
+                }
                 break;
-            case "d":
-                this.#movementRight = 1;
+            case 100:
+            case 68:
+                if (keyDown && this.#movementRight == 0) {
+                    this.#movementRight = 1;
+                } else if (!keyDown && this.#movementRight == 1) {
+                    this.#movementRight = 0;
+                } else {
+                    return;
+                }
                 break;
-            case "a":
-                this.#movementLeft = 1;
+            case 97:
+            case 65:
+                if (keyDown && this.#movementLeft == 0) {
+                    this.#movementLeft = 1;
+                } else if (!keyDown && this.#movementLeft == 1) {
+                    this.#movementLeft = 0;
+                } else {
+                    return;
+                }
                 break;
+            /*case 32:
+                if (keyDown && this.#movementUp == 0) {
+                    this.#movementUp = 1;
+                } else if (this.rep3d.velocity == 0) {
+                    this.#movementUp = 0;
+                }*/
         }
 
         let moveX =  this.#movementRight - this.#movementLeft;
         let moveZ =  this.#movementBackward - this.#movementForward;
-        let moveY =  0;
+        let moveY =  0; //this.#movementUp;
 
         if (moveX == 0 && moveY == 0 && moveZ == 0) return;
 
@@ -131,6 +172,13 @@ export class Player extends GameObject3D {
         return this.#playerMass + this.#inventory.getMass();
     }
 
+    lockMouse() {
+        this.#controls.lock();
+    }
+
+    unlockMouse() {
+        this.#controls.unlock();
+    }
 }
 
 //this.initMovement

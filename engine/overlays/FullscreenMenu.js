@@ -1,5 +1,7 @@
+import { Player } from '../player/Player';
 import Overlay from './Overlay';
-import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+import PlayerMediator from "./engine/communication/mediator/PlayerMediator";
+import MouseMsg from "./engine/communication/message/MouseMsg";
 
 /**
  * @class FullscreenMenu
@@ -7,12 +9,18 @@ import { PointerLockControls } from 'three/addons/controls/PointerLockControls.j
  * 
  */
 export default class FullscreenMenu extends Overlay{
+
+    #playerMediatorInstance;
+
     constructor(renderTarget) {
         super(renderTarget);
         const exitButton = document.createElement('button');
         exitButton.addEventListener("click",() => this.exitMenu());
         this.addElement(exitButton)
         //Unlock mouse by sending message to the game world or the player
+        const mouseMessage = new MouseMsg(false);
+        this.#playerMediatorInstance = PlayerMediator.getInstance();
+        this.#playerMediatorInstance.notify(mouseMessage);
     }
 
     addElement(element) {
@@ -31,5 +39,7 @@ export default class FullscreenMenu extends Overlay{
     exitMenu() {
         this.setVisibility(hidden);
         //Lock mouse by sending message to the game world or the player, notify menu mediator
+        const mouseMessage = new MouseMsg(true);
+        this.#playerMediatorInstance.notify(mouseMessage);
     }
 }
