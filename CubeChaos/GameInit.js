@@ -1,6 +1,6 @@
 import * as THREE from 'three';
-import GameWorld from '../engine/world/GameWorld.js';
-import Room from '../engine/world/Room.js';
+import GameWorld from '../../engine/world/GameWorld.js';
+import Room from '../../engine/world/Room.js';
 
 export class GameInit {
 
