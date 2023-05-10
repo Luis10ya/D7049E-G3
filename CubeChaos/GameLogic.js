@@ -30,7 +30,7 @@ export class GameInit {
 
     #gameLoop(){
         while(run == true){
-
+            
             // run game
         
         }

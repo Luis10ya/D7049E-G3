@@ -46,7 +46,7 @@ export class Player extends GameObject3D {
         this.#eyeHeight = eyeHeight;
         this.#playerMass = mass;
         this.#controls = new PointerLockControls(this.rep3d, renderTarget.domElement);
-        this.#controls.unlock();
+        //this.#controls.unlock(); Depends on how the game starts and
 
         PlayerMediator.getInstance().register(this);
     }
