@@ -1,3 +1,5 @@
+import CollisionMsg from "./CollisionMsg";
+
 /**
  * @class TriggerMsg
  * @extends {CollisionMsg}

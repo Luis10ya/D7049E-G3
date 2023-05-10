@@ -1,3 +1,5 @@
+import Mediator from "./Mediator";
+
 /**
  * @class GameObject3DMediator
  * @extends {Mediator}
