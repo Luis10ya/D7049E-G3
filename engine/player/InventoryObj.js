@@ -14,6 +14,9 @@ export class InventoryObj {
 
     getRenderableInventoryObjectElement() {
         const inventoryObject = document.createElement('div');
+        inventoryObject.style.width = '10%';
+        inventoryObject.style.height = '10%';
+        inventoryObject.style.visibility = 'visible';
         const invObjectImage = document.createElement('img');
         invObjectImage.src = this.image;
         inventoryObject.appendChild(invObjectImage);
