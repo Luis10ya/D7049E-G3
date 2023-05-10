@@ -1,3 +1,5 @@
+import MenuMediator from "./MenuMediator";
+
 /**
  * @class EscMediator
  * @extends {MenuMediator}
