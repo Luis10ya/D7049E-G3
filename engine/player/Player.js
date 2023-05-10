@@ -112,7 +112,7 @@ export class Player extends GameObject3D {
             movementVelocity.op_mul(this.#velocity);
         }
         
-        this.rep3d.initMovement(movementVelocity);
+        this.initMovement(movementVelocity);
     }
 
     #jump() {

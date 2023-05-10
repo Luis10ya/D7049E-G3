@@ -148,7 +148,6 @@ export default class GameObject3D extends Colleague {
    * This method is called to start the movement of a body, given a btVector3 velocity.
    */
   initMovement(velocity) {
-    let physicsBody = this.rep3d.userData.physicsBody;
-    physicsBody.setLinearVelocity(velocity);
+    this.#body.setLinearVelocity(velocity);
   }
 }
