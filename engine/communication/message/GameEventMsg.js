@@ -1,3 +1,5 @@
+import Message from "./Message";
+
 /**
  * @class GameEventMsg
  * @extends {Message}

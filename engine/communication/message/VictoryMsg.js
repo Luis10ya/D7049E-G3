@@ -1,3 +1,5 @@
+import GameEventMsg from "./GameEventMsg";
+
 /**
  * @class VictoryMsg
  * @extends {GameEventMsg}
@@ -5,7 +7,7 @@
  */
 
 // informs that vincondition has been met
-class ObjInteractMsg extends GameEventMsg {
+class VictoryMsg extends GameEventMsg {
 
     touchGrass = "You Won!";
     

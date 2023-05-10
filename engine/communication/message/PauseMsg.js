@@ -1,3 +1,5 @@
+import KeyboardMsg from "./KeyboardMsg";
+
 /**
  * @class PauseMsg
  * @extends {KeyboardMsg}

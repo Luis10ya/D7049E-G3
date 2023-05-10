@@ -1,3 +1,5 @@
+import GameEventMsg from "./GameEventMsg";
+
 /**
  * @class RoomChangeMsg
  * @extends {GameEventMsg}
