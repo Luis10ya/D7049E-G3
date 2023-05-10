@@ -246,7 +246,7 @@ export default class Room extends Colleague {
      * @param {Number} timeDelta 
      */
     updateGameObjects(timeDelta){
-        this.#physicsWorld.stepSimulation( deltaTime, 10 );
+        this.#physicsWorld.stepSimulation( timeDelta, 10 );
         this.#gameObject3Dlist.forEach(object => {
             object.updateMotion();
         });
@@ -284,6 +284,8 @@ export default class Room extends Colleague {
                 }
             });
         });
+        room.setIntensityOfGeneralLight(100);
+        return room;
     }
 
 }

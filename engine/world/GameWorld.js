@@ -26,7 +26,7 @@ export default class GameWorld extends Colleague{
 
     /**
      * Constructor for the GameWorldClass
-     * @param {Player} player 
+     * @param {Player} player
      * @param {Element} domElement 
      */
     constructor(player, domElement) {
@@ -161,7 +161,8 @@ export default class GameWorld extends Colleague{
     }
 
     update() {
-        const deltaTime = this.#clock.deltaTime();
-        this.#currentRoom.updatePhysics();
+        const deltaTime = this.#clock.getDelta();
+        console.log(deltaTime);
+        this.#currentRoom.updateGameObjects(deltaTime);
     }
 }
