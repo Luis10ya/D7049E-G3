@@ -1,3 +1,5 @@
+import Mediator from "./Mediator";
+
 /**
  * @class PlayerMediator
  * @extends {Mediator}
