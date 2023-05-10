@@ -4,8 +4,10 @@ import Inventory from './Inventory.js';
 import GameObject3D from '../world/GameObject3D.js';
 import MovementMsg from '../communication/message/MovementMsg.js';
 import InventoryMsg from '../communication/message/InventoryMsg.js';
+import MouseMsg from '../communication/message/MouseMsg.js';
 import InventoryOverlay from '../overlays/InventoryOverlay.js';
 import PlayerMediator from '../communication/mediator/PlayerMediator.js';
+import PointerLockControls from 'three/addons/controls/PointerLockControls.js';
 import * as Ammo from 'ammo.js';
 
 export class Player extends GameObject3D {
@@ -22,6 +24,7 @@ export class Player extends GameObject3D {
     #movementBackward = 0;
     #movementRight = 0;
     #movementLeft = 0;
+    #controls;
     constructor(mass, velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
         const geometry = new THREE.BoxGeometry( 1, 1, 1 ); 
         super([0,eyeHeight,0], [0,0,0], mass, geometry);
@@ -41,8 +44,9 @@ export class Player extends GameObject3D {
         this.#jumpAcceleration = jumpAcceleration;
         this.#isSprinting = false;
         this.#eyeHeight = eyeHeight;
-        //this.#playerMass = this.rep3d.body.info.m_mass; //@Luis Please explain?
-        this.#playerMass = mass; //Maybe like this?
+        this.#playerMass = mass;
+        this.#controls = new PointerLockControls(this.rep3d, renderTarget.domElement);
+        this.#controls.unlock();
 
         PlayerMediator.getInstance().register(this);
     }
@@ -71,6 +75,12 @@ export class Player extends GameObject3D {
                 this.#removeInventoryItem(this.item);
             } else {
                 this.addInventoryItem(this.item);
+            }
+        } else if (message instanceof MouseMsg) {
+            if (message.lockMouse) {
+                this.lockMouse();
+            } else {
+                this.unlockMouse();
             }
         } else return
     }
@@ -162,6 +172,13 @@ export class Player extends GameObject3D {
         return this.#playerMass + this.#inventory.getMass();
     }
 
+    lockMouse() {
+        this.#controls.lock();
+    }
+
+    unlockMouse() {
+        this.#controls.unlock();
+    }
 }
 
 //this.initMovement
