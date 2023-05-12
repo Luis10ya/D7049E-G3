@@ -98,8 +98,10 @@ export class Player extends GameObject3D {
             case 119:
             case 87:
                 if (keyDown && this.#movementForward == 0) {
+                    console.log("W key received, key down");
                     this.#movementForward = 1;
                 } else if (!keyDown && this.#movementForward == 1) {
+                    console.log("W key received, key up");
                     this.#movementForward = 0;
                 } else {
                     return;
@@ -108,8 +110,10 @@ export class Player extends GameObject3D {
             case 115:
             case 83:
                 if (keyDown && this.#movementBackward == 0) {
+                    console.log("S key received, key down");
                     this.#movementBackward = 1;
                 } else if (!keyDown && this.#movementBackward == 1) {
+                    console.log("S key received, key up");
                     this.#movementBackward = 0;
                 } else {
                     return;
@@ -118,8 +122,10 @@ export class Player extends GameObject3D {
             case 100:
             case 68:
                 if (keyDown && this.#movementRight == 0) {
+                    console.log("D key received, key down");
                     this.#movementRight = 1;
                 } else if (!keyDown && this.#movementRight == 1) {
+                    console.log("D key received, key up");
                     this.#movementRight = 0;
                 } else {
                     return;
@@ -128,8 +134,10 @@ export class Player extends GameObject3D {
             case 97:
             case 65:
                 if (keyDown && this.#movementLeft == 0) {
+                    console.log("A key received, key down");
                     this.#movementLeft = 1;
                 } else if (!keyDown && this.#movementLeft == 1) {
+                    console.log("A key received, key up");
                     this.#movementLeft = 0;
                 } else {
                     return;
