@@ -151,9 +151,25 @@ export class GameInit {
         return room;
     }
 
+    /**
+     * 
+     * MOTION ROOM!?!?!? :)
+     */
     #buildMotionRoom(){
         let room = new Room("Motion room");
-        // fill room here
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionFloor.gif");
+        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionCeiling.gif");
+        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionWall.gif");
+        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+
+        this.#createRoomStructure(75, 25, 25, groundMaterial, wallMaterial, ceilingMaterial, room);
+
+        let sphereTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/spherePattern.gif");
+        let sphereMaterial = new THREE.MeshStandardMaterial({map: sphereTexture});
+        this.#createSphere([0,17,0], [0,0,0], 1, 8,32,32, sphereMaterial, true, true, room);
+
         return room;
     }
 
