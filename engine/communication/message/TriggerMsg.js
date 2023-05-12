@@ -7,5 +7,5 @@ import CollisionMsg from "./CollisionMsg";
  */
 
 // same as collisonMsg
-class TriggerMsg extends CollisionMsg {
+export default class TriggerMsg extends CollisionMsg {
 }

@@ -7,7 +7,7 @@ import GameEventMsg from "./GameEventMsg";
  */
 
 // Sends infomation of what is the new room
-class RoomChangeMsg extends GameEventMsg {
+export default class RoomChangeMsg extends GameEventMsg {
 
     newCurrentRoom;
 

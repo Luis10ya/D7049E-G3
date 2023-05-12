@@ -7,7 +7,7 @@ import GameEventMsg from "./GameEventMsg";
  */
 
 // informs that vincondition has been met
-class VictoryMsg extends GameEventMsg {
+export default class VictoryMsg extends GameEventMsg {
 
     touchGrass = "You Won!";
     
