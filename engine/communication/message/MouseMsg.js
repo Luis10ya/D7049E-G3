@@ -12,6 +12,7 @@ export default class MouseMsg extends Message {
     lockMouse;
 
     constructor(lockMouse){
+        super();
         this.lockMouse = lockMouse;
     }
 }

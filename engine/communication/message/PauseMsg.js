@@ -13,6 +13,7 @@ export default class PauseMsg extends KeyboardMsg {
     //pause ?
     
     constructor(keyCode){
+        super();
         this.keyCode = keyCode;
         // this.pause = pause ?
     }
