@@ -7,7 +7,7 @@ import InventoryMsg from '../communication/message/InventoryMsg.js';
 import MouseMsg from '../communication/message/MouseMsg.js';
 import InventoryOverlay from '../overlays/InventoryOverlay.js';
 import PlayerMediator from '../communication/mediator/PlayerMediator.js';
-import { FirstPersonControls } from 'three/addons/controls/FirstPersonControls.js';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import * as Ammo from 'ammo.js';
 
 export class Player extends GameObject3D {
@@ -33,8 +33,8 @@ export class Player extends GameObject3D {
         let height = window.screen.height;
 
         this.rep3d = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
-        this.rep3d.matrix.makeRotationFromEuler([0,0,0]);
-        this.rep3d.matrix.setPosition((0,0,0));
+        this.rep3d.matrix.makeRotationFromEuler(new THREE.Euler(0,0,0,'XYZ'));
+        this.rep3d.matrix.setPosition(10,5,2);
         this.rep3d.scale.set((1,1,1));
         this.rep3d.matrixAutoUpdate = false;
         this.#inventory = new Inventory();
@@ -45,7 +45,11 @@ export class Player extends GameObject3D {
         this.#isSprinting = false;
         this.#eyeHeight = eyeHeight;
         this.#playerMass = mass;
-        this.controls = new FirstPersonControls(this.rep3d, document.body);
+        this.#controls = new PointerLockControls(this.rep3d, document.body);
+
+        document.addEventListener("click", ()=> {
+            this.#controls.lock();
+        });
         //this.lockMouse();
 
         PlayerMediator.getInstance().register(this);
@@ -164,6 +168,10 @@ export class Player extends GameObject3D {
         this.#inventoryOverlay.update(this.#inventory.getRenderableInventoryElement());
     }
 
+    getObject3D() {
+        return this.#controls.getObject();
+    }
+
     getCamera() {
         return this.rep3d;
     }
@@ -171,13 +179,21 @@ export class Player extends GameObject3D {
     getMass() {
         return this.#playerMass + this.#inventory.getMass();
     }
-
+/* 
     lockMouse() {
         this.#controls.lock();
     }
 
     unlockMouse() {
         this.#controls.unlock();
+    } */
+
+    getControls() {
+        return this.#controls;
+    }
+
+    setPosition(x,y,z) {
+        this.rep3d.setPosition(x,y,z);
     }
 }
 

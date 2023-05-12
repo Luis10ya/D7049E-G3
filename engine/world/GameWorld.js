@@ -112,7 +112,6 @@ export default class GameWorld extends Colleague{
             const index = this.#rooms.indexOf(room);
             if (index > -1) {
                 //this.currentRoom.removeObject3D(this.#player);
-                //this.loadRoom(room);
                 this.#currentRoom = room;
                 //this.#currentRoom.addObject3D(this.#player);
                 return true;
@@ -177,7 +176,7 @@ export default class GameWorld extends Colleague{
         }); */
         
         requestAnimationFrame((t)=>{
-            console.log(this.#player.getObject3D().matrix);
+            console.log(this.#player.getCamera().matrix);
             if (this.#previousRAF === null) {
                 this.#previousRAF = t;
             }
@@ -187,5 +186,9 @@ export default class GameWorld extends Colleague{
             this.update();
             this.#previousRAF = t;
         });
+    }
+
+    getRooms() {
+        return this.#rooms;
     }
 }
