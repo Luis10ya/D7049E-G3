@@ -8,11 +8,12 @@ import KeyboardMsg from "./KeyboardMsg";
 
 // contain what key is pressed and 
 // if game should pause or not
-class PauseMsg extends KeyboardMsg {
+export default class PauseMsg extends KeyboardMsg {
 
     //pause ?
     
     constructor(keyCode){
+        super();
         this.keyCode = keyCode;
         // this.pause = pause ?
     }

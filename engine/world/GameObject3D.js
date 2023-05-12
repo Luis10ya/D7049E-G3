@@ -24,7 +24,7 @@ export default class GameObject3D extends Colleague {
    * @param {Array} rot Rotation of the object
    * @param {integer} mass
    * @param {THREE.BufferGeometry} geometry
-   * @param {boolean}
+   * @param {boolean} castShadow
    * @param {boolean} recvShadow
    */
   constructor(

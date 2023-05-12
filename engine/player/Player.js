@@ -7,7 +7,7 @@ import InventoryMsg from '../communication/message/InventoryMsg.js';
 import MouseMsg from '../communication/message/MouseMsg.js';
 import InventoryOverlay from '../overlays/InventoryOverlay.js';
 import PlayerMediator from '../communication/mediator/PlayerMediator.js';
-import PointerLockControls from 'three/addons/controls/PointerLockControls.js';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import * as Ammo from 'ammo.js';
 
 export class Player extends GameObject3D {
@@ -45,7 +45,7 @@ export class Player extends GameObject3D {
         this.#isSprinting = false;
         this.#eyeHeight = eyeHeight;
         this.#playerMass = mass;
-        this.#controls = new PointerLockControls(this.rep3d, renderTarget.domElement);
+        this.#controls = new PointerLockControls(this.rep3d, renderTarget);
     
 
         PlayerMediator.getInstance().register(this);

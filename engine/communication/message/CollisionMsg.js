@@ -7,11 +7,12 @@ import Message from "./Message";
  */
 
 // Send what was collided with
-class CollisionMsg extends Message {
+export default class CollisionMsg extends Message {
 
     collisionPartner;
 
     constructor(collisionPartner){
+        super();
         this.collisionPartner = collisionPartner;
     }
 }

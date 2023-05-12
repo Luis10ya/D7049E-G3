@@ -8,11 +8,12 @@ import Message from "./Message";
 
 // contains visibility information regarding the menu
 // Toogle the menu on and off
-class MenuMsg extends Message {
+export default class MenuMsg extends Message {
 
     hide = true;
 
     constructor(hide){
+        super();
         this.hide=hide;
     }
 }
