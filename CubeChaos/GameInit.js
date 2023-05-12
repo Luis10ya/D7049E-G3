@@ -2,10 +2,19 @@ import * as THREE from 'three';
 import GameWorld from '../../engine/world/GameWorld.js';
 import Room from '../../engine/world/Room.js';
 import GameObject3D from '../engine/world/GameObject3D.js';
+import Exit from '../engine/world/Exit.js';
 
 export class GameInit {
 
     #gameWorld
+    #entryRoomDimensions
+    #zeroGravityRoomDimensions
+    #spaceRoomDimensions
+    #motionRoomDimensions
+    #cubeRoomDimensions
+    #sphereRoomDimensions
+    #mysteryRoomDimensions
+    #finalRoomDimensions
 
     constructor(gameWorld){
         this.#gameWorld = gameWorld;
@@ -22,18 +31,28 @@ export class GameInit {
         this.#gameWorld.addRoom(this.#buildMysteryRoom);
         this.#gameWorld.addRoom(this.#buildFinalRoom);
         this.#connectRooms();
+
+        // width, depth, height
+        this.#entryRoomDimensions = [75, 100, 10];
+        this.#zeroGravityRoomDimensions = [100, 100, 100];
+        this.#spaceRoomDimensions = [50, 50, 30];
+        this.#motionRoomDimensions = [75, 25, 25];
+        this. #cubeRoomDimensions = [150, 150, 150];
+        this.#sphereRoomDimensions = [50, 25, 75];
+        this.#mysteryRoomDimensions = [50, 25, 10];
+        this.#finalRoomDimensions = [10, 10, 10];
     }
 
-    #createRoomStructure(roomWidth, roomDepth, roomHeight, groundMaterial, wallMaterial, ceilingMaterial, room) {
-        var groundAndCeilingGeometry = new THREE.BoxGeometry(roomWidth, 1, roomDepth);
-        let widthWall = new THREE.BoxGeometry(roomWidth, roomHeight, 0.5);
-        let depthWall = new THREE.BoxGeometry(0.5, roomHeight, roomDepth);
+    #createRoomStructure( dimenstions, groundMaterial, wallMaterial, ceilingMaterial, room) {
+        var groundAndCeilingGeometry = new THREE.BoxGeometry(dimenstions[0], 1, dimenstions[1]);
+        let widthWall = new THREE.BoxGeometry(dimenstions[0], dimenstions[2], 0.5);
+        let depthWall = new THREE.BoxGeometry(0.5, dimenstions[2], dimenstions[1]);
         let ground = new GameObject3D([0,-0.5,0], [0,0,0], 0, groundAndCeilingGeometry, groundMaterial, false, true);
-        let ceiling = new GameObject3D([0,roomHeight+0.5,0], [0,0,0], 0, groundAndCeilingGeometry, ceilingMaterial, false, true);
-        let southWall = new GameObject3D([0,roomHeight/2,-(roomDepth/2)-0.25], [0,0,0], 0, widthWall, wallMaterial, false, true);
-        let northWall = new GameObject3D([0,roomHeight/2,(roomDepth/2)+0.25], [0,0,0], 0, widthWall, wallMaterial, false, true);
-        let westWall = new GameObject3D([-(roomWidth/2)-0.25,roomHeight/2,0], [0,0,0], 0, depthWall, wallMaterial, false, true);
-        let eastWall = new GameObject3D([(roomWidth/2)+0.25,roomHeight/2,0], [0,0,0], 0, depthWall, wallMaterial, false, true);
+        let ceiling = new GameObject3D([0,dimenstions[2]+0.5,0], [0,0,0], 0, groundAndCeilingGeometry, ceilingMaterial, false, true);
+        let southWall = new GameObject3D([0,dimenstions[2]/2,-(dimenstions[1]/2)-0.25], [0,0,0], 0, widthWall, wallMaterial, false, true);
+        let northWall = new GameObject3D([0,dimenstions[2]/2,(dimenstions[1]/2)+0.25], [0,0,0], 0, widthWall, wallMaterial, false, true);
+        let westWall = new GameObject3D([-(dimenstions[0]/2)-0.25,dimenstions[2]/2,0], [0,0,0], 0, depthWall, wallMaterial, false, true);
+        let eastWall = new GameObject3D([(dimenstions[0]/2)+0.25,dimenstions[2]/2,0], [0,0,0], 0, depthWall, wallMaterial, false, true);
         room.createGround(ground);
         room.addObject3D(ceiling, southWall, northWall, westWall, eastWall);
     }
@@ -42,6 +61,20 @@ export class GameInit {
         var boxGeometry = new THREE.BoxGeometry(width, height, depth);
         let box = new GameObject3D(pos, rot, mass, boxGeometry, material, castShadow, recvShadow);
         room.addObject3D(box);
+    }
+
+    #createExit(pos, rot, width, height, depth, castShadow, recvShadow, image, currRoom, newRoom){
+        let exitTexture = new THREE.TextureLoader().load(image);
+        let exitMaterial =  new THREE.MeshStandardMaterial({map: exitTexture});
+        let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
+        let exit = new Exit(exitObject,newRoom);
+        currRoom.addExit(exit);
+    }
+
+    #getExit(pos, rot, width, height, depth, material, castShadow, recvShadow) {
+        var exitGeometry = new THREE.BoxGeometry(width, height, depth);
+        let exit = new GameObject3D(pos, rot, 0, exitGeometry, material, castShadow, recvShadow);
+        return exit;
     }
 
     #createSphere(pos, rot, mass, radius, widthSegments, heightSegments, material, castShadow, recvShadow, room) {
@@ -63,7 +96,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/desert.jpg");
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
-        this.#createRoomStructure(75, 100, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#entryRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let waterTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/water.jpg");
         let waterMaterial = new THREE.MeshStandardMaterial({map: waterTexture});
@@ -92,7 +125,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/spaceship-in-space.jpg");
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
-        this.#createRoomStructure(100, 100, 100, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#zeroGravityRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let sphereTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/sci-fi-eye.jpg");
         let sphereMaterial = new THREE.MeshStandardMaterial({map: sphereTexture});
@@ -122,7 +155,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space-walls.jpg");
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
-        this.#createRoomStructure(50, 50, 30, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#spaceRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
         
         let sunTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/sun.jpg");
         let sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
@@ -164,7 +197,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionWall.gif");
         let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
 
-        this.#createRoomStructure(75, 25, 25, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#motionRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let sphereTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/spherePattern.gif");
         let sphereMaterial = new THREE.MeshStandardMaterial({map: sphereTexture});
@@ -186,7 +219,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
-        this.#createRoomStructure(150, 150, 150, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#cubeRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let metalTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/brushedMetal.jpg");
         let metalMaterial = new THREE.MeshStandardMaterial({map: metalTexture});
@@ -232,7 +265,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime.gif");
         let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
 
-        this.#createRoomStructure(50, 25, 75, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#spaceRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let slimeBallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-balls.jpg");
         let slimeBallMaterial = new THREE.MeshDepthMaterial({map: slimeBallTexture});
@@ -257,7 +290,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryWall.jpg");
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
-        this.#createRoomStructure(50, 25, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#mysteryRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let chestTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryWall.jpg");
         let chestMaterial = new THREE.MeshStandardMaterial({map: chestTexture});
@@ -276,7 +309,7 @@ export class GameInit {
         let wallTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/you-did-it.gif");
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
-        this.#createRoomStructure(10, 10, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(this.#finalRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let confettiTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/confetti.jpg");
         let confettiMaterial = new THREE.MeshStandardMaterial({map: confettiTexture});
@@ -287,7 +320,82 @@ export class GameInit {
     }
 
     #connectRooms(){
-        // create exit objects and add them to the rooms
+        let rooms = this.#gameWorld.getRooms();
+
+        // entryToSphere
+        let exit1 = ""
+        this.#createExit([0, 2, (this.#entryRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit1, rooms[0], rooms[5]);
+
+        // sphereToEntry
+        let exit2 = ""
+        this.#createExit([0, 2, -(this.#sphereRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit2, rooms[5], rooms[0]);
+
+        // sphereToMystery
+        let exit3 = ""
+        this.#createExit([-(this.#sphereRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit3, rooms[5], rooms[6]);
+
+        // sphereToZeroGravity
+        let exit4 = ""
+        this.#createExit([(this.#sphereRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit4, rooms[5], rooms[1]);
+
+        // mysteryToEntry
+        let exit5 = ""
+        this.#createExit([(this.#mysteryRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit5, rooms[6], rooms[0]);
+
+        // zeroGravityToSphere
+        let exit6 = ""
+        this.#createExit([-(this.#zeroGravityRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit6, rooms[1], rooms[5]);
+
+        // zeroGravityToMotion
+        let exit7 = ""
+        this.#createExit([0, 2, -(this.#zeroGravityRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit7, rooms[1], rooms[3]);
+
+        // zeroGravityToSpace
+        let exit8 = ""
+        this.#createExit([(this.#zeroGravityRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit8, rooms[1], rooms[2]);
+
+        // motionToZeroGravity
+        let exit9 = ""
+        this.#createExit([0, 2, (this.#motionRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit9, rooms[3], rooms[1]);
+
+        // motionToEntry
+        let exit10 = ""
+        this.#createExit([-(this.#motionRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit10, rooms[3], rooms[0]);
+
+        // motionToSpace
+        let exit11 = ""
+        this.#createExit([(this.#motionRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit11, rooms[3], rooms[2]);
+
+        // spaceToMotion
+        let exit12 = ""
+        this.#createExit([-(this.#spaceRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit12, rooms[2], rooms[3]);
+
+        // spaceToZeroGravity
+        let exit13 = ""
+        this.#createExit([0, 2, -(this.#spaceRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit13, rooms[2], rooms[1]);
+
+        // spaceToCube
+        let exit14 = ""
+        this.#createExit([0, 2, (this.#spaceRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit14, rooms[2], rooms[4]);
+
+        // cubeToSpace
+        let exit15 = ""
+        this.#createExit([0, 2, -(this.#cubeRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit15, rooms[4], rooms[2]);
+
+        // cubeToFinal
+        let exit16 = ""
+        this.#createExit([0, 2, (this.#cubeRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit16, rooms[4], rooms[7]);
+
+        // finalToCube
+        let exit17 = ""
+        this.#createExit([0, 2, -(this.#finalRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit17, rooms[7], rooms[4]);
+
+        // finalToEntry
+        let exit18 = ""
+        this.#createExit([0, 2, (this.#finalRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit18, rooms[7], rooms[0]);
+
+        //this.#createExit(pos, rot, width, height, depth, true, true, image, currRoom, newRoom);
+
     }
 
 }
