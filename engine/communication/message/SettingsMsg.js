@@ -7,7 +7,7 @@ import Message from "./Message";
  */
 
 // sends name and value of setting?
-class SettingsMsg extends Message {
+export default class SettingsMsg extends Message {
 
     name;
     value;

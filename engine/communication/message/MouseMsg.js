@@ -7,7 +7,7 @@ import Message from "./Message";
  */
 
 // Sends message to the player to lock or unlock the mouse movement
-class MouseMsg extends Message {
+export default class MouseMsg extends Message {
     
     lockMouse;
 
