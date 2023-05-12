@@ -151,9 +151,11 @@ export class Player extends GameObject3D {
 
         let movementVelocity = new Ammo.btVector3(moveX, moveY, moveZ);
         if (this.#isSprinting) {
-            movementVelocity.op_mul(this.#velocityTurbo);
+            movementVelocity.x = movementVelocity.x * this.#velocityTurbo.x;
+            movementVelocity.z = movementVelocity.z * this.#velocityTurbo.z;
         } else  {
-            movementVelocity.op_mul(this.#velocity);
+            movementVelocity.x = movementVelocity.x * this.#velocity.x;
+            movementVelocity.z = movementVelocity.z * this.#velocity.z;
         }
         
         this.initMovement(movementVelocity);
