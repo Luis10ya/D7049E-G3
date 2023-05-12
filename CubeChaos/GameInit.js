@@ -53,16 +53,16 @@ export class GameInit {
     #buildEntryRoom(){
         let room = new Room("Entry room");
         let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
-        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/Blue-Sky.jpg");
-        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
         let wallTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/desert.jpg");
-        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
         this.#createRoomStructure(75, 100, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
         let boxCount = 0;
         let waterTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/water.jpg");
-        let waterMaterial = new THREE.MeshDepthMaterial({map: waterTexture});
+        let waterMaterial = new THREE.MeshStandardMaterial({map: waterTexture});
         while(boxCount < 5) {
             this.#createBox([0,boxCount+0.5,0], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
             boxCount++;
@@ -77,16 +77,16 @@ export class GameInit {
         let room = new Room("Zero Gravity room");
         room.setGravity(0.5);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/spaceship_floor.jpg");
-        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/floating-guy.jpg");
-        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
         let wallTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/spaceship-in-space.jpg");
-        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
         this.#createRoomStructure(100, 100, 100, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let sphereTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/sci-fi-eye.jpg");
-        let sphereMaterial = new THREE.MeshDepthMaterial({map: sphereTexture});
+        let sphereMaterial = new THREE.MeshStandardMaterial({map: sphereTexture});
 
         let sphereCount = 0;
         while(sphereCount < 25) {
@@ -120,16 +120,16 @@ export class GameInit {
     #buildCubeRoom(){
         let room = new Room("Cube room");
         let groundTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
-        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
-        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
         let wallTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
-        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
         this.#createRoomStructure(150, 150, 150, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let metalTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/brushedMetal.jpg");
-        let metalMaterial = new THREE.MeshDepthMaterial({map: metalTexture});
+        let metalMaterial = new THREE.MeshStandardMaterial({map: metalTexture});
 
         let boxTowerCount1 = 0;
         while(boxTowerCount1 < 30) {
@@ -159,6 +159,7 @@ export class GameInit {
         return room;
     }
 
+    // This room is not complete. Obnoxious stuff.
     #buildSphereRoom(){
         let room = new Room("Sphere room");
         let groundTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
