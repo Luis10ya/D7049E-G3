@@ -55,6 +55,18 @@ function buildEntryRoom(){
 }
 
 const room = buildEntryRoom();
+
+/**const loader = new THREE.CubeTextureLoader();
+const texture = loader.load([
+    './resources/posx.jpg',
+    './resources/negx.jpg',
+    './resources/posy.jpg',
+    './resources/negy.jpg',
+    './resources/posz.jpg',
+    './resources/negz.jpg',
+]);
+room.getScene().background = texture;*/
+
 room.setIntensityOfGeneralLight(1);
 
 const renderer = new THREE.WebGLRenderer({
@@ -67,10 +79,19 @@ renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement)
 
 createListeners(parent);
+var previousRAF = null
+raf()
+function raf() {
 requestAnimationFrame((t)=>{
+    if (previousRAF === null) {
+        previousRAF = t
+    }
     renderer.render(room.getScene(), player.getCamera());
-    
+    raf()
+    previousRAF = t;
 });
+}
+
 
 /**
  * 
