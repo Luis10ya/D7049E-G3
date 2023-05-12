@@ -132,16 +132,16 @@ export class GameInit {
      */
     #buildCubeRoom(){
         let room = new Room("Cube room");
-        let groundTexture = new THREE.TextureLoader().load("./assets/images/images/cubeRoom/cube.png");
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
-        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/images/cubeRoom/cube.png");
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
         let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
-        let wallTexture = new THREE.TextureLoader().load("./assets/images/images/cubeRoom/cube.png");
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
         this.#createRoomStructure(150, 150, 150, groundMaterial, wallMaterial, ceilingMaterial, room);
 
-        let metalTexture = new THREE.TextureLoader().load("./assets/images/images/cubeRoom/brushedMetal.jpg");
+        let metalTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/brushedMetal.jpg");
         let metalMaterial = new THREE.MeshStandardMaterial({map: metalTexture});
 
         let boxTowerCount1 = 0;
