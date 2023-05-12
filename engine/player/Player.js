@@ -44,7 +44,6 @@ export class Player extends GameObject3D {
         this.#velocityTurbo = velocityTurbo;
         this.#jumpAcceleration = jumpAcceleration;
         this.#isSprinting = false;
-        this.#eyeHeight = eyeHeight;
         this.#playerMass = mass;
         this.#controls = new PointerLockControls(this.rep3d, document.body);
 
@@ -204,7 +203,7 @@ export class Player extends GameObject3D {
     }
 
     setPosition(x,z) {
-        this.rep3d.setPosition(x,self.#eyeheight,z);
+        this.rep3d.setPosition(x,this.#eyeHeight,z);
     }
 }
 
