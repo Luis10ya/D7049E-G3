@@ -201,6 +201,8 @@ export default class Room extends Colleague {
         if(!this.#hasGround && !objectExistsInScene){
             this.#hasGround = true;
             this.#scene.add(groundShape.getObject3D());
+            this.#physicsWorld.addRigidBody(groundShape.getRigidBody());
+            this.#gameObject3Dlist.push(groundShape);
         }
     }
 
