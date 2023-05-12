@@ -46,6 +46,7 @@ export class Player extends GameObject3D {
         this.#eyeHeight = eyeHeight;
         this.#playerMass = mass;
         this.#controls = new PointerLockControls(this.rep3d, renderTarget);
+        this.lockMouse();
     
 
         PlayerMediator.getInstance().register(this);
