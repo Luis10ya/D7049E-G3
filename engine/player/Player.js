@@ -34,10 +34,11 @@ export class Player extends GameObject3D {
 
         this.rep3d = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
         this.rep3d.matrix.makeRotationFromEuler(new THREE.Euler(0,0,0,'XYZ'));
-        this.rep3d.matrix.setPosition(10,5,2);
+        this.rep3d.matrix.setPosition(0,eyeHeight,0);
         this.rep3d.scale.set((1,1,1));
         this.rep3d.matrixAutoUpdate = false;
         this.#inventory = new Inventory();
+        this.#eyeHeight = eyeHeight;
         //this.#inventoryOverlay = new InventoryOverlay(renderTarget);
         this.#velocity = velocity;
         this.#velocityTurbo = velocityTurbo;
@@ -194,8 +195,8 @@ export class Player extends GameObject3D {
         return this.#controls;
     }
 
-    setPosition(x,y,z) {
-        this.rep3d.setPosition(x,y,z);
+    setPosition(x,z) {
+        this.rep3d.setPosition(x,self.#eyeheight,z);
     }
 }
 
