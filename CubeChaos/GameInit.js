@@ -172,45 +172,31 @@ export class GameInit {
         return room;
     }
 
-    // This room is not complete. Obnoxious stuff.
+    /**
+     * 
+     * SLIME ROOM/Sphere room
+     */
     #buildSphereRoom(){
         let room = new Room("Sphere room");
-        let groundTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.png");
         let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
-        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.png");
         let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
-        let wallTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime.gif");
         let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
 
-        this.#createRoomStructure(150, 150, 150, groundMaterial, wallMaterial, ceilingMaterial, room);
+        this.#createRoomStructure(50, 25, 75, groundMaterial, wallMaterial, ceilingMaterial, room);
 
-        let metalTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/brushedMetal.jpg");
-        let metalMaterial = new THREE.MeshDepthMaterial({map: metalTexture});
+        let slimeBallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-balls.jpg");
+        let slimeBallMaterial = new THREE.MeshDepthMaterial({map: slimeBallTexture});
 
-        let boxTowerCount1 = 0;
-        while(boxTowerCount1 < 30) {
-            this.#createBox([30,boxTowerCount1+0.5,10], [0,0,0], 20, 2,2,2, metalMaterial, true, true, room);
-            boxTowerCount1++;
+        let sphereCount1 = 0;
+        while(sphereCount1 < 30) {
+            this.#createSphere([-10,sphereCount1+4,35], [0,0,0], 5, 4,32,32, slimeBallMaterial, true, true, room);
+            sphereCount1++;
         }
 
-        let boxTowerCount2 = 0;
-        while(boxTowerCount2 < 40) {
-            this.#createBox([10,boxTowerCount2+0.5,5], [0,0,0], 20, 4,4,4, metalMaterial, true, true, room);
-            boxTowerCount2++;
-        }
-
-        let boxTowerCount3 = 0;
-        while(boxTowerCount3 < 20) {
-            this.#createBox([5,boxTowerCount3+0.5,2.5], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
-            boxTowerCount3++;
-        }
-
-        this.#createBox([1,0.5,1], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
-        this.#createBox([25,0.5,25], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
-        this.#createBox([42,0.5,100], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
-        this.#createBox([30,0.5,30], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
-        this.#createBox([40,0.5,20], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
-        this.#createBox([15,0.5,25], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
+        this.#createSphere([10, 4, 25], [0,0,0], 5, 4,32,32, slimeBallMaterial, true, true, room);
 
         return room;
     }
