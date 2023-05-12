@@ -109,20 +109,67 @@ export class GameInit {
             sphereCount++;
         }
 
-        this.#createSphere()
-
         return room;
     }
 
     #buildSpaceRoom(){
         let room = new Room("Space room");
-        // fill room here
+        room.setGravity(2);
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space_floor.gif");
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space-ceiling.gif");
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space-walls.jpg");
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
+
+        this.#createRoomStructure(50, 50, 30, groundMaterial, wallMaterial, ceilingMaterial, room);
+        
+        let sunTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/sun.jpg");
+        let sunMaterial = new THREE.MeshStandardMaterial({map: sunTexture});
+        this.#createSphere([0,6,0], [0,0,0], 30, 6,32,32, sunMaterial, false, false, room);
+
+        let earthTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/earth.jpg");
+        let earthMaterial = new THREE.MeshStandardMaterial({map: earthTexture});
+        this.#createSphere([20,6,0], [0,0,0], 10, 2,32,32, earthMaterial, false, false, room);
+
+        let jupiterTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/jupiter.jpg");
+        let jupiterMaterial = new THREE.MeshStandardMaterial({map: jupiterTexture});
+        this.#createSphere([0,6,20], [0,0,0], 15, 5,32,32, jupiterMaterial, false, false, room);
+
+        let moonTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/moon.jpg");
+        let moonMaterial = new THREE.MeshStandardMaterial({map: moonTexture});
+        this.#createSphere([-20,6,0], [0,0,0], 5, 1,32,32, moonMaterial, false, false, room);
+
+        let neptuneTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/neptune.jpg");
+        let neptuneMaterial = new THREE.MeshStandardMaterial({map: neptuneTexture});
+        this.#createSphere([0,6,-20], [0,0,0], 8, 4,32,32, neptuneMaterial, false, false, room);
+
+        let plutoTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/pluto.jpg");
+        let plutoMaterial = new THREE.MeshStandardMaterial({map: plutoTexture});
+        this.#createSphere([11,6,11], [0,0,0], 10, 3,32,32, plutoMaterial, false, false, room);
+
         return room;
     }
 
+    /**
+     * 
+     * MOTION ROOM!?!?!? :)
+     */
     #buildMotionRoom(){
         let room = new Room("Motion room");
-        // fill room here
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionFloor.gif");
+        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionCeiling.gif");
+        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionWall.gif");
+        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+
+        this.#createRoomStructure(75, 25, 25, groundMaterial, wallMaterial, ceilingMaterial, room);
+
+        let sphereTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/spherePattern.gif");
+        let sphereMaterial = new THREE.MeshStandardMaterial({map: sphereTexture});
+        this.#createSphere([0,17,0], [0,0,0], 1, 8,32,32, sphereMaterial, true, true, room);
+
         return room;
     }
 
@@ -222,7 +269,20 @@ export class GameInit {
 
     #buildFinalRoom(){
         let room = new Room("Final room");
-        // fill room here
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/happy-floor.jpg");
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/firework.gif");
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/you-did-it.gif");
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
+
+        this.#createRoomStructure(10, 10, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+
+        let confettiTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/confetti.jpg");
+        let confettiMaterial = new THREE.MeshStandardMaterial({map: confettiTexture});
+
+        this.#createBox([0,2,0], [0,0,0], 1, 4,4,4, confettiMaterial, false, false, room);
+
         return room;
     }
 
