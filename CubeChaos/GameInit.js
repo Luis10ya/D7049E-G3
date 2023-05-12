@@ -50,6 +50,10 @@ export class GameInit {
         room.addObject3D(sphere);
     }
 
+    /**
+     * 
+     * Entry room
+     */
     #buildEntryRoom(){
         let room = new Room("Entry room");
         let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
@@ -60,9 +64,10 @@ export class GameInit {
         let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
         this.#createRoomStructure(75, 100, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
-        let boxCount = 0;
+
         let waterTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/water.jpg");
         let waterMaterial = new THREE.MeshStandardMaterial({map: waterTexture});
+        let boxCount = 0;
         while(boxCount < 5) {
             this.#createBox([0,boxCount+0.5,0], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
             boxCount++;
@@ -73,6 +78,10 @@ export class GameInit {
         return room;
     }
 
+    /**
+     * 
+     * "Zero"Gravity room
+     */
     #buildZeroGravityRoom(){
         let room = new Room("Zero Gravity room");
         room.setGravity(0.5);
@@ -117,6 +126,10 @@ export class GameInit {
         return room;
     }
 
+    /**
+     * 
+     * CUBE ROOM
+     */
     #buildCubeRoom(){
         let room = new Room("Cube room");
         let groundTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
@@ -204,7 +217,20 @@ export class GameInit {
 
     #buildMysteryRoom(){
         let room = new Room("Mystery room");
-        // fill room here
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryFloorAndRoof.jpg");
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryFloorAndRoof.jpg");
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryWall.jpg");
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
+
+        this.#createRoomStructure(50, 25, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+
+        let chestTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryWall.jpg");
+        let chestMaterial = new THREE.MeshStandardMaterial({map: chestTexture});
+
+        this.#createBox([15,0.5,5], [0,0,0], 20, 2,1,1, chestMaterial, true, true, room);
+
         return room;
     }
 
