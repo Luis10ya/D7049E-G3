@@ -269,7 +269,20 @@ export class GameInit {
 
     #buildFinalRoom(){
         let room = new Room("Final room");
-        // fill room here
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/happy-floor.jpg");
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/firework.gif");
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/you-did-it.gif");
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
+
+        this.#createRoomStructure(10, 10, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
+
+        let confettiTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/confetti.jpg");
+        let confettiMaterial = new THREE.MeshStandardMaterial({map: confettiTexture});
+
+        this.#createBox([0,2,0], [0,0,0], 1, 4,4,4, confettiMaterial, false, false, room);
+
         return room;
     }
 
