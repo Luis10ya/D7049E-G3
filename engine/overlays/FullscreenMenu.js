@@ -1,7 +1,7 @@
 import { Player } from '../player/Player';
 import Overlay from './Overlay';
-import PlayerMediator from "./engine/communication/mediator/PlayerMediator";
-import MouseMsg from "./engine/communication/message/MouseMsg";
+import PlayerMediator from "../communication/mediator/PlayerMediator";
+import MouseMsg from "../communication/message/MouseMsg";
 
 /**
  * @class FullscreenMenu
