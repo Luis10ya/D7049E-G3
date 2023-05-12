@@ -14,7 +14,8 @@ export default class InventoryMsg extends Message {
     item;   // InventoryObj
     
     constructor(remove, item){
-            this.remove = remove;
-            this.item = item
+        super();
+        this.remove = remove;
+        this.item = item
     }
 }

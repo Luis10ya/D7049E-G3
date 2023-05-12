@@ -12,6 +12,7 @@ export default class RoomChangeMsg extends GameEventMsg {
     newCurrentRoom;
 
     constructor(newCurrentRoom){
+        super();
         this.newCurrentRoom = newCurrentRoom;
     }
 }

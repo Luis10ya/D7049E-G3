@@ -12,6 +12,7 @@ export default class VictoryMsg extends GameEventMsg {
     touchGrass = "You Won!";
     
     constructor(touchGrass){
+        super();
         this.touchGrass = touchGrass;
     }
 }

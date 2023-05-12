@@ -13,6 +13,7 @@ export default class MenuMsg extends Message {
     hide = true;
 
     constructor(hide){
+        super();
         this.hide=hide;
     }
 }

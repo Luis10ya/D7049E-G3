@@ -13,6 +13,7 @@ export default class ObjInteractMsg extends KeyboardMsg {
     //interactedObj;
     
     constructor(keyCode){
+        super();
         this.keyCode = keyCode;
         // this.interactedObj = interactedObj ?
     }

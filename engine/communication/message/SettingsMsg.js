@@ -13,6 +13,7 @@ export default class SettingsMsg extends Message {
     value;
 
     constructor(name, value){
+        super();
         this.name = name;
         this.value = value;
     }
