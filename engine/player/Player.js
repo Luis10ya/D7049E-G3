@@ -203,7 +203,7 @@ export class Player extends GameObject3D {
     }
 
     setPosition(x,z) {
-        this.rep3d.setPosition(x,this.#eyeHeight,z);
+        this.rep3d.matrix.setPosition(x,this.#eyeHeight,z);
     }
 }
 
