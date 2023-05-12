@@ -10,8 +10,7 @@ import GameObject3D from "./engine/world/GameObject3D";
 
 let parent = document.getElementById("game");
 let player = new Player(80,1,3,12,1.7,parent);
-//let gameWorld = new GameWorld(player, parent);
-//gameWorld.addRoom(Room.createFromGLTFScene('motor', './public/2CylinderEngine.gltf'))
+let gameWorld = new GameWorld(player, parent);
 
 function createRoomStructure(roomWidth, roomDepth, roomHeight, groundMaterial, wallMaterial, ceilingMaterial, room) {
     var groundAndCeilingGeometry = new THREE.BoxGeometry(roomWidth, 1, roomDepth);
@@ -36,39 +35,32 @@ function createBox(pos, rot, mass, width, height, depth, material, castShadow, r
 function buildEntryRoom(){
     let room = new Room("Entry room");
     let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
-    let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+    let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
     let ceilingTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/Blue-Sky.jpg");
-    let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+    let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
     let wallTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/desert.jpg");
-    let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+    let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
     createRoomStructure(75, 100, 10, groundMaterial, wallMaterial, ceilingMaterial, room);
     let boxCount = 0;
     let waterTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/water.jpg");
-    let waterMaterial = new THREE.MeshDepthMaterial({map: waterTexture});
+    let waterMaterial = new THREE.MeshStandardMaterial({map: waterTexture});
     while(boxCount < 5) {
         createBox([0,boxCount+0.5,0], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
         boxCount++;
     }
+    room.setIntensityOfGeneralLight(10);
 
     return room;
 }
 
 const room = buildEntryRoom();
+room.blabla = "richtig"
+gameWorld.addRoom(room);
+gameWorld.setCurrentRoom(room);
+gameWorld.update()
 
-/**const loader = new THREE.CubeTextureLoader();
-const texture = loader.load([
-    './resources/posx.jpg',
-    './resources/negx.jpg',
-    './resources/posy.jpg',
-    './resources/negy.jpg',
-    './resources/posz.jpg',
-    './resources/negz.jpg',
-]);
-room.getScene().background = texture;*/
-
-room.setIntensityOfGeneralLight(1);
-
+/**
 const renderer = new THREE.WebGLRenderer({
     antialias: true
 });
@@ -78,7 +70,7 @@ renderer.setPixelRatio(window.devicePixelRatio);
 renderer.setSize(window.innerWidth, window.innerHeight);
 document.body.appendChild(renderer.domElement)
 
-createListeners(parent);
+
 var previousRAF = null
 raf()
 function raf() {
@@ -91,8 +83,10 @@ requestAnimationFrame((t)=>{
     previousRAF = t;
 });
 }
+*/
 
 
+createListeners(parent);
 /**
  * 
  * @param {Element} parent 

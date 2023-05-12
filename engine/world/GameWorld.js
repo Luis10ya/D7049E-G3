@@ -41,12 +41,13 @@ export default class GameWorld extends Colleague{
         this.#camera = player.getCamera();
         this.#clock = new THREE.Clock();
         this.#renderer = new THREE.WebGLRenderer({
-            antialias: true,
-            alpha: true,
+            antialias: true
         });
+        this.#renderer.shadowMap.enabled = true;
+        this.#renderer.shadowMap.type = THREE.PCFSoftShadowMap;
         this.#renderer.setPixelRatio(window.devicePixelRatio);
         this.#renderer.setSize(window.innerWidth, window.innerHeight);
-        domElement.appendChild(this.#renderer.domElement);
+        document.body.appendChild(this.#renderer.domElement)
 
         this.#currentRoom = undefined;
         this.#rooms = new Array();
@@ -69,7 +70,7 @@ export default class GameWorld extends Colleague{
         if (this.#rooms.length == 0) {
             this.#currentRoom = room;
             this.#rooms.push(room);
-            room.addObject3D(this.#player);
+            //room.addObject3D(this.#player);
             return true;
         } else {
             if (this.#rooms.indexOf(room) > -1) {
@@ -110,10 +111,10 @@ export default class GameWorld extends Colleague{
         } else {
             const index = this.#rooms.indexOf(room);
             if (index > -1) {
-                this.currentRoom.removeObject3D(this.#player);
-                this.loadRoom(room);
+                //this.currentRoom.removeObject3D(this.#player);
+                //this.loadRoom(room);
                 this.#currentRoom = room;
-                this.#currentRoom.addObject3D(this.#player);
+                //this.#currentRoom.addObject3D(this.#player);
                 return true;
             } else { //room is not known
                 return false; 
@@ -181,7 +182,7 @@ export default class GameWorld extends Colleague{
                 this.#previousRAF = t;
             }
 
-            this.#currentRoom.updateGameObjects(t-this.#previousRAF);
+            //this.#currentRoom.updateGameObjects(t-this.#previousRAF);
             this.#renderer.render(this.currentRoom.getScene(), this.#player.getCamera());
             this.update();
             this.#previousRAF = t;
