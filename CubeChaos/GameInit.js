@@ -91,11 +91,13 @@ export class GameInit {
         let sphereCount = 0;
         while(sphereCount < 25) {
             this.#createSphere([30,sphereCount+1,-20], [0,0,0], 10, 1,32,32, sphereMaterial, true, true, room);
+            sphereCount++;
         }
 
         sphereCount = 0;
         while(sphereCount < 10) {
             this.#createSphere([-10,sphereCount+4,35], [0,0,0], 5, 4,32,32, sphereMaterial, true, true, room);
+            sphereCount++;
         }
 
         this.#createSphere()
