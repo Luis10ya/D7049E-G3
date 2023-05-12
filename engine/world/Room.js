@@ -284,7 +284,7 @@ export default class Room extends Colleague {
                 }
             });
         });
-        room.setIntensityOfGeneralLight(1);
+        //room.setIntensityOfGeneralLight(1);
         return room;
     }
 }

@@ -21,6 +21,7 @@ export default class GameWorld extends Colleague{
     #pauseMenu;
     #mapMenu;
     #paused;
+    #previousRAF
     
 
 
@@ -50,11 +51,14 @@ export default class GameWorld extends Colleague{
         this.#currentRoom = undefined;
         this.#rooms = new Array();
 
-        this.#pauseMenu = new PauseMenu(domElement);
+        /* this.#pauseMenu = new PauseMenu(domElement);
+        this.#pauseMenu.setVisibility(false);
         this.#mapMenu = new MapMenu(domElement, this.#rooms)
+        this.#mapMenu.setVisibility(false); */
 
         this.#paused = false;
-        this.#clock.start()
+        this.#clock.start();
+        this.#previousRAF = null;
     }
 
     /**
@@ -65,6 +69,7 @@ export default class GameWorld extends Colleague{
         if (this.#rooms.length == 0) {
             this.#currentRoom = room;
             this.#rooms.push(room);
+            room.addObject3D(this.#player);
             return true;
         } else {
             if (this.#rooms.indexOf(room) > -1) {
@@ -105,8 +110,10 @@ export default class GameWorld extends Colleague{
         } else {
             const index = this.#rooms.indexOf(room);
             if (index > -1) {
+                this.currentRoom.removeObject3D(this.#player);
                 this.loadRoom(room);
                 this.#currentRoom = room;
+                this.#currentRoom.addObject3D(this.#player);
                 return true;
             } else { //room is not known
                 return false; 
@@ -127,7 +134,7 @@ export default class GameWorld extends Colleague{
      * @param {Number} id 
      */
     loadRoom(id) {
-        this.#renderer.render(this.#rooms[id].getScene(), this.#camera);
+        this.#renderer.render(this.#rooms.at(id).getScene(), this.#camera);
     }
 
     /**
@@ -161,8 +168,23 @@ export default class GameWorld extends Colleague{
     }
 
     update() {
-        const deltaTime = this.#clock.getDelta();
+        /* const deltaTime = this.#clock.getDelta();
         console.log(deltaTime);
         this.#currentRoom.updateGameObjects(deltaTime);
+        requestAnimationFrame((t) => {
+            this.#renderer.render(this.#currentRoom.getScene(), this.#camera);
+        }); */
+        
+        requestAnimationFrame((t)=>{
+            console.log("bla");
+            if (this.#previousRAF === null) {
+                this.#previousRAF = t;
+            }
+
+            this.#currentRoom.updateGameObjects(t-this.#previousRAF);
+            this.#renderer.render(this.currentRoom.getScene(), this.#player.getCamera());
+            this.update();
+            this.#previousRAF = t;
+        });
     }
 }
