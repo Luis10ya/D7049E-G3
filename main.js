@@ -10,6 +10,7 @@ import GameObject3D from "./engine/world/GameObject3D";
 
 let parent = document.getElementById("game");
 let player = new Player(80,1,3,12,1.7,parent);
+player.setPosition(0,0);
 let gameWorld = new GameWorld(player, parent);
 
 function createRoomStructure(roomWidth, roomDepth, roomHeight, groundMaterial, wallMaterial, ceilingMaterial, room) {
@@ -94,16 +95,16 @@ createListeners(parent);
 function createListeners (parent) {
     window.addEventListener("keydown", (event)=> {
         console.log("pressed down");
-        const message = new KeyboardMsg(event.key);
+        const message = new KeyboardMsg(event.key, true);
         console.log(message);
-        const movementMessage = new MovementMsg(event.key);
+        const movementMessage = new MovementMsg(event.key, true);
         KeyboardMediator.getInstance().notify(message);
         PlayerMediator.getInstance().notify(movementMessage);
     }, true);
     window.addEventListener("keyup", (event) => {
         console.log("released");
-        const message = new KeyboardMsg(event.key);
-        const movementMessage = new MovementMsg(event.key);
+        const message = new KeyboardMsg(event.key, false);
+        const movementMessage = new MovementMsg(event.key, false);
         KeyboardMediator.getInstance().notify(message);
         PlayerMediator.getInstance().notify(movementMessage);
     }, false);

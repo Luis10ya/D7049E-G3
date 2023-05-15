@@ -176,12 +176,13 @@ export default class GameWorld extends Colleague{
         }); */
         
         requestAnimationFrame((t)=>{
-            console.log(this.#player.getCamera().matrix);
+            //console.log(this.#player.getCamera().matrix);
             if (this.#previousRAF === null) {
                 this.#previousRAF = t;
             }
 
             this.#currentRoom.updateGameObjects(t-this.#previousRAF);
+            this.#player.updateMotion();
             this.#renderer.render(this.currentRoom.getScene(), this.#player.getCamera());
             this.update();
             this.#previousRAF = t;

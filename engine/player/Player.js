@@ -93,8 +93,10 @@ export class Player extends GameObject3D {
         this.#isSprinting = keyDown;
     }
 
-    #step(keyCode) {
+    #step(keyCode, keyDown) {
         switch (keyCode) {
+            case "w":
+            case "W":
             case 119:
             case 87:
                 if (keyDown && this.#movementForward == 0) {
@@ -107,6 +109,8 @@ export class Player extends GameObject3D {
                     return;
                 }
                 break;
+            case "S":
+            case "s":
             case 115:
             case 83:
                 if (keyDown && this.#movementBackward == 0) {
@@ -119,6 +123,8 @@ export class Player extends GameObject3D {
                     return;
                 }
                 break;
+            case "D":
+            case "d":
             case 100:
             case 68:
                 if (keyDown && this.#movementRight == 0) {
@@ -131,6 +137,8 @@ export class Player extends GameObject3D {
                     return;
                 }
                 break;
+            case "A":
+            case "a":
             case 97:
             case 65:
                 if (keyDown && this.#movementLeft == 0) {
@@ -157,14 +165,15 @@ export class Player extends GameObject3D {
 
         if (moveX == 0 && moveY == 0 && moveZ == 0) return;
 
-        let movementVelocity = new Ammo.btVector3(moveX, moveY, moveZ);
+        let movementVelocity = new Ammo.btVector3()
         if (this.#isSprinting) {
-            movementVelocity.x = movementVelocity.x * this.#velocityTurbo.x;
-            movementVelocity.z = movementVelocity.z * this.#velocityTurbo.z;
+            movementVelocity.op_mul(new Ammo.btVector3(this.#velocityTurbo.x, 1,1));
+            movementVelocity.op_mul(new Ammo.btVector3(1,1, this.#velocityTurbo.z));
         } else  {
-            movementVelocity.x = movementVelocity.x * this.#velocity.x;
-            movementVelocity.z = movementVelocity.z * this.#velocity.z;
+            movementVelocity.setX(moveX * this.#velocity);
+            movementVelocity.setZ(moveZ * this.#velocity);
         }
+        movementVelocity.setY(moveY);
         
         this.initMovement(movementVelocity);
     }

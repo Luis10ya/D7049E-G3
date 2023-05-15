@@ -2,6 +2,7 @@ import Colleague from "../communication/Colleague.js"
 import * as THREE from 'three';
 import * as Ammo from 'ammo.js'
 import ObjInteractionMsg from '../communication/message/ObjInteractMsg.js'
+import { Player } from "../player/Player.js";
 
 /**
  * @class GameObject3D
@@ -129,6 +130,9 @@ export default class GameObject3D extends Colleague {
    * position calculated by the physics engine.
    */
   updateMotion() {
+    if (this instanceof Player) {
+      console.log("Player")
+    }
     let motionState = this.#body.getMotionState();
     if (motionState) {
       motionState.getWorldTransform(this.#transform);
