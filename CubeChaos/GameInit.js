@@ -77,6 +77,7 @@ export class GameInit {
         currRoom.addExit(exit);
     }
 
+    // Absolutely scuffed
     changeRoom(currRoom, newRoom){
         this.#gameWorld.setCurrentRoom(newRoom);
         let rooms = this.#gameWorld.getRooms();
