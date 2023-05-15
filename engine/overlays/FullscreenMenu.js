@@ -14,8 +14,9 @@ export default class FullscreenMenu extends Overlay{
 
     constructor(renderTarget) {
         super(renderTarget);
+        const playerInstance = Player.getInstance();
         const exitButton = document.createElement('button');
-        exitButton.addEventListener("click",() => this.exitMenu());
+        exitButton.addEventListener("click",() => function() { playerInstance.controls.unlock(); this.exitMenu(); });
         this.addElement(exitButton)
         //Unlock mouse by sending message to the game world or the player
         const mouseMessage = new MouseMsg(false);
