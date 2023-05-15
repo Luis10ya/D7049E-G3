@@ -2,6 +2,7 @@ import Colleague from "../communication/Colleague.js"
 import * as THREE from 'three';
 import * as Ammo from 'ammo.js'
 import ObjInteractionMsg from '../communication/message/ObjInteractMsg.js'
+import GameObject3D from "./GameObject3D.js";
 
 /**
  * @class TriggerObject
