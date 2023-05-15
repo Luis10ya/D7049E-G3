@@ -13,8 +13,8 @@ export default class Exit extends TriggerObject{
     /**
      * @param {Room} room
      */
-    constructor(pos, rot, mass, geometry, material, castShadow, recvShadow, action, room) {
-        super(pos, rot, mass, geometry, material, castShadow, recvShadow, action);
+    constructor(pos, rot, mass, geometry, material, castShadow, recvShadow, room) {
+        super(pos, rot, mass, geometry, material, castShadow, recvShadow);
 
         // initialize given arguments
         this.room = room;

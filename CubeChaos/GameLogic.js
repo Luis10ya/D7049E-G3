@@ -3,6 +3,7 @@ import GameWorld from '../engine/world/GameWorld.js';
 import Room from '../engine/world/Room.js';
 import { MediatorInit } from './MediatorInit.js';
 import FullscreenMenu from '../engine/overlays/FullscreenMenu.js';
+import  Player  from '../engine/player/Player.js';
 
 export class GameInit {
 
@@ -10,12 +11,14 @@ export class GameInit {
     #renderTarget
     #mediatorInit
     #run
+    #player
 
-    constructor(gameWorld, renderTarget){
+    constructor(gameWorld, renderTarget, player){
         this.#gameWorld = gameWorld;
         this.#renderTarget = renderTarget;
         this.#mediatorInit = new MediatorInit();
         this.#run = false;
+        this.#player = player;
 
         // create overlays and add to renderTarget
         // create fullscreenmenu for the start menu

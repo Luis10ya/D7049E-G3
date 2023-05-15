@@ -18,16 +18,19 @@ export default class TriggerObject extends GameObject3D {
         geometry,
         material,
         castShadow,
-        recvShadow,
-        action
+        recvShadow
       ) { 
         super(pos, rot, mass, geometry, material, castShadow, recvShadow); 
-        this.action = action;
+        this.action;
     
     }
 
     onTrigger(){
         throw new Error("Method 'onTrigger()' must be implemented.");
+    }
+
+    setAction(action){
+        this.action = action;
     }
 
 

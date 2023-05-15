@@ -3,6 +3,7 @@ import GameWorld from '../../engine/world/GameWorld.js';
 import Room from '../../engine/world/Room.js';
 import GameObject3D from '../engine/world/GameObject3D.js';
 import Exit from '../engine/world/Exit.js';
+import  Player  from '../engine/player/Player.js';
 
 export class GameInit {
 
@@ -15,10 +16,11 @@ export class GameInit {
     #sphereRoomDimensions
     #mysteryRoomDimensions
     #finalRoomDimensions
+    #player
 
-    constructor(gameWorld){
+    constructor(gameWorld, player){
         this.#gameWorld = gameWorld;
-
+        this.#player = player;
     }
 
     buildRooms(){
@@ -66,9 +68,19 @@ export class GameInit {
     #createExit(pos, rot, width, height, depth, castShadow, recvShadow, image, currRoom, newRoom){
         let exitTexture = new THREE.TextureLoader().load(image);
         let exitMaterial =  new THREE.MeshStandardMaterial({map: exitTexture});
-        let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
-        let exit = new Exit(exitObject,newRoom);
+        //let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
+        let exit = new Exit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow,newRoom);
+        let action = currRoom.getPhysicsWorld().contactPairTest(this.#player, exit, function(collisionData){
+            this.#changeRoom(currRoom, newRoom);
+        });
+        exit.setAction(action);
         currRoom.addExit(exit);
+    }
+
+    #changeRoom(currRoom, newRoom){
+        if(){
+            
+        }
     }
 
     #getExit(pos, rot, width, height, depth, material, castShadow, recvShadow) {

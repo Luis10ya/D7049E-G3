@@ -270,6 +270,14 @@ export default class Room extends Colleague {
     }
 
     /**
+     * 
+     * @returns {Ammo.btDiscreteDynamicsWorld}
+     */
+    getPhysicsWorld(){
+        return this.#physicsWorld;
+    }
+
+    /**
      * Static method to create a room with static elements in it.
      * @param {string} roomName 
      * @param {string} pathToGLTF 

@@ -21,8 +21,8 @@ export class CubeChaos {
         // init gameWorld
         let gameWorld = new GameWorld(player, renderTarget);
 
-        let gameLogic = new GameLogic(gameWorld, renderTarget);
-        let gameInit = new GameInit(gameWorld);
+        let gameLogic = new GameLogic(gameWorld, renderTarget, player);
+        let gameInit = new GameInit(gameWorld, player);
 
         // init and start game
         gameInit.buildRooms();
