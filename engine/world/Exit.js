@@ -47,7 +47,7 @@ export default class Exit extends TriggerObject{
         return this.locked;
     }
 
-    action(){
-        throw new Error("Method 'action()' must be implemented.");
+    onTrigger(){
+        throw new Error("Method 'onTrigger()' must be implemented.");
     }
 }
