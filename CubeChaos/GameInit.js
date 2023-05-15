@@ -78,8 +78,43 @@ export class GameInit {
     }
 
     #changeRoom(currRoom, newRoom){
-        if(){
+        let rooms = this.#gameWorld.getRooms();
+        if(currRoom ===  rooms[0] && newRoom === rooms[5]){
             
+        }else if(currRoom ===  rooms[5] && newRoom === rooms[0]) {
+
+        }else if(currRoom ===  rooms[5] && newRoom === rooms[6]) {
+
+        }else if(currRoom ===  rooms[5] && newRoom === rooms[1]) {
+
+        }else if(currRoom ===  rooms[6] && newRoom === rooms[0]) {
+
+        }else if(currRoom ===  rooms[1] && newRoom === rooms[5]) {
+
+        }else if(currRoom ===  rooms[1] && newRoom === rooms[3]) {
+
+        }else if(currRoom ===  rooms[1] && newRoom === rooms[2]) {
+
+        }else if(currRoom ===  rooms[3] && newRoom === rooms[0]) {
+
+        }else if(currRoom ===  rooms[3] && newRoom === rooms[2]) {
+
+        }else if(currRoom ===  rooms[3] && newRoom === rooms[1]) {
+
+        }else if(currRoom ===  rooms[2] && newRoom === rooms[3]) {
+
+        }else if(currRoom ===  rooms[2] && newRoom === rooms[1]) {
+
+        }else if(currRoom ===  rooms[2] && newRoom === rooms[4]) {
+
+        }else if(currRoom ===  rooms[4] && newRoom === rooms[2]) {
+
+        }else if(currRoom ===  rooms[4] && newRoom === rooms[7]) {
+
+        }else if(currRoom ===  rooms[7] && newRoom === rooms[4]) {
+
+        }else if(currRoom ===  rooms[7] && newRoom === rooms[0]) {
+
         }
     }
 
