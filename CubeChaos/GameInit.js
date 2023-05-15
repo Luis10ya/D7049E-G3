@@ -226,19 +226,19 @@ export class GameInit {
 
         let boxTowerCount1 = 0;
         while(boxTowerCount1 < 30) {
-            this.#createBox([30,boxTowerCount1+0.5,10], [0,0,0], 20, 2,2,2, metalMaterial, true, true, room);
+            this.#createBox([30,2*boxTowerCount1+2,10], [0,0,0], 20, 2,2,2, metalMaterial, true, true, room);
             boxTowerCount1++;
         }
 
         let boxTowerCount2 = 0;
         while(boxTowerCount2 < 40) {
-            this.#createBox([10,boxTowerCount2+0.5,5], [0,0,0], 20, 4,4,4, metalMaterial, true, true, room);
+            this.#createBox([10,4*boxTowerCount2+4,5], [0,0,0], 20, 4,4,4, metalMaterial, true, true, room);
             boxTowerCount2++;
         }
 
         let boxTowerCount3 = 0;
         while(boxTowerCount3 < 20) {
-            this.#createBox([5,boxTowerCount3+0.5,2.5], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
+            this.#createBox([5,boxTowerCount3+1,2.5], [0,0,0], 20, 1,1,1, metalMaterial, true, true, room);
             boxTowerCount3++;
         }
 
