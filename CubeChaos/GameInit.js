@@ -323,75 +323,75 @@ export class GameInit {
         let rooms = this.#gameWorld.getRooms();
 
         // entryToSphere
-        let exit1 = ""
+        let exit1 = "./assets/images/entryRoom/sphereDoor.png";
         this.#createExit([0, 2, (this.#entryRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit1, rooms[0], rooms[5]);
 
         // sphereToEntry
-        let exit2 = ""
+        let exit2 = "./assets/images/sphereRoom/entryDoor.jpg";
         this.#createExit([0, 2, -(this.#sphereRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit2, rooms[5], rooms[0]);
 
         // sphereToMystery
-        let exit3 = ""
+        let exit3 = "./assets/images/sphereRoom/mysteryDoor.png";
         this.#createExit([-(this.#sphereRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit3, rooms[5], rooms[6]);
 
         // sphereToZeroGravity
-        let exit4 = ""
+        let exit4 = "./assets/images/sphereRoom/zeroGravityDoor.png";
         this.#createExit([(this.#sphereRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit4, rooms[5], rooms[1]);
 
         // mysteryToEntry
-        let exit5 = ""
+        let exit5 = "./assets/images/mysteryRoom/entryDoor.jpg";
         this.#createExit([(this.#mysteryRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit5, rooms[6], rooms[0]);
 
         // zeroGravityToSphere
-        let exit6 = ""
+        let exit6 = "./assets/images/zeroGravityRoom/sphereDoor.png";
         this.#createExit([-(this.#zeroGravityRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit6, rooms[1], rooms[5]);
 
         // zeroGravityToMotion
-        let exit7 = ""
+        let exit7 = "./assets/images/zeroGravityRoom/sphereDoor.png"; // This one is not correct
         this.#createExit([0, 2, -(this.#zeroGravityRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit7, rooms[1], rooms[3]);
 
         // zeroGravityToSpace
-        let exit8 = ""
+        let exit8 = "./assets/images/zeroGravityRoom/spaceDoor.jpg";
         this.#createExit([(this.#zeroGravityRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit8, rooms[1], rooms[2]);
 
         // motionToZeroGravity
-        let exit9 = ""
+        let exit9 = "./assets/images/motionRoom/zeroGravityDoor.png";
         this.#createExit([0, 2, (this.#motionRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit9, rooms[3], rooms[1]);
 
         // motionToEntry
-        let exit10 = ""
+        let exit10 = "./assets/images/motionRoom/entryDoor.jpg";
         this.#createExit([-(this.#motionRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit10, rooms[3], rooms[0]);
 
         // motionToSpace
-        let exit11 = ""
+        let exit11 = "./assets/images/motionRoom/spaceDoor.jpg";
         this.#createExit([(this.#motionRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit11, rooms[3], rooms[2]);
 
         // spaceToMotion
-        let exit12 = ""
+        let exit12 = "./assets/images/spaceRoom/zeroGravityDoor.png"; // This one is not correct
         this.#createExit([-(this.#spaceRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit12, rooms[2], rooms[3]);
 
         // spaceToZeroGravity
-        let exit13 = ""
+        let exit13 = "./assets/images/spaceRoom/zeroGravityDoor.png";
         this.#createExit([0, 2, -(this.#spaceRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit13, rooms[2], rooms[1]);
 
         // spaceToCube
-        let exit14 = ""
+        let exit14 = "./assets/images/spaceRoom/cubeDoor.png";
         this.#createExit([0, 2, (this.#spaceRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit14, rooms[2], rooms[4]);
 
         // cubeToSpace
-        let exit15 = ""
+        let exit15 = "./assets/images/cubeRoom/spaceDoor.jpg";
         this.#createExit([0, 2, -(this.#cubeRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit15, rooms[4], rooms[2]);
 
         // cubeToFinal
-        let exit16 = ""
+        let exit16 = "./assets/images/cubeRoom/victoryDoor.png";
         this.#createExit([0, 2, (this.#cubeRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit16, rooms[4], rooms[7]);
 
         // finalToCube
-        let exit17 = ""
+        let exit17 = "./assets/images/finalRoom/cubeDoor.png";
         this.#createExit([0, 2, -(this.#finalRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit17, rooms[7], rooms[4]);
 
         // finalToEntry
-        let exit18 = ""
+        let exit18 = "./assets/images/finalRoom/entryDoor.jpg";
         this.#createExit([0, 2, (this.#finalRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit18, rooms[7], rooms[0]);
 
         //this.#createExit(pos, rot, width, height, depth, true, true, image, currRoom, newRoom);
