@@ -1,20 +1,26 @@
 //@author Malte
 
+import TriggerObject from "./TriggerObject";
+
 /**
  * Exits manage the exit from a room
+ * 
+ * @class TriggerObject
+ * @extends {TriggerObject}
+ * 
  */
-export default class Exit {
+export default class Exit extends TriggerObject{
     /**
-     * @param {Room} room 
-     * @param {GameObject3D} portal 
+     * @param {Room} room
      */
-    constructor(room, portal) {
+    constructor(pos, rot, mass, geometry, material, castShadow, recvShadow, action, room) {
+        super(pos, rot, mass, geometry, material, castShadow, recvShadow, action);
+
         // initialize given arguments
         this.room = room;
-        this.portal = portal;
 
         // initialize with default values
-        this.locked = true;
+        this.locked = false;
     }
 
     /**
@@ -39,5 +45,9 @@ export default class Exit {
     toggleLock() {
         this.locked = !this.locked;
         return this.locked;
+    }
+
+    action(){
+        throw new Error("Method 'action()' must be implemented.");
     }
 }

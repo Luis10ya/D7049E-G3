@@ -101,8 +101,9 @@ export default class Room extends Colleague {
     addExit(exit) {
         if(this.indexOfExit(exit) == -1){
             this.#exits.push(exit);
-            this.#scene.add(exit.getObject3D().getObject3D());
-            this.#physicsWorld.addRigidBody(exit.getObject3D().getRigidBody());
+            this.#scene.add(exit.getObject3D());
+            this.#physicsWorld.addRigidBody(exit.getRigidBody());
+            this.#gameObject3Dlist.push(exit);
         }
     }
 
@@ -135,9 +136,11 @@ export default class Room extends Colleague {
             }
         }
         let exitObject = this.#exits[posInExits];
-        let ridigBody = exitObject.getObject3D().getRigidBody();
+        this.removeObject3D(exitObject);
+        let ridigBody = exitObject.getRigidBody();
         this.#exits.splice(posInExits, 1);
-        this.#scene.remove(exitObject.getObject3D().getObject3D());
+        this.#gameObject3Dlist.splice(indexOfGameObject3D(exitObject), 1);
+        this.#scene.remove(exitObject.getObject3D());
         this.#physicsWorld.removeRigidBody(ridigBody);
         Ammo.destroy(ridigBody);
         return true;
