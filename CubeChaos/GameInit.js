@@ -71,13 +71,13 @@ export class GameInit {
         //let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
         let exit = new Exit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow,newRoom);
         let action = currRoom.getPhysicsWorld().contactPairTest(this.#player, exit, function(collisionData){
-            this.#changeRoom(currRoom, newRoom);
+            this.changeRoom(currRoom, newRoom);
         });
         exit.setAction(action);
         currRoom.addExit(exit);
     }
 
-    #changeRoom(currRoom, newRoom){
+    changeRoom(currRoom, newRoom){
         this.#gameWorld.setCurrentRoom(newRoom);
         let rooms = this.#gameWorld.getRooms();
         if(currRoom ===  rooms[0] && newRoom === rooms[5]){
