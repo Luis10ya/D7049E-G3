@@ -1,21 +1,21 @@
 import * as THREE from 'three';
 import GameWorld from '../engine/world/GameWorld.js';
 import Room from '../engine/world/Room.js';
-import { MediatorInit } from './MediatorInit.js';
+// import { MediatorInit } from './MediatorInit.js';
 import FullscreenMenu from '../engine/overlays/FullscreenMenu.js';
-import  Player  from '../engine/player/Player.js';
+import { Player } from '../engine/player/Player.js';
 
-export class GameInit {
+export class GameLogic {
 
     #gameWorld
     #renderTarget
-    #mediatorInit
+    // #mediatorInit
     #player
 
     constructor(gameWorld, renderTarget, player){
         this.#gameWorld = gameWorld;
         this.#renderTarget = renderTarget;
-        this.#mediatorInit = new MediatorInit();
+        // this.#mediatorInit = new MediatorInit();
 
         this.#player = player;
 
@@ -43,7 +43,6 @@ export class GameInit {
     }
 
     startGameLoop(){
-        this.#run = true;
         this.#gameLoop();
     }
 
@@ -59,14 +58,14 @@ export class GameInit {
         window.addEventListener("keydown", (event)=> {
             const message = new KeyboardMsg(event.key, true);
             const movementMessage = new MovementMsg(event.key, true);
-            this.#mediatorInit.keyboardMediator.notify(message);
-            this.#mediatorInit.playerMediator.notify(movementMessage);
+            // this.#mediatorInit.keyboardMediator.notify(message);
+            // this.#mediatorInit.playerMediator.notify(movementMessage);
         }, true);
         window.addEventListener("keyup", (event) => {
             const message = new KeyboardMsg(event.key, false);
             const movementMessage = new MovementMsg(event.key, false);
-            this.#mediatorInit.keyboardMediator.notify(message);
-            this.#mediatorInit.playerMediator.notify(movementMessage);
+            // this.#mediatorInit.keyboardMediator.notify(message);
+            // this.#mediatorInit.playerMediator.notify(movementMessage);
         }, false);
     }
 
