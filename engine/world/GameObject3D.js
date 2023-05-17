@@ -28,7 +28,6 @@ export default class GameObject3D extends Colleague {
         this.rep3d.rotateZ(rotZ);*/
         this.rep3d.castShadow = castShadow;
         this.rep3d.receiveShadow = recvShadow;
-        //Untested until here
 
         this.body = this.createBodyFromMesh(this.rep3d, mass);
     }
