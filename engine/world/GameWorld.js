@@ -59,6 +59,9 @@ export default class GameWorld extends Colleague {
     }
 
     roomExists(name) {
+        if (name instanceof Room) {
+            return this.roomExists(name.getName());
+        }
         for (const room of this.roomList) {
             if (room.getName() === name) {
                 return true;
@@ -68,6 +71,9 @@ export default class GameWorld extends Colleague {
     }
 
     removeRoom(name) {
+        if (name instanceof Room) {
+            return this.removeRoom(name.getName());
+        }
         var toRemove = -1;
         for (var i = 0; i < this.roomList.length; i++) {
             if (this.roomList.at(i).getName() === name) {
@@ -81,6 +87,9 @@ export default class GameWorld extends Colleague {
     }
 
     setCurrentRoom(name) {
+        if (name instanceof Room) {
+            return this.setCurrentRoom(name.getName());
+        }
         for (const room of this.roomList) {
             if (room.getName() === name) {
                 this.currentRoom = room;
