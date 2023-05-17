@@ -162,7 +162,53 @@ export class GameInit {
             boxCount++;
         }
 
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([5,boxCount+0.5,5], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
 
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([-5,boxCount+0.5,-5], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
+
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([5,boxCount+0.5,-5], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
+
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([-5,boxCount+0.5,5], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
+
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([10,boxCount+0.5,10], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
+
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([-10,boxCount+0.5,-10], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
+
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([10,boxCount+0.5,-10], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
+
+        boxCount = 0;
+        while(boxCount < 5) {
+            this.#createBox([-10,boxCount+0.5,10], [0,0,0], 20, 1,1,1, waterMaterial, true, true, room);
+            boxCount++;
+        }
 
         return room;
     }
