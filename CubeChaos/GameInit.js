@@ -16,11 +16,9 @@ export class GameInit {
     #sphereRoomDimensions
     #mysteryRoomDimensions
     #finalRoomDimensions
-    #player
 
-    constructor(gameWorld, player){
+    constructor(gameWorld){
         this.#gameWorld = gameWorld;
-        this.#player = player;
     }
 
     buildRooms(){
@@ -70,7 +68,7 @@ export class GameInit {
         let exitMaterial =  new THREE.MeshStandardMaterial({map: exitTexture});
         //let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
         let exit = new Exit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow,newRoom);
-        let action = currRoom.getPhysicsWorld().contactPairTest(this.#player, exit, function(collisionData){
+        let action = currRoom.getPhysicsWorld().contactPairTest(this.#gameWorld.getPlayer(), exit, function(collisionData){
             this.changeRoom(currRoom, newRoom);
         });
         exit.setAction(action);
@@ -82,41 +80,41 @@ export class GameInit {
         this.#gameWorld.setCurrentRoom(newRoom);
         let rooms = this.#gameWorld.getRooms();
         if(currRoom ===  rooms[0] && newRoom === rooms[5]){
-            this.#player.setPosition(this.#sphereRoomDimensions[0]/2, -(this.#sphereRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#sphereRoomDimensions[0]/2, -(this.#sphereRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[5] && newRoom === rooms[0]) {
-            this.#player.setPosition(this.#entryRoomDimensions[0]/2, (this.#entryRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#entryRoomDimensions[0]/2, (this.#entryRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[5] && newRoom === rooms[6]) {
-            this.#player.setPosition((this.#mysteryRoomDimensions[0]/2)-1.5, this.#mysteryRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#mysteryRoomDimensions[0]/2)-1.5, this.#mysteryRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[5] && newRoom === rooms[1]) {
-            this.#player.setPosition(-(this.#zeroGravityRoomDimensions[0]/2)+1.5, this.#zeroGravityRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#zeroGravityRoomDimensions[0]/2)+1.5, this.#zeroGravityRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[6] && newRoom === rooms[0]) {
-            this.#player.setPosition(-(this.#entryRoomDimensions[0]/2)+1.5, this.#entryRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#entryRoomDimensions[0]/2)+1.5, this.#entryRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[1] && newRoom === rooms[5]) {
-            this.#player.setPosition(-(this.#sphereRoomDimensions[0]/2)+1.5, this.#sphereRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#sphereRoomDimensions[0]/2)+1.5, this.#sphereRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[1] && newRoom === rooms[3]) {
-            this.#player.setPosition(this.#motionRoomDimensions[0]/2, (this.#motionRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#motionRoomDimensions[0]/2, (this.#motionRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[1] && newRoom === rooms[2]) {
-            this.#player.setPosition(this.#spaceRoomDimensions[0]/2, -(this.#spaceRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#spaceRoomDimensions[0]/2, -(this.#spaceRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[3] && newRoom === rooms[0]) {
-            this.#player.setPosition((this.#entryRoomDimensions[0]/2)-1.5, this.#entryRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#entryRoomDimensions[0]/2)-1.5, this.#entryRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[3] && newRoom === rooms[2]) {
-            this.#player.setPosition(-(this.#spaceRoomDimensions[0]/2)+1.5, this.#spaceRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#spaceRoomDimensions[0]/2)+1.5, this.#spaceRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[3] && newRoom === rooms[1]) {
-            this.#player.setPosition(this.#zeroGravityRoomDimensions[0]/2, (this.#zeroGravityRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#zeroGravityRoomDimensions[0]/2, (this.#zeroGravityRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[2] && newRoom === rooms[3]) {
-            this.#player.setPosition((this.#motionRoomDimensions[0]/2)-1.5, this.#motionRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#motionRoomDimensions[0]/2)-1.5, this.#motionRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[2] && newRoom === rooms[1]) {
-            this.#player.setPosition((this.#zeroGravityRoomDimensions[0]/2)-1.5, this.#zeroGravityRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#zeroGravityRoomDimensions[0]/2)-1.5, this.#zeroGravityRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[2] && newRoom === rooms[4]) {
-            this.#player.setPosition(this.#cubeRoomDimensions[0]/2, -(this.#cubeRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#cubeRoomDimensions[0]/2, -(this.#cubeRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[4] && newRoom === rooms[2]) {
-            this.#player.setPosition(this.#spaceRoomDimensions[0]/2, (this.#spaceRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#spaceRoomDimensions[0]/2, (this.#spaceRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[4] && newRoom === rooms[7]) {
-            this.#player.setPosition(this.#finalRoomDimensions[0]/2, -(this.#finalRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#finalRoomDimensions[0]/2, -(this.#finalRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[7] && newRoom === rooms[4]) {
-            this.#player.setPosition(this.#cubeRoomDimensions[0]/2, (this.#cubeRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#cubeRoomDimensions[0]/2, (this.#cubeRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[7] && newRoom === rooms[0]) {
-            this.#player.setPosition(this.#entryRoomDimensions[0]/2, -(this.#entryRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#entryRoomDimensions[0]/2, -(this.#entryRoomDimensions[1]/2)+1.5);
         }
     }
 
