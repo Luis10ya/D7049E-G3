@@ -19,6 +19,16 @@ export class GameInit {
 
     constructor(gameWorld){
         this.#gameWorld = gameWorld;
+
+        // width, depth, height
+        this.#entryRoomDimensions = [75, 100, 10];
+        this.#zeroGravityRoomDimensions = [100, 100, 100];
+        this.#spaceRoomDimensions = [50, 50, 30];
+        this.#motionRoomDimensions = [75, 25, 25];
+        this. #cubeRoomDimensions = [150, 150, 150];
+        this.#sphereRoomDimensions = [50, 25, 75];
+        this.#mysteryRoomDimensions = [50, 25, 10];
+        this.#finalRoomDimensions = [10, 10, 10];
     }
 
     buildRooms(){
@@ -32,15 +42,7 @@ export class GameInit {
         this.#gameWorld.addRoom(this.#buildFinalRoom);
         this.#connectRooms();
 
-        // width, depth, height
-        this.#entryRoomDimensions = [75, 100, 10];
-        this.#zeroGravityRoomDimensions = [100, 100, 100];
-        this.#spaceRoomDimensions = [50, 50, 30];
-        this.#motionRoomDimensions = [75, 25, 25];
-        this. #cubeRoomDimensions = [150, 150, 150];
-        this.#sphereRoomDimensions = [50, 25, 75];
-        this.#mysteryRoomDimensions = [50, 25, 10];
-        this.#finalRoomDimensions = [10, 10, 10];
+        
     }
 
     #createRoomStructure( dimenstions, groundMaterial, wallMaterial, ceilingMaterial, room) {
