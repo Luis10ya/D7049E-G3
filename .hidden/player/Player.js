@@ -14,6 +14,7 @@ export class Player extends GameObject3D {
     backwards;
     left;
     right;
+    sprinting;
 
     velocity;
     velocityTurbo; //TODO
@@ -76,6 +77,9 @@ export class Player extends GameObject3D {
             case 'KeyD':
                 this.right = true;
                 break;
+            case 'KeyShift':
+                this.sprinting = true;
+                break;
         }
     }
 
@@ -93,10 +97,18 @@ export class Player extends GameObject3D {
             case 'KeyD':
                 this.right = false;
                 break;
+            case 'KeyShift':
+                this.sprinting = false;
+                break;
         }
     }
 
     update(deltaTime) {
+        if (!this.sprinting) {
+            const forceMultiplier = this.velocity * deltaTime;
+        } else {
+            const forceMultiplier = this.velocityTurbo * deltaTime;
+        }
         const forceMultiplier = this.velocity * deltaTime;
         const playerDirection = new THREE.Vector3();
         this.camera.getWorldDirection(playerDirection);

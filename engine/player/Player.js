@@ -24,11 +24,11 @@ export class Player extends GameObject3D {
     //TODO: add the inventory, addInventoryItem, removeInventoryItem
 
     constructor(mass, velocity, velocityTurbo, jumpAcceleration, eyeHeight, domElement) {
-        const playerGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const playerGeometry = new THREE.BoxGeometry(1, 2, 1);
         const playerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
 
         super(
-            [0, 20, 0],
+            [0, 5, 0],
             [0, 0, 0],
             mass,
             playerGeometry,
@@ -76,6 +76,9 @@ export class Player extends GameObject3D {
             case 'KeyD':
                 this.right = true;
                 break;
+            case 'KeyShift':
+                this.sprinting = true;
+                break;
         }
     }
 
@@ -93,11 +96,18 @@ export class Player extends GameObject3D {
             case 'KeyD':
                 this.right = false;
                 break;
+            case 'KeyShift':
+                this.sprinting = false;
+                break;
         }
     }
 
     update(deltaTime) {
-        console.log("speed");
+        if (!this.sprinting) {
+            const forceMultiplier = this.velocity * deltaTime;
+        } else {
+            const forceMultiplier = this.velocityTurbo * deltaTime;
+        }
         const forceMultiplier = this.velocity * deltaTime;
         const playerDirection = new THREE.Vector3();
         this.camera.getWorldDirection(playerDirection);
@@ -140,5 +150,13 @@ export class Player extends GameObject3D {
 
     getControls()  {
         return this.controls;
+    }
+
+    pushUp() {
+        console.log("bla");
+        const transform = this.body.getWorldTransform();
+        const origin = transform.getOrigin();
+        transform.setOrigin(new Ammo.btVector3(origin.x(),origin.y()+0.05,origin.z()));
+        this.body.setWorldTransform(transform);
     }
 }

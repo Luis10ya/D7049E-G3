@@ -54,35 +54,9 @@ function buildEntryRoom(){
 }
 
 const room = buildEntryRoom();
-room.blabla = "richtig"
 gameWorld.addRoom(room);
 gameWorld.setCurrentRoom(room);
 gameWorld.animate()
-
-/**
-const renderer = new THREE.WebGLRenderer({
-    antialias: true
-});
-renderer.shadowMap.enabled = true;
-renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-renderer.setPixelRatio(window.devicePixelRatio);
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement)
-
-
-var previousRAF = null
-raf()
-function raf() {
-requestAnimationFrame((t)=>{
-    if (previousRAF === null) {
-        previousRAF = t
-    }
-    renderer.render(room.getScene(), player.getCamera());
-    raf()
-    previousRAF = t;
-});
-}
-*/
 
 
 createListeners(parent);

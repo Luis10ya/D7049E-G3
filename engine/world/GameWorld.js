@@ -32,6 +32,7 @@ export default class GameWorld extends Colleague {
         const player = new Player(20, 200, 40, 10, 1.5, this.renderer.domElement);
         this.player = player
         this.currentRoom.addObject3D(player);
+        player.setPosition(0,0,0);
 
         this.roomList = new Array();
 
@@ -51,6 +52,11 @@ export default class GameWorld extends Colleague {
         this.deltaTime = this.clock.getDelta();
         console.log(this.deltaTime);
         this.totalTime += this.deltaTime;
+
+        if(this.totalTime > 1) {
+            this.totalTime = 0;
+            this.player.pushUp();
+        }
 
         this.currentRoom.updateGameObjects(this.deltaTime);
         this.player.update(this.deltaTime);
