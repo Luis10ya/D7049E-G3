@@ -153,10 +153,16 @@ export class Player extends GameObject3D {
     }
 
     pushUp() {
-        console.log("bla");
+        var transform = this.body.getWorldTransform();
+        var origin = transform.getOrigin();
+        transform.setOrigin(new Ammo.btVector3(origin.x(),origin.y()+0.05,origin.z()));
+        this.body.setWorldTransform(transform);
+    }
+
+    pullDown() {
         const transform = this.body.getWorldTransform();
         const origin = transform.getOrigin();
-        transform.setOrigin(new Ammo.btVector3(origin.x(),origin.y()+0.05,origin.z()));
+        transform.setOrigin(new Ammo.btVector3(origin.x(),origin.y()-0.05,origin.z()));
         this.body.setWorldTransform(transform);
     }
 }

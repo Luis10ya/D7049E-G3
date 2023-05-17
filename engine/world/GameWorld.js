@@ -56,6 +56,8 @@ export default class GameWorld extends Colleague {
         if(this.totalTime > 1) {
             this.totalTime = 0;
             this.player.pushUp();
+            this.currentRoom.getPhysicsWorld().stepSimulation(0, 10);
+            this.currentRoom.pullDown();
         }
 
         this.currentRoom.updateGameObjects(this.deltaTime);
