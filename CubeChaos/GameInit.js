@@ -88,41 +88,41 @@ export class GameInit {
         this.#gameWorld.setCurrentRoom(newRoom);
         let rooms = this.#gameWorld.getRooms();
         if(currRoom ===  rooms[0] && newRoom === rooms[5]){
-            this.#gameWorld.getPlayer().setPosition(this.#sphereRoomDimensions[0]/2, -(this.#sphereRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#sphereRoomDimensions[0]/2,0, -(this.#sphereRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[5] && newRoom === rooms[0]) {
-            this.#gameWorld.getPlayer().setPosition(this.#entryRoomDimensions[0]/2, (this.#entryRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#entryRoomDimensions[0]/2,0, (this.#entryRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[5] && newRoom === rooms[6]) {
-            this.#gameWorld.getPlayer().setPosition((this.#mysteryRoomDimensions[0]/2)-1.5, this.#mysteryRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#mysteryRoomDimensions[0]/2)-1.5,0, this.#mysteryRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[5] && newRoom === rooms[1]) {
-            this.#gameWorld.getPlayer().setPosition(-(this.#zeroGravityRoomDimensions[0]/2)+1.5, this.#zeroGravityRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#zeroGravityRoomDimensions[0]/2)+1.5,0, this.#zeroGravityRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[6] && newRoom === rooms[0]) {
-            this.#gameWorld.getPlayer().setPosition(-(this.#entryRoomDimensions[0]/2)+1.5, this.#entryRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#entryRoomDimensions[0]/2)+1.5,0, this.#entryRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[1] && newRoom === rooms[5]) {
-            this.#gameWorld.getPlayer().setPosition(-(this.#sphereRoomDimensions[0]/2)+1.5, this.#sphereRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#sphereRoomDimensions[0]/2)+1.5,0, this.#sphereRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[1] && newRoom === rooms[3]) {
-            this.#gameWorld.getPlayer().setPosition(this.#motionRoomDimensions[0]/2, (this.#motionRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#motionRoomDimensions[0]/2,0, (this.#motionRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[1] && newRoom === rooms[2]) {
-            this.#gameWorld.getPlayer().setPosition(this.#spaceRoomDimensions[0]/2, -(this.#spaceRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#spaceRoomDimensions[0]/2,0, -(this.#spaceRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[3] && newRoom === rooms[0]) {
-            this.#gameWorld.getPlayer().setPosition((this.#entryRoomDimensions[0]/2)-1.5, this.#entryRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#entryRoomDimensions[0]/2)-1.5,0, this.#entryRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[3] && newRoom === rooms[2]) {
-            this.#gameWorld.getPlayer().setPosition(-(this.#spaceRoomDimensions[0]/2)+1.5, this.#spaceRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition(-(this.#spaceRoomDimensions[0]/2)+1.5,0, this.#spaceRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[3] && newRoom === rooms[1]) {
-            this.#gameWorld.getPlayer().setPosition(this.#zeroGravityRoomDimensions[0]/2, (this.#zeroGravityRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#zeroGravityRoomDimensions[0]/2,0, (this.#zeroGravityRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[2] && newRoom === rooms[3]) {
-            this.#gameWorld.getPlayer().setPosition((this.#motionRoomDimensions[0]/2)-1.5, this.#motionRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#motionRoomDimensions[0]/2)-1.5,0, this.#motionRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[2] && newRoom === rooms[1]) {
-            this.#gameWorld.getPlayer().setPosition((this.#zeroGravityRoomDimensions[0]/2)-1.5, this.#zeroGravityRoomDimensions[1]/2);
+            this.#gameWorld.getPlayer().setPosition((this.#zeroGravityRoomDimensions[0]/2)-1.5,0, this.#zeroGravityRoomDimensions[1]/2);
         }else if(currRoom ===  rooms[2] && newRoom === rooms[4]) {
-            this.#gameWorld.getPlayer().setPosition(this.#cubeRoomDimensions[0]/2, -(this.#cubeRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#cubeRoomDimensions[0]/2,0, -(this.#cubeRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[4] && newRoom === rooms[2]) {
-            this.#gameWorld.getPlayer().setPosition(this.#spaceRoomDimensions[0]/2, (this.#spaceRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#spaceRoomDimensions[0]/2,0, (this.#spaceRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[4] && newRoom === rooms[7]) {
-            this.#gameWorld.getPlayer().setPosition(this.#finalRoomDimensions[0]/2, -(this.#finalRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#finalRoomDimensions[0]/2,0, -(this.#finalRoomDimensions[1]/2)+1.5);
         }else if(currRoom ===  rooms[7] && newRoom === rooms[4]) {
-            this.#gameWorld.getPlayer().setPosition(this.#cubeRoomDimensions[0]/2, (this.#cubeRoomDimensions[1]/2)-1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#cubeRoomDimensions[0]/2,0, (this.#cubeRoomDimensions[1]/2)-1.5);
         }else if(currRoom ===  rooms[7] && newRoom === rooms[0]) {
-            this.#gameWorld.getPlayer().setPosition(this.#entryRoomDimensions[0]/2, -(this.#entryRoomDimensions[1]/2)+1.5);
+            this.#gameWorld.getPlayer().setPosition(this.#entryRoomDimensions[0]/2,0, -(this.#entryRoomDimensions[1]/2)+1.5);
         }
     }
 
