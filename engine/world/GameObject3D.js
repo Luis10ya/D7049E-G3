@@ -102,4 +102,10 @@ export default class GameObject3D extends Colleague {
     initMovement(velocity) {
         this.body.setLinearVelocity(velocity);
     }
+
+    setPosition(x,y,z) {
+        const transform = this.body.getWorldTransform();
+        transform.setOrigin(new Ammo.btVector3(x,y,z));
+        this.body.setWorldTransform(transform);
+    }
 }

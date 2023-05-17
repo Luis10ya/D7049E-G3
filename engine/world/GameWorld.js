@@ -59,10 +59,13 @@ export default class GameWorld extends Colleague {
     }
 
     addRoom(newRoom) {
-        if (!(newRoom instanceof Room) || (this.roomExists(newRoom.getName()))) {
+        const isInstance = !(newRoom instanceof Room)
+        const roomExists = this.roomExists(newRoom.getName())
+        if ( isInstance || roomExists) {
             return false;
         }
         this.roomList.push(newRoom);
+        return true;
     }
 
     roomExists(name) {
