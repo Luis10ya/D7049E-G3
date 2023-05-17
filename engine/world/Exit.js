@@ -13,8 +13,17 @@ export default class Exit extends TriggerObject{
     /**
      * @param {Room} room
      */
-    constructor(pos, rot, mass, geometry, material, castShadow, recvShadow, room) {
-        super(pos, rot, mass, geometry, material, castShadow, recvShadow);
+    constructor(
+        [posX = 0, posY = 0, posZ = 0],
+        [rotX = 0, rotY = 0, rotZ = 0],
+        mass = 0,
+        geometry = new THREE.BoxGeometry(5, 5, 5),
+        material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+        castShadow = true,
+        recvShadow = true,
+        room
+    )/*(pos, rot, mass, geometry, material, castShadow, recvShadow, room)*/ {
+        super([posX, posY, posZ], [rotX, rotY, rotZ], mass, geometry, material, castShadow, recvShadow);
 
         // initialize given arguments
         this.room = room;
