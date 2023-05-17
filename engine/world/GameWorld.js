@@ -34,6 +34,13 @@ export default class GameWorld extends Colleague {
         this.currentRoom.addObject3D(player);
 
         this.roomList = new Array();
+
+        window.addEventListener('resize', () => {
+            this.player.getCamera().aspect = window.innerWidth / window.innerHeight;
+            this.player.getCamera().updateProjectionMatrix();
+
+            this.renderer.setSize(window.innerWidth, window.innerHeight);
+        }, false);
     }
 
     animate() {
