@@ -11,18 +11,11 @@ export function cubeChaos(){
     let renderTarget = document.createElement('div');
     document.body.appendChild(renderTarget);
 
-    // init player
-    let velocity = 4 // test
-    let velocityTurbo = 8 // test
-    let jumpAcceleration = 30 // test
-    let eyeHeight = 3 // test
-    let player = new Player(velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget);
-
     // init gameWorld
-    let gameWorld = new GameWorld(player, renderTarget);
+    let gameWorld = new GameWorld(renderTarget);
 
-    let gameLogic = new GameLogic(gameWorld, renderTarget, player);
-    let gameInit = new GameInit(gameWorld, player);
+    let gameLogic = new GameLogic(gameWorld, renderTarget);
+    let gameInit = new GameInit(gameWorld);
 
     // init and start game
     gameInit.buildRooms();
