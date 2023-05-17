@@ -45,25 +45,9 @@ export class GameLogic {
 
 
     #gameLoop(){
-        this.#gameWorld.update();
-        createListeners();
-    }
-
-    
-
-    createListeners () {
-        window.addEventListener("keydown", (event)=> {
-            const message = new KeyboardMsg(event.key, true);
-            const movementMessage = new MovementMsg(event.key, true);
-            KeyboardMediator.getInstance().notify(message);
-            PlayerMediator.getInstance().notify(movementMessage);
-        }, true);
-        window.addEventListener("keyup", (event) => {
-            const message = new KeyboardMsg(event.key, false);
-            const movementMessage = new MovementMsg(event.key, false);
-            KeyboardMediator.getInstance().notify(message);
-            PlayerMediator.getInstance().notify(movementMessage);
-        }, false);
+        this.#gameWorld.setCurrentRoom("Final room");
+        this.#gameWorld.getPlayer().setPosition([50,50,0]);
+        this.#gameWorld.animate();
     }
 
 }

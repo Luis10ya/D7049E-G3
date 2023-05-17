@@ -32,14 +32,15 @@ export class GameInit {
     }
 
     buildRooms(){
-        this.#gameWorld.addRoom(this.#buildEntryRoom);
-        this.#gameWorld.addRoom(this.#buildZeroGravityRoom);
-        this.#gameWorld.addRoom(this.#buildSpaceRoom);
-        this.#gameWorld.addRoom(this.#buildMotionRoom);
-        this.#gameWorld.addRoom(this.#buildCubeRoom);
-        this.#gameWorld.addRoom(this.#buildSphereRoom);
-        this.#gameWorld.addRoom(this.#buildMysteryRoom);
-        this.#gameWorld.addRoom(this.#buildFinalRoom);
+        let room = this.#buildEntryRoom()
+        this.#gameWorld.addRoom(room);
+        this.#gameWorld.addRoom(this.#buildZeroGravityRoom());
+        this.#gameWorld.addRoom(this.#buildSpaceRoom());
+        this.#gameWorld.addRoom(this.#buildMotionRoom());
+        this.#gameWorld.addRoom(this.#buildCubeRoom());
+        this.#gameWorld.addRoom(this.#buildSphereRoom());
+        this.#gameWorld.addRoom(this.#buildMysteryRoom());
+        this.#gameWorld.addRoom(this.#buildFinalRoom());
         this.#connectRooms();
 
         
@@ -69,11 +70,16 @@ export class GameInit {
         let exitTexture = new THREE.TextureLoader().load(image);
         let exitMaterial =  new THREE.MeshStandardMaterial({map: exitTexture});
         //let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
-        let exit = new Exit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow,newRoom);
-        let action = currRoom.getPhysicsWorld().contactPairTest(this.#gameWorld.getPlayer(), exit, function(collisionData){
-            this.changeRoom(currRoom, newRoom);
-        });
-        exit.setAction(action);
+        let exitGeometry = new THREE.BoxGeometry(width, height, depth)
+        let exit = new Exit(pos, rot, 0, exitGeometry, exitMaterial, castShadow, recvShadow, newRoom);
+        // let action = currRoom.getPhysicsWorld().contactPairTest(
+        //     this.#gameWorld.getPlayer(),
+        //     exit,
+        //     function(collisionData) {
+        //       this.changeRoom(currRoom, newRoom);
+        //     }.bind(this)
+        //   );
+        // exit.setAction(action);
         currRoom.addExit(exit);
     }
 
@@ -138,6 +144,7 @@ export class GameInit {
      */
     #buildEntryRoom(){
         let room = new Room("Entry room");
+        room.setIntensityOfGeneralLight(15);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/Blue-Sky.jpg");
@@ -166,6 +173,7 @@ export class GameInit {
      */
     #buildZeroGravityRoom(){
         let room = new Room("Zero Gravity room");
+        room.setIntensityOfGeneralLight(8);
         room.setGravity(0.5);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/spaceship_floor.jpg");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
@@ -196,8 +204,9 @@ export class GameInit {
 
     #buildSpaceRoom(){
         let room = new Room("Space room");
+        room.setIntensityOfGeneralLight(4);
         room.setGravity(2);
-        let groundTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space_floor.gif");
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space-floor.gif");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space-ceiling.gif");
         let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
@@ -239,6 +248,7 @@ export class GameInit {
      */
     #buildMotionRoom(){
         let room = new Room("Motion room");
+        room.setIntensityOfGeneralLight(10);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionFloor.gif");
         let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionCeiling.gif");
@@ -261,6 +271,7 @@ export class GameInit {
      */
     #buildCubeRoom(){
         let room = new Room("Cube room");
+        room.setIntensityOfGeneralLight(10);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
@@ -307,9 +318,10 @@ export class GameInit {
      */
     #buildSphereRoom(){
         let room = new Room("Sphere room");
-        let groundTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.png");
+        room.setIntensityOfGeneralLight(10);
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.jpg");
         let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
-        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.png");
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.jpg");
         let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
         let wallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime.gif");
         let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
@@ -332,6 +344,7 @@ export class GameInit {
 
     #buildMysteryRoom(){
         let room = new Room("Mystery room");
+        room.setIntensityOfGeneralLight(5);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryFloorAndRoof.jpg");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryFloorAndRoof.jpg");
@@ -351,6 +364,7 @@ export class GameInit {
 
     #buildFinalRoom(){
         let room = new Room("Final room");
+        room.setIntensityOfGeneralLight(8);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/happy-floor.jpg");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/finalRoom/firework.gif");
