@@ -1,195 +1,104 @@
-//@author: Malte
-
+import Colleague from "../communication/Colleague";
 import * as THREE from 'three';
-import * as Ammo from 'ammo.js';
-import MapMenu from '../overlays/MapMenu';
-import PauseMenu from '../overlays/PauseMenu'
-import Colleague from '../communication/Colleague';
+import { Player } from "../player/Player";
+import Room from "./Room";
 
-/**
- * The GameWorld is the central Element of the players surrounding in the Game.
- * It manages all rooms and manages the basic attributes of the entire game world like gravity and the clock
- */
-export default class GameWorld extends Colleague{
+export default class GameWorld extends Colleague {
+    roomList;
+    currentRoom;
+    player;
 
-    #player;
-    #camera;
-    #clock;
-    #renderer;
-    #currentRoom;
-    #rooms;
-    #pauseMenu;
-    #mapMenu;
-    #paused;
-    #previousRAF
-    
+    renderer;
 
+    clock;
+    deltaTime;
+    totalTime;
 
-    /**
-     * Constructor for the GameWorldClass
-     * @param {Player} player
-     * @param {Element} domElement 
-     */
-    constructor(player, domElement) {
+    //TODO Menus
 
+    constructor() {
         super();
 
-        //Set constructor arguments
-        this.#player = player;
-
-        //initialize ThreeJS stuff
-        this.#camera = player.getCamera();
-        this.#clock = new THREE.Clock();
-        this.#renderer = new THREE.WebGLRenderer({
-            antialias: true
-        });
-        this.#renderer.shadowMap.enabled = true;
-        this.#renderer.shadowMap.type = THREE.PCFSoftShadowMap;
-        this.#renderer.setPixelRatio(window.devicePixelRatio);
-        this.#renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(this.#renderer.domElement)
-
-        this.#currentRoom = undefined;
-        this.#rooms = new Array();
-
-        /* this.#pauseMenu = new PauseMenu(domElement);
-        this.#pauseMenu.setVisibility(false);
-        this.#mapMenu = new MapMenu(domElement, this.#rooms)
-        this.#mapMenu.setVisibility(false); */
-
-        this.#paused = false;
-        this.#clock.start();
-        this.#previousRAF = null;
-    }
-
-    /**
-     * Adds a new room to the rooms known to GameWorld
-     * @param {Room} room
-     */
-    addRoom(room) {
-        if (this.#rooms.length == 0) {
-            this.#currentRoom = room;
-            this.#rooms.push(room);
-            //room.addObject3D(this.#player);
-            return true;
-        } else {
-            if (this.#rooms.indexOf(room) > -1) {
-                return false;
-            } else {
-                this.#rooms.push(room);
-                return true;
-            }
-        }
-    }
-
-    /**
-     * deletes a room from the availableRooms
-     * @param {Room | number} room
-     */
-    removeRoom(room) {
-        if(typeof(room) === 'Number') {
-            if ((room >= 0) && (room < this.#rooms.length)) {
-                this.#rooms.splice(room,1);
-            }
-        } else {
-            const index = this.#rooms.indexOf(room);
-            if (index > -1) {
-                this.#rooms.splice(index,1);
-            }
-        }
-    }
-
-    /**
-     * Sets the current room either by object reference or by index in the rooms array
-     * @param {Room | number} room
-     */
-    setCurrentRoom(room){
-        if (typeof(room) === 'Number') {
-            this.loadRoom(room);
-            this.#currentRoom = this.#rooms[room];
-            return true;
-        } else {
-            const index = this.#rooms.indexOf(room);
-            if (index > -1) {
-                //this.currentRoom.removeObject3D(this.#player);
-                this.#currentRoom = room;
-                //this.#currentRoom.addObject3D(this.#player);
-                return true;
-            } else { //room is not known
-                return false; 
-            }
-        }
-    }
-
-    /**
-     * Returns the current room
-     * @returns {Room} room
-     */
-    get currentRoom() {
-        return this.#currentRoom;
-    }
-
-    /**
-     * This **private** Method is used to load a room, so set the scene in the renderer
-     * @param {Number} id 
-     */
-    loadRoom(id) {
-        this.#renderer.render(this.#rooms.at(id).getScene(), this.#camera);
-    }
-
-    /**
-     * Handles incoming Messages
-     * @override
-     * @param {Message} msg 
-     */
-    action(msg) {
-        if (msg instanceof GameObjectMessage) {
-            //Do nothing?
-        } else if (msg instanceof PlayerMessage) {
-            //Do nothing?
-        } else if (msg instanceof MovementMessage) {
-            //Do nothing?
-        } else if (msg instanceof GameEventMessage) {
-            //Do nothing
-        } else {
-            throw new Error("Argument of type " + Object.prototype.toString.call(msg) + " not supported for action");
-        }
-    }
-
-    #togglePause(){
-        this.#paused = !this.#paused;
-        if (this.#paused) {
-            this.#pauseMenu.setVisibility(true);
-            this.clock.stop();
-        } else {
-            this.#pauseMenu.setVisibility(false);
-            this.#clock.start();
-        }
-    }
-
-    update() {
-        /* const deltaTime = this.#clock.getDelta();
-        console.log(deltaTime);
-        this.#currentRoom.updateGameObjects(deltaTime);
-        requestAnimationFrame((t) => {
-            this.#renderer.render(this.#currentRoom.getScene(), this.#camera);
-        }); */
+        this.renderer = new THREE.WebGLRenderer();
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(this.renderer.domElement);
         
-        requestAnimationFrame((t)=>{
-            //console.log(this.#player.getCamera().matrix);
-            if (this.#previousRAF === null) {
-                this.#previousRAF = t;
-            }
+        this.clock = new THREE.Clock();
+        this.deltaTime = 0;
+        this.totalTime = 0;
+        
+        this.currentRoom = new Room();
 
-            this.#currentRoom.updateGameObjects(t-this.#previousRAF);
-            this.#player.updateMotion();
-            this.#renderer.render(this.currentRoom.getScene(), this.#player.getCamera());
-            this.update();
-            this.#previousRAF = t;
+        const player = new Player(20, 200, 40, 10, 1.5, this.renderer.domElement);
+        this.player = player
+        this.currentRoom.addObject3D(player);
+
+        this.roomList = new Array();
+    }
+
+    animate() {
+        requestAnimationFrame(() => {
+            this.animate();
         });
+
+        this.deltaTime = this.clock.getDelta();
+        console.log(this.deltaTime);
+        this.totalTime += this.deltaTime;
+
+        this.currentRoom.updateGameObjects(this.deltaTime);
+        this.player.update(this.deltaTime);
+
+        this.renderer.render(this.currentRoom.getScene(), this.player.camera);
+    }
+
+    addRoom(newRoom) {
+        if (!(newRoom instanceof Room) || (this.roomExists(newRoom.getName()))) {
+            return false;
+        }
+        this.roomList.push(newRoom);
+    }
+
+    roomExists(name) {
+        for (const room of this.roomList) {
+            if (room.getName() === name) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    removeRoom(name) {
+        var toRemove = -1;
+        for (var i = 0; i < this.roomList.length; i++) {
+            if (this.roomList.at(i).getName() === name) {
+                toRemove = i;
+                break;
+            }
+        }
+        if (toRemove >= 0) {
+            this.roomList.splice(toRemove, 1);
+        }
+    }
+
+    setCurrentRoom(name) {
+        for (const room of this.roomList) {
+            if (room.getName() === name) {
+                this.currentRoom = room;
+                return true;
+            }
+        }
+        return false;
+    }
+
+    getCurrentRoom() {
+        return this.currentRoom;
     }
 
     getRooms() {
-        return this.#rooms;
+        return this.roomList;
+    }
+
+    getPlayer() {
+        return this.player;
     }
 }

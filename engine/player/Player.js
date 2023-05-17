@@ -1,219 +1,144 @@
-//@author: Luis
 import * as THREE from 'three';
-import Inventory from './Inventory.js';
-import GameObject3D from '../world/GameObject3D.js';
-import MovementMsg from '../communication/message/MovementMsg.js';
-import InventoryMsg from '../communication/message/InventoryMsg.js';
-import MouseMsg from '../communication/message/MouseMsg.js';
-import InventoryOverlay from '../overlays/InventoryOverlay.js';
-import PlayerMediator from '../communication/mediator/PlayerMediator.js';
-import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
 import * as Ammo from 'ammo.js';
+import { PointerLockControls } from 'three/addons/controls/PointerLockControls.js';
+
+import GameObject3D from '../world/GameObject3D';
+
 
 export class Player extends GameObject3D {
-    #inventory;
-    #velocity;
-    #velocityTurbo;
-    #jumpVelocity;
-    #eyeHeight;
-    #playerMass;
-    #jumpAcceleration;
-    #isSprinting;
-    #inventoryOverlay;
-    #movementForward = 0;
-    #movementBackward = 0;
-    #movementRight = 0;
-    #movementLeft = 0;
-    #controls;
-    constructor(mass, velocity, velocityTurbo, jumpAcceleration, eyeHeight, renderTarget) {
-        const geometry = new THREE.BoxGeometry( 1, 1, 1 ); 
-        super([0,eyeHeight,0], [0,0,0], mass, geometry);
 
-        let width = window.screen.width;
-        let height = window.screen.height;
+    camera;
+    controls;
 
-        this.rep3d = new THREE.PerspectiveCamera(45, width/height, 1, 1000);
-        this.rep3d.matrix.makeRotationFromEuler(new THREE.Euler(0,0,0,'XYZ'));
-        this.rep3d.matrix.setPosition(0,eyeHeight,0);
-        this.rep3d.scale.set((1,1,1));
-        this.rep3d.matrixAutoUpdate = false;
-        this.#inventory = new Inventory();
-        this.#eyeHeight = eyeHeight;
-        //this.#inventoryOverlay = new InventoryOverlay(renderTarget);
-        this.#velocity = velocity;
-        this.#velocityTurbo = velocityTurbo;
-        this.#jumpAcceleration = jumpAcceleration;
-        this.#isSprinting = false;
-        this.#playerMass = mass;
-        this.#controls = new PointerLockControls(this.rep3d, document.body);
+    forward;
+    backwards;
+    left;
+    right;
 
-        document.addEventListener("click", ()=> {
-            this.#controls.lock();
-        });
-        //this.lockMouse();
+    velocity;
+    velocityTurbo; //TODO
+    mass;
+    jumpAcceleration;
+    eyeHeight;
 
-        PlayerMediator.getInstance().register(this);
+    //TODO: add the inventory, addInventoryItem, removeInventoryItem
+
+    constructor(mass, velocity, velocityTurbo, jumpAcceleration, eyeHeight, domElement) {
+        const playerGeometry = new THREE.BoxGeometry(1, 1, 1);
+        const playerMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.5 });
+
+        super(
+            [0, 20, 0],
+            [0, 0, 0],
+            mass,
+            playerGeometry,
+            playerGeometry,
+            true,
+            false
+        );
+
+        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.rep3d.add(this.camera);
+        this.camera.position.y = 1.5;
+
+        this.body.setAngularFactor(new Ammo.btVector3(0, 0, 0));
+        this.body.setFriction(0.4);
+        this.body.setDamping(0.4, 0.4);
+        this.body.setCcdSweptSphereRadius(0.2);
+        this.body.setCcdMotionThreshold(0.0001);
+        this.body.setRestitution(50);
+
+
+        this.controls = new PointerLockControls(this.camera, domElement);
+
+        this.velocity = velocity;
+        this.velocityTurbo = velocityTurbo;
+        this.jumpAcceleration = jumpAcceleration;
+        this.eyeHeight = eyeHeight;
+
+        document.addEventListener('click', () => this.controls.lock(), false);
+
+        document.addEventListener('keydown', this.onKeyDown.bind(this), false);
+        document.addEventListener('keyup', this.onKeyRelease.bind(this), false);
     }
 
-    // If the item already exists in the inventory, adds the item.amount quantity to the amount.
-    addInventoryItem(item) {
-        this.#inventory.addItem(item);
-    }
-
-    // Decreases the number of items as specified in the item amount atribute
-    #removeInventoryItem(item) {
-        return this.#inventory.removeItem(item);
-    }
-
-    action(message) {
-        if (message instanceof MovementMsg) {
-            if (message.keyCode == 14) {
-                this.#sprint(message.keyDown);
-            } /*else if (message.keyCode == 32) {
-                this.#jump();
-            }*/ else {
-                this.#step(message.keyCode, message.keyDown);
-            }
-        } else if (message instanceof InventoryMsg) {
-            if (message.remove) {
-                this.#removeInventoryItem(this.item);
-            } else {
-                this.addInventoryItem(this.item);
-            }
-        } else if (message instanceof MouseMsg) {
-            if (message.lockMouse) {
-                this.lockMouse();
-            } else {
-                this.unlockMouse();
-            }
-        } else return
-    }
-
-    #sprint(keyDown) {
-        this.#isSprinting = keyDown;
-    }
-
-    #step(keyCode, keyDown) {
-        switch (keyCode) {
-            case "w":
-            case "W":
-            case 119:
-            case 87:
-                if (keyDown && this.#movementForward == 0) {
-                    console.log("W key received, key down");
-                    this.#movementForward = 1;
-                } else if (!keyDown && this.#movementForward == 1) {
-                    console.log("W key received, key up");
-                    this.#movementForward = 0;
-                } else {
-                    return;
-                }
+    onKeyDown(event) {
+        switch (event.code) {
+            case 'KeyW':
+                this.forward = true;
                 break;
-            case "S":
-            case "s":
-            case 115:
-            case 83:
-                if (keyDown && this.#movementBackward == 0) {
-                    console.log("S key received, key down");
-                    this.#movementBackward = 1;
-                } else if (!keyDown && this.#movementBackward == 1) {
-                    console.log("S key received, key up");
-                    this.#movementBackward = 0;
-                } else {
-                    return;
-                }
+            case 'KeyS':
+                this.backwards = true;
                 break;
-            case "D":
-            case "d":
-            case 100:
-            case 68:
-                if (keyDown && this.#movementRight == 0) {
-                    console.log("D key received, key down");
-                    this.#movementRight = 1;
-                } else if (!keyDown && this.#movementRight == 1) {
-                    console.log("D key received, key up");
-                    this.#movementRight = 0;
-                } else {
-                    return;
-                }
+            case 'KeyA':
+                this.left = true;
                 break;
-            case "A":
-            case "a":
-            case 97:
-            case 65:
-                if (keyDown && this.#movementLeft == 0) {
-                    console.log("A key received, key down");
-                    this.#movementLeft = 1;
-                } else if (!keyDown && this.#movementLeft == 1) {
-                    console.log("A key received, key up");
-                    this.#movementLeft = 0;
-                } else {
-                    return;
-                }
+            case 'KeyD':
+                this.right = true;
                 break;
-            /*case 32:
-                if (keyDown && this.#movementUp == 0) {
-                    this.#movementUp = 1;
-                } else if (this.rep3d.velocity == 0) {
-                    this.#movementUp = 0;
-                }*/
         }
+    }
 
-        let moveX =  this.#movementRight - this.#movementLeft;
-        let moveZ =  this.#movementBackward - this.#movementForward;
-        let moveY =  0; //this.#movementUp;
-
-        if (moveX == 0 && moveY == 0 && moveZ == 0) return;
-
-        let movementVelocity = new Ammo.btVector3()
-        if (this.#isSprinting) {
-            movementVelocity.op_mul(new Ammo.btVector3(this.#velocityTurbo.x, 1,1));
-            movementVelocity.op_mul(new Ammo.btVector3(1,1, this.#velocityTurbo.z));
-        } else  {
-            movementVelocity.setX(moveX * this.#velocity);
-            movementVelocity.setZ(moveZ * this.#velocity);
+    onKeyRelease(event) {
+        switch (event.code) {
+            case 'KeyW':
+                this.forward = false;
+                break;
+            case 'KeyS':
+                this.backwards = false;
+                break;
+            case 'KeyA':
+                this.left = false;
+                break;
+            case 'KeyD':
+                this.right = false;
+                break;
         }
-        movementVelocity.setY(moveY);
-        
-        this.initMovement(movementVelocity);
     }
 
-    #jump() {
-        /*this.#jumpVelocity = this.getMass() * this.#jumpAcceleration;
-        this.rep3d.translateOnAxis(THREE.Vector3(0,1,0), distance*this.#jumpVelocity); // ?*/
-    }
+    update(deltaTime) {
+        console.log("speed");
+        const forceMultiplier = this.velocity * deltaTime;
+        const playerDirection = new THREE.Vector3();
+        this.camera.getWorldDirection(playerDirection);
+        playerDirection.y = 0;
+        playerDirection.normalize();
 
-    #updateInventoryOverlay() { // Creates a one-row table with the info of the objects of the inventory
-        this.#inventoryOverlay.update(this.#inventory.getRenderableInventoryElement());
-    }
+        const currentVelocity = this.body.getLinearVelocity()
 
-    getObject3D() {
-        return this.#controls.getObject();
+        const playerVelocity = this.body.getLinearVelocity();
+        const force = new Ammo.btVector3(0, currentVelocity.y(), 0);
+
+        if (this.forward) {
+            
+            force.setValue(playerDirection.x * forceMultiplier, currentVelocity.y(), playerDirection.z * forceMultiplier);
+        } 
+        if (this.backwards) {
+            force.setValue(-playerDirection.x * forceMultiplier, currentVelocity.y(), -playerDirection.z * forceMultiplier);
+        }
+        if (this.left) {
+            playerDirection.cross(this.camera.up);
+            force.setValue(-playerDirection.x * forceMultiplier, currentVelocity.y(), -playerDirection.z * forceMultiplier);
+        } 
+        if (this.right) {
+            playerDirection.cross(this.camera.up);
+            force.setValue(playerDirection.x * forceMultiplier, currentVelocity.y(), playerDirection.z * forceMultiplier);
+        }
+        this.body.setLinearVelocity(force);
+        //console.log(force.x(), force.y(), force.z());
+
+        super.updateMotion()
     }
 
     getCamera() {
-        return this.rep3d;
+        return this.camera;
     }
 
     getMass() {
-        return this.#playerMass + this.#inventory.getMass();
-    }
-/* 
-    lockMouse() {
-        this.#controls.lock();
+        return this.mass //TODO: + INventorymass
     }
 
-    unlockMouse() {
-        this.#controls.unlock();
-    } */
-
-    getControls() {
-        return this.#controls;
-    }
-
-    setPosition(x,z) {
-        this.rep3d.matrix.setPosition(x,this.#eyeHeight,z);
+    getControls()  {
+        return this.controls;
     }
 }
-
-//this.initMovement

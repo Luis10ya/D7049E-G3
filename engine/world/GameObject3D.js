@@ -1,157 +1,106 @@
-import Colleague from "../communication/Colleague.js"
+import Colleague from "../communication/Colleague";
 import * as THREE from 'three';
 import * as Ammo from 'ammo.js'
-import ObjInteractionMsg from '../communication/message/ObjInteractMsg.js'
-import { Player } from "../player/Player.js";
 
-/**
- * @class GameObject3D
- * @extends {Colleague}
- * 
- */
 
 export default class GameObject3D extends Colleague {
+    rep3d;
+    body;
 
-  rep3d;
-  #body;
-  #transform;
+    constructor(
+        [posX = 0, posY = 0, posZ = 0],
+        [rotX = 0, rotY = 0, rotZ = 0],
+        mass = 0,
+        geometry = new THREE.BoxGeometry(5, 5, 5),
+        material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
+        castShadow = true,
+        recvShadow = true
+    ) {
+        super();
 
-  // Constructor for game Object3D
-  // Setups the dimensions and whatnot for the intended objects.
+        this.rep3d = new THREE.Mesh(geometry, material);
+        const position = new THREE.Vector3(posX, posY, posZ);
+        this.rep3d.position.copy(position);
+        
+        //TODO: Test this
+        /**this.rep3d.rotateX(rotX);
+        this.rep3d.rotateY(rotY);
+        this.rep3d.rotateZ(rotZ);*/
+        this.rep3d.castShadow = castShadow;
+        this.rep3d.receiveShadow = recvShadow;
+        //Untested until here
 
-  /**
-   * Constructor for the GameObject3D
-   * @param {Array} pos
-   * @param {Array} rot Rotation of the object
-   * @param {integer} mass
-   * @param {THREE.BufferGeometry} geometry
-   * @param {boolean} castShadow
-   * @param {boolean} recvShadow
-   */
-  constructor(
-    [posX = 0, posY = 0, posZ = 0],
-    [rotX = 0, rotY = 0, rotZ = 0],
-    mass = 0,
-    geometry = null,
-    material = new THREE.MeshStandardMaterial({ color: 0xff0000 }),
-    castShadow = true,
-    recvShadow = true,
-  ) {
-
-    super();
-
-    let rotation = new THREE.Euler(rotX, rotY, rotZ);
-    let rotation_quaternion = new THREE.Quaternion();
-    rotation_quaternion.setFromEuler(rotation);
-
-    // Create the THREE.Mesh using the given geometry and material
-    this.rep3d = new THREE.Mesh(geometry, material);
-    let translation = new THREE.Vector3(posX, posY, posZ);
-    let translationDistance = translation.length();
-    let translationDirection = translation.normalize();
-    this.rep3d.translateOnAxis(translationDirection, translationDistance);
-    this.rep3d.castShadow = castShadow;
-    this.rep3d.receiveShadow = recvShadow;
-
-    // Initialize Physics Representation
-    this.#transform = new Ammo.btTransform();
-    this.#transform.setIdentity();
-    let position = new Ammo.btVector3(posX, posY, posZ)
-    this.#transform.setOrigin(position);
-    this.#transform.setRotation(new Ammo.btQuaternion(
-      rotation_quaternion.x,
-      rotation_quaternion.y,
-      rotation_quaternion.z,
-      rotation_quaternion.w));
-    let defaultMotionState = new Ammo.btDefaultMotionState(this.#transform);
-
-    // Create an Ammo shape based on the given geometry
-    let structColShape = this.createAmmoShape(geometry);
-    let localInertia = new Ammo.btVector3(0, 0, 0);
-
-    let RBody_Info = new Ammo.btRigidBodyConstructionInfo(mass, defaultMotionState, structColShape, localInertia);
-    this.#body = new Ammo.btRigidBody(RBody_Info);
-    this.rep3d.userData.physicsBody = this.#body;
-  }
-
-  action(message) {
-    if (message instanceof ObjInteractionMsg) {
-      this.#interaction();
+        this.body = this.createBodyFromMesh(this.rep3d, mass);
     }
-  }
 
-  #interaction() {
-    if (this.constructor == InventoryObj) {
-      throw new Error("Interaction not implemented for base class.");
+    createBodyFromMesh(mesh, mass) {
+        const geometry = mesh.geometry;
+        const scale = mesh.scale;
+        geometry.computeVertexNormals();
+
+        const shape = new Ammo.btConvexHullShape();
+
+        if (geometry.attributes.position) {
+            const vertices = geometry.attributes.position.array;
+            for (let i = 0; i < vertices.length; i += 3) {
+                const vertex = new Ammo.btVector3(
+                    vertices[i] * scale.x,
+                    vertices[i + 1] * scale.y,
+                    vertices[i + 2] * scale.z
+                );
+                shape.addPoint(vertex);
+            }
+        } else if (geometry.vertices) {
+            for (const vertex of geometry.vertices) {
+                const btVertex = new Ammo.btVector3(
+                    vertex.x * scale.x,
+                    vertex.y * scale.y,
+                    vertex.z * scale.z
+                );
+                shape.addPoint(btVertex);
+            }
+        } else {
+            console.warn("Unsupported geometry type for collision shape creation:", geometry);
+            return null;
+        }
+
+        const position = new THREE.Vector3();
+        mesh.getWorldPosition(position);
+
+        const quaternion = new THREE.Quaternion();
+        mesh.getWorldQuaternion(quaternion);
+
+        const transform = new Ammo.btTransform();
+        transform.setIdentity();
+        transform.setOrigin(new Ammo.btVector3(position.x, position.y, position.z));
+        transform.setRotation(new Ammo.btQuaternion(quaternion.x, quaternion.y, quaternion.z, quaternion.w));
+
+        const motionState = new Ammo.btDefaultMotionState(transform);
+        const localInertia = new Ammo.btVector3(0, 0, 0);
+        shape.calculateLocalInertia(mass, localInertia);
+
+        const rbInfo = new Ammo.btRigidBodyConstructionInfo(mass, motionState, shape, localInertia);
+        return new Ammo.btRigidBody(rbInfo);       
     }
-  }
 
-  /**
-   * 
-   * @param {THREE.BufferGeometry} geometry 
-   * @returns 
-   */
-  createAmmoShape(geometry) {
-    const shape = new Ammo.btConvexHullShape();
-    const vertices = geometry.attributes.position.array;
-    for (let i = 0; i < vertices.length; i += 3) {
-      const vertex = new Ammo.btVector3(vertices[i], vertices[i + 1], vertices[i + 2]);
-      shape.addPoint(vertex, true);
+    updateMotion() {
+        const transform = this.body.getWorldTransform();
+        const origin = transform.getOrigin();
+        const rotation = transform.getRotation();
+
+        this.rep3d.position.set(origin.x(), origin.y(), origin.z());
+        this.rep3d.quaternion.set(rotation.x(), rotation.y(), rotation.z(), rotation.w());
     }
-    return shape;
-  }
 
-  /**
-   * setProperties for the material the created objects should have. Right now it makes the material red.
-   * @param {THREE.Material} material
-   */
-  setMaterialProperties(material) {
-    this.rep3d.material = material;
-  }
-
-  /**
-   * 
-   * @returns {THREE.Object3D} The 3D representation of the gameobject
-   */
-  getObject3D() {
-    return this.rep3d;
-  }
-
-  /**
-   * 
-   * @returns {Ammo.btRigidBody} The rigid body for the physics calculation in the game
-   */
-  getRigidBody() {
-    return this.#body;
-  }
-
-  /**
-   * This method is called to synchronize the visual representation of game objects with their 
-   * position calculated by the physics engine.
-   */
-  updateMotion() {
-    if (this instanceof Player) {
-      console.log("Player")
+    getObject3D() {
+        return this.rep3d;
     }
-    let motionState = this.#body.getMotionState();
-    if (motionState) {
-      motionState.getWorldTransform(this.#transform);
-      let newPos = this.#transform.getOrigin();
-      let newRotationQuaternion = this.#transform.getRotation();
-      this.rep3d.position.set(newPos.x(), newPos.y(), newPos.z());
-      this.rep3d.quaternion.set(
-        newRotationQuaternion.x(),
-        newRotationQuaternion.y(),
-        newRotationQuaternion.z(),
-        newRotationQuaternion.w()
-      );
-    }
-  }
 
-  /**
-   * This method is called to start the movement of a body, given a btVector3 velocity.
-   */
-  initMovement(velocity) {
-    this.#body.setLinearVelocity(velocity);
-  }
+    getRigidBody() {
+        return this.body;
+    }
+
+    initMovement(velocity) {
+        this.body.setLinearVelocity(velocity);
+    }
 }
