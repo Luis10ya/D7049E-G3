@@ -16,28 +16,28 @@ export class GameLogic {
         this.#gameWorld = gameWorld;
         this.#renderTarget = renderTarget;
 
-        this.showStartMenu();
+        // this.showStartMenu();
 
         
 
     }
 
-    showStartMenu() {
-        let startMenu = new FullscreenMenu(this.#renderTarget);
-        let buttonContainer = document.createElement('div');
+    // showStartMenu() {
+    //     let startMenu = new FullscreenMenu(this.#renderTarget);
+    //     let buttonContainer = document.createElement('div');
 
-        let button = document.createElement('button');
-        button.textContent = 'Start Game';
+    //     let button = document.createElement('button');
+    //     button.textContent = 'Start Game';
 
-        button.addEventListener('click', () => {
-            this.startGameLoop();
-        });
+    //     button.addEventListener('click', () => {
+    //         this.startGameLoop();
+    //     });
 
-        buttonContainer.appendChild(button);
+    //     buttonContainer.appendChild(button);
 
-        startMenu.addElement(buttonContainer);
+    //     startMenu.addElement(buttonContainer);
 
-    }
+    // }
 
     startGameLoop(){
         this.#gameLoop();
