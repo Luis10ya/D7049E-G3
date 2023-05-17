@@ -8,10 +8,8 @@ import MovementMsg from "./engine/communication/message/MovementMsg";
 import * as THREE from 'three';
 import GameObject3D from "./engine/world/GameObject3D";
 
-let parent = document.getElementById("game");
-let player = new Player(80,1,3,12,1.7,parent);
-player.setPosition(0,0);
-let gameWorld = new GameWorld(player, parent);
+let gameWorld = new GameWorld();
+let player = gameWorld.getPlayer();
 
 function createRoomStructure(roomWidth, roomDepth, roomHeight, groundMaterial, wallMaterial, ceilingMaterial, room) {
     var groundAndCeilingGeometry = new THREE.BoxGeometry(roomWidth, 1, roomDepth);
@@ -59,7 +57,7 @@ const room = buildEntryRoom();
 room.blabla = "richtig"
 gameWorld.addRoom(room);
 gameWorld.setCurrentRoom(room);
-gameWorld.update()
+gameWorld.animate()
 
 /**
 const renderer = new THREE.WebGLRenderer({
