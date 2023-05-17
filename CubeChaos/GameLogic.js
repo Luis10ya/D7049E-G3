@@ -45,7 +45,7 @@ export class GameLogic {
 
 
     #gameLoop(){
-        this.#gameWorld.setCurrentRoom("Entry room");
+        this.#gameWorld.setCurrentRoom("Final room");
         this.#gameWorld.getPlayer().setPosition([50,50,0]);
         this.#gameWorld.animate();
         this.createListeners();
