@@ -4,7 +4,7 @@ import Room from '../engine/world/Room.js';
 // import { MediatorInit } from './MediatorInit.js';
 import FullscreenMenu from '../engine/overlays/FullscreenMenu.js';
 import KeyboardMediator from "../engine/communication/mediator/KeyboardMediator";
-import PlayerMediator from "./engine/communication/mediator/PlayerMediator";
+import PlayerMediator from "../engine/communication/mediator/PlayerMediator";
 import { Player } from '../engine/player/Player.js';
 
 export class GameLogic {
