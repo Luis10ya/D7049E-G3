@@ -99,7 +99,9 @@ export default class GameWorld extends Colleague {
         }
         for (const room of this.roomList) {
             if (room.getName() === name) {
+                this.currentRoom.removeObject3D(this.player);
                 this.currentRoom = room;
+                this.currentRoom.addObject3D(this.player);
                 return true;
             }
         }
