@@ -10,21 +10,35 @@ export class GameInit {
     #gameWorld
     #renderTarget
     #mediatorInit
-    #run
     #player
 
     constructor(gameWorld, renderTarget, player){
         this.#gameWorld = gameWorld;
         this.#renderTarget = renderTarget;
         this.#mediatorInit = new MediatorInit();
-        this.#run = false;
+
         this.#player = player;
 
-        // create overlays and add to renderTarget
-        // create fullscreenmenu for the start menu
+        this.showStartMenu();
+
+        
+
+    }
+
+    showStartMenu() {
         let startMenu = new FullscreenMenu(this.#renderTarget);
-        startMenu.addElement(document.createTextNode("Cube Chaos"));
-        let button = startMenu.getElementsByTagName('button');
+        let buttonContainer = document.createElement('div');
+
+        let button = document.createElement('button');
+        button.textContent = 'Start Game';
+
+        button.addEventListener('click', () => {
+            this.startGameLoop();
+        });
+
+        buttonContainer.appendChild(button);
+
+        startMenu.addElement(buttonContainer);
 
     }
 
@@ -33,16 +47,27 @@ export class GameInit {
         this.#gameLoop();
     }
 
-    emergencyBreak(){
-        this.#run = false;
-    }
 
     #gameLoop(){
-        while(run == true){
+        this.#gameWorld.update();
+        createListeners();
+    }
 
-            // run game
-        
-        }
+    
+
+    createListeners () {
+        window.addEventListener("keydown", (event)=> {
+            const message = new KeyboardMsg(event.key, true);
+            const movementMessage = new MovementMsg(event.key, true);
+            this.#mediatorInit.keyboardMediator.notify(message);
+            this.#mediatorInit.playerMediator.notify(movementMessage);
+        }, true);
+        window.addEventListener("keyup", (event) => {
+            const message = new KeyboardMsg(event.key, false);
+            const movementMessage = new MovementMsg(event.key, false);
+            this.#mediatorInit.keyboardMediator.notify(message);
+            this.#mediatorInit.playerMediator.notify(movementMessage);
+        }, false);
     }
 
 }
