@@ -23,7 +23,8 @@ export default class Exit extends TriggerObject{
         material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
         castShadow = true,
         recvShadow = true,
-        room
+        room,
+        [playerX = 0, playerY = 0, playerZ = 0]
     )/*(pos, rot, mass, geometry, material, castShadow, recvShadow, room)*/ {
         super([posX, posY, posZ], [rotX, rotY, rotZ], mass, geometry, material, castShadow, recvShadow);
         this.body.setAngularFactor(new Ammo.btVector3(0, 0, 0));
@@ -33,6 +34,9 @@ export default class Exit extends TriggerObject{
 
         // initialize with default values
         this.locked = false;
+        this.playerX = playerX;
+        this.playerY = playerY;
+        this.playerZ = playerZ;
     }
 
     /**
@@ -73,9 +77,9 @@ export default class Exit extends TriggerObject{
         super.updateMotion();
 
         if (this.rep3d.position.distanceTo(previousPosition) > 0.05) {
-            const msg = new RoomChangeMsg(this.room);
+            const msg = new RoomChangeMsg(this.room, this.playerX, this.playerY, this.playerZ);
             TriggerMediator.getInstance().notify(msg);
-            //console.log("Triggered");
+            console.log("Triggered");
         }
     }
 }

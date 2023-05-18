@@ -51,11 +51,12 @@ export default class GameWorld extends Colleague {
     animate() {
         requestAnimationFrame(() => {
             this.animate();
+            this.deltaTime = this.clock.getDelta();
+            console.log(this.deltaTime);
+            this.totalTime += this.deltaTime;
         });
-
-        this.deltaTime = this.clock.getDelta();
-        console.log(this.deltaTime);
-        this.totalTime += this.deltaTime;
+        console.log("bla");
+        
 
         if(this.totalTime > 1) {
             this.totalTime = 0;
@@ -106,15 +107,16 @@ export default class GameWorld extends Colleague {
         }
     }
 
-    setCurrentRoom(name) {
+    setCurrentRoom(name, playerX = 0, playerY = 0, playerZ = 0) {
         if (name instanceof Room) {
-            return this.setCurrentRoom(name.getName());
+            return this.setCurrentRoom(name.getName(), playerX, playerY, playerZ);
         }
         for (const room of this.roomList) {
             if (room.getName() === name) {
                 this.currentRoom.removeObject3D(this.player);
                 this.currentRoom = room;
                 this.currentRoom.addObject3D(this.player);
+                this.player.setPosition(playerX, playerY, playerZ);
                 return true;
             }
         }
@@ -135,7 +137,7 @@ export default class GameWorld extends Colleague {
 
     action(msg) {
         if (msg instanceof RoomChangeMsg) {
-            this.setCurrentRoom(msg.newCurrentRoom);
+            this.setCurrentRoom(msg.newCurrentRoom, msg.playerX, msg.playerY, msg.playerZ);
         }
     }
 }
