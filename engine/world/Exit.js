@@ -37,6 +37,8 @@ export default class Exit extends TriggerObject{
         this.playerX = playerX;
         this.playerY = playerY;
         this.playerZ = playerZ;
+
+        this.hasBeenMoved = false;
     }
 
     /**
@@ -77,9 +79,15 @@ export default class Exit extends TriggerObject{
         super.updateMotion();
 
         if (this.rep3d.position.distanceTo(previousPosition) > 0.05) {
-            const msg = new RoomChangeMsg(this.room, this.playerX, this.playerY, this.playerZ);
-            TriggerMediator.getInstance().notify(msg);
-            console.log("Triggered");
+            if (this.hasBeenMoved == true) {
+                const msg = new RoomChangeMsg(this.room, this.playerX, this.playerY, this.playerZ);
+                TriggerMediator.getInstance().notify(msg);
+                console.log("Triggered");
+            } else {
+                this.hasBeenMoved = true;
+            }
+        } else {
+            this.hasBeenMoved = false;
         }
     }
 }
