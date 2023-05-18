@@ -479,6 +479,10 @@ export class GameInit {
         return room;
     }
 
+    /**
+     * 
+     * SUPER MYSTERY!
+     */
     #buildMysteryRoom(){
         let room = new Room("Mystery room");
         room.setIntensityOfGeneralLight(5);
@@ -497,7 +501,7 @@ export class GameInit {
 
         this.#createRoomStructure(this.#mysteryRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
-        let chestTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryWall.jpg");
+        let chestTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/chest.jpg");
         let chestMaterial = new THREE.MeshStandardMaterial({map: chestTexture});
 
         this.#createBox([15,0.5,5], [0,0,0], 20, 2,1,1, chestMaterial, true, true, room);
