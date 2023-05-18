@@ -1,6 +1,6 @@
 import Colleague from "../communication/Colleague";
 import * as THREE from 'three';
-import * as Ammo from 'ammo.js'
+import * as Ammo from 'ammo.js';
 
 
 export default class GameObject3D extends Colleague {

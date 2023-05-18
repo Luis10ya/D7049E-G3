@@ -1,6 +1,8 @@
-//@author Malte
-
 import TriggerObject from "./TriggerObject";
+import * as THREE from 'three';
+import RoomChangeMsg from "../communication/message/RoomChangeMsg";
+import TriggerMediator from "../communication/mediator/TriggerMediator";
+import * as Ammo from 'ammo.js';
 
 /**
  * Exits manage the exit from a room
@@ -24,7 +26,8 @@ export default class Exit extends TriggerObject{
         room
     )/*(pos, rot, mass, geometry, material, castShadow, recvShadow, room)*/ {
         super([posX, posY, posZ], [rotX, rotY, rotZ], mass, geometry, material, castShadow, recvShadow);
-
+        this.body.setAngularFactor(new Ammo.btVector3(0, 0, 0));
+        
         // initialize given arguments
         this.room = room;
 
@@ -58,5 +61,21 @@ export default class Exit extends TriggerObject{
 
     onTrigger(){
         throw new Error("Method 'onTrigger()' must be implemented.");
+    }
+
+    updateMotion() {        
+        let previousPosition = new THREE.Vector3(
+            this.rep3d.position.x,
+            this.rep3d.position.y,
+            this.rep3d.position.z
+        );
+
+        super.updateMotion();
+
+        if (this.rep3d.position.distanceTo(previousPosition) > 0.05) {
+            const msg = new RoomChangeMsg(this.room);
+            TriggerMediator.getInstance().notify(msg);
+            //console.log("Triggered");
+        }
     }
 }

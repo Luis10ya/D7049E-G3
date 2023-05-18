@@ -2,6 +2,8 @@ import Colleague from "../communication/Colleague";
 import * as THREE from 'three';
 import { Player } from "../player/Player";
 import Room from "./Room";
+import TriggerMediator from "../communication/mediator/TriggerMediator";
+import RoomChangeMsg from "../communication/message/RoomChangeMsg";
 
 export default class GameWorld extends Colleague {
     roomList;
@@ -42,6 +44,8 @@ export default class GameWorld extends Colleague {
 
             this.renderer.setSize(window.innerWidth, window.innerHeight);
         }, false);
+
+        TriggerMediator.getInstance().register(this);
     }
 
     animate() {
@@ -127,5 +131,11 @@ export default class GameWorld extends Colleague {
 
     getPlayer() {
         return this.player;
+    }
+
+    action(msg) {
+        if (msg instanceof RoomChangeMsg) {
+            this.setCurrentRoom(msg.newCurrentRoom);
+        }
     }
 }

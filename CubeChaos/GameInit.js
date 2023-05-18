@@ -71,7 +71,7 @@ export class GameInit {
         let exitMaterial =  new THREE.MeshStandardMaterial({map: exitTexture});
         //let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
         let exitGeometry = new THREE.BoxGeometry(width, height, depth)
-        let exit = new Exit(pos, rot, 0, exitGeometry, exitMaterial, castShadow, recvShadow, newRoom);
+        let exit = new Exit(pos, rot, 10, exitGeometry, exitMaterial, castShadow, recvShadow, newRoom);
         // let action = currRoom.getPhysicsWorld().contactPairTest(
         //     this.#gameWorld.getPlayer(),
         //     exit,

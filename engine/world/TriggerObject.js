@@ -11,6 +11,7 @@ import GameObject3D from "./GameObject3D.js";
  */
 
 export default class TriggerObject extends GameObject3D {
+    action;
     constructor(
         [posX = 0, posY = 0, posZ = 0],
         [rotX = 0, rotY = 0, rotZ = 0],
@@ -19,18 +20,9 @@ export default class TriggerObject extends GameObject3D {
         material = new THREE.MeshBasicMaterial({ color: 0x00ff00 }),
         castShadow = true,
         recvShadow = true
-    )/*(
-        pos,
-        rot,
-        mass,
-        geometry,
-        material,
-        castShadow,
-        recvShadow
-      )*/ { 
+    ){ 
         super([posX, posY, posZ], [rotX, rotY, rotZ], mass, geometry, material, castShadow, recvShadow); 
         this.action;
-    
     }
 
     onTrigger(){
