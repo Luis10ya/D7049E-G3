@@ -22,7 +22,7 @@ export class GameLogic {
 
 
     #gameLoop(){
-        this.#gameWorld.setCurrentRoom("Final room");
+        this.#gameWorld.setCurrentRoom("Zero Gravity room");
         this.#gameWorld.getPlayer().setPosition([50,50,0]);
         this.#gameWorld.animate();
     }

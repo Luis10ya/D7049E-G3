@@ -25,8 +25,8 @@ export class GameInit {
         this.#zeroGravityRoomDimensions = [100, 100, 100];
         this.#spaceRoomDimensions = [50, 50, 30];
         this.#motionRoomDimensions = [75, 25, 25];
-        this. #cubeRoomDimensions = [150, 150, 150];
-        this.#sphereRoomDimensions = [50, 25, 75];
+        this.#cubeRoomDimensions = [150, 150, 150];
+        this.#sphereRoomDimensions = [50, 25, 50];
         this.#mysteryRoomDimensions = [50, 25, 10];
         this.#finalRoomDimensions = [10, 10, 10];
     }
@@ -145,6 +145,12 @@ export class GameInit {
     #buildEntryRoom(){
         let room = new Room("Entry room");
         room.setIntensityOfGeneralLight(15);
+
+        const fogColor = 0xf7ebba;
+        const fogDensity = 0.03;
+        const fog = new THREE.FogExp2(fogColor, fogDensity);
+        room.getScene().fog = fog;
+
         let groundTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/waves-of-sand.png");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/entryRoom/Blue-Sky.jpg");
@@ -268,6 +274,12 @@ export class GameInit {
     #buildZeroGravityRoom(){
         let room = new Room("Zero Gravity room");
         room.setIntensityOfGeneralLight(8);
+
+        const fogColor = 0xffffff;
+        const fogDensity = 0.005;
+        const fog = new THREE.FogExp2(fogColor, fogDensity);
+        room.getScene().fog = fog;
+
         room.setGravity(0.5);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/zeroGravityRoom/spaceship_floor.jpg");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
@@ -299,6 +311,12 @@ export class GameInit {
     #buildSpaceRoom(){
         let room = new Room("Space room");
         room.setIntensityOfGeneralLight(4);
+
+        const fogColor = 0x99097c;
+        const fogDensity = 0.02;
+        const fog = new THREE.FogExp2(fogColor, fogDensity);
+        room.getScene().fog = fog;
+
         room.setGravity(2);
         let groundTexture = new THREE.TextureLoader().load("./assets/images/spaceRoom/space-floor.gif");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
@@ -343,12 +361,18 @@ export class GameInit {
     #buildMotionRoom(){
         let room = new Room("Motion room");
         room.setIntensityOfGeneralLight(10);
+
+        const fogColor = 0xffffff;
+        const fogDensity = 0.025;
+        const fog = new THREE.FogExp2(fogColor, fogDensity);
+        room.getScene().fog = fog;
+
         let groundTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionFloor.gif");
-        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionCeiling.gif");
-        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
         let wallTexture = new THREE.TextureLoader().load("./assets/images/motionRoom/motionWall.gif");
-        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
 
         this.#createRoomStructure(this.#motionRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
@@ -366,6 +390,12 @@ export class GameInit {
     #buildCubeRoom(){
         let room = new Room("Cube room");
         room.setIntensityOfGeneralLight(10);
+
+        const fogColor = 0xffffff;
+        const fogDensity = 0.025;
+        const fog = new THREE.FogExp2(fogColor, fogDensity);
+        room.getScene().fog = fog;
+
         let groundTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/cubeRoom/cube.png");
@@ -413,25 +443,38 @@ export class GameInit {
     #buildSphereRoom(){
         let room = new Room("Sphere room");
         room.setIntensityOfGeneralLight(10);
-        let groundTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.jpg");
-        let groundMaterial = new THREE.MeshDepthMaterial({map: groundTexture});
-        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.jpg");
-        let ceilingMaterial = new THREE.MeshDepthMaterial({map: ceilingTexture});
-        let wallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime.gif");
-        let wallMaterial = new THREE.MeshDepthMaterial({map: wallTexture});
 
-        this.#createRoomStructure(this.#spaceRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
+        const fogColor = 0x25ba20;
+        const fogDensity = 0.025;
+        const fog = new THREE.FogExp2(fogColor, fogDensity);
+
+        room.getScene().fog = fog;
+
+        let groundTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.jpg");
+        let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
+        let ceilingTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-floor-ceiling.jpg");
+        let ceilingMaterial = new THREE.MeshStandardMaterial({map: ceilingTexture});
+        let wallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime.gif");
+        let wallMaterial = new THREE.MeshStandardMaterial({map: wallTexture});
+
+        this.#createRoomStructure(this.#sphereRoomDimensions, groundMaterial, wallMaterial, ceilingMaterial, room);
 
         let slimeBallTexture = new THREE.TextureLoader().load("./assets/images/sphereRoom/slime-balls.jpg");
-        let slimeBallMaterial = new THREE.MeshDepthMaterial({map: slimeBallTexture});
+        let slimeBallMaterial = new THREE.MeshStandardMaterial({map: slimeBallTexture});
 
         let sphereCount1 = 0;
-        while(sphereCount1 < 30) {
-            this.#createSphere([-10,sphereCount1+4,35], [0,0,0], 5, 4,32,32, slimeBallMaterial, true, true, room);
+        while(sphereCount1 < 35) {
+            this.#createSphere([10,sphereCount1+4,10], [0,0,0], 5, 1.5,32,32, slimeBallMaterial, true, true, room);
             sphereCount1++;
         }
 
-        this.#createSphere([10, 4, 25], [0,0,0], 5, 4,32,32, slimeBallMaterial, true, true, room);
+        let sphereCount2 = 0;
+        while(sphereCount2 < 35) {
+            this.#createSphere([-10,sphereCount2+4,10], [0,0,0], 5, 1.5,32,32, slimeBallMaterial, true, true, room);
+            sphereCount2++;
+        }
+
+        this.#createSphere([10, 40, -10], [0,0,0], 5, 4,32,32, slimeBallMaterial, true, true, room);
 
         return room;
     }
@@ -439,6 +482,12 @@ export class GameInit {
     #buildMysteryRoom(){
         let room = new Room("Mystery room");
         room.setIntensityOfGeneralLight(5);
+
+        const fogColor = 0x1f1e1d;
+        const fogDensity = 0.1;
+        const fog = new THREE.FogExp2(fogColor, fogDensity);
+        room.getScene().fog = fog;
+
         let groundTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryFloorAndRoof.jpg");
         let groundMaterial = new THREE.MeshStandardMaterial({map: groundTexture});
         let ceilingTexture = new THREE.TextureLoader().load("./assets/images/mysteryRoom/mysteryFloorAndRoof.jpg");
@@ -489,19 +538,19 @@ export class GameInit {
 
         // sphereToMystery
         let exit3 = './assets/images/sphereRoom/mysteryDoor.png';
-        this.#createExit([-(this.#sphereRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit3, rooms[5], rooms[6]);
+        this.#createExit([-(this.#sphereRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit3, rooms[5], rooms[6]);
 
         // sphereToZeroGravity
         let exit4 = './assets/images/sphereRoom/zeroGravityDoor.png';
-        this.#createExit([(this.#sphereRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit4, rooms[5], rooms[1]);
+        this.#createExit([(this.#sphereRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit4, rooms[5], rooms[1]);
 
         // mysteryToEntry
         let exit5 = './assets/images/mysteryRoom/entryDoor.jpg';
-        this.#createExit([(this.#mysteryRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit5, rooms[6], rooms[0]);
+        this.#createExit([(this.#mysteryRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit5, rooms[6], rooms[0]);
 
         // zeroGravityToSphere
         let exit6 = './assets/images/zeroGravityRoom/sphereDoor.png';
-        this.#createExit([-(this.#zeroGravityRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit6, rooms[1], rooms[5]);
+        this.#createExit([-(this.#zeroGravityRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit6, rooms[1], rooms[5]);
 
         // zeroGravityToMotion
         let exit7 = './assets/images/zeroGravityRoom/motionDoor.gif';
@@ -509,7 +558,7 @@ export class GameInit {
 
         // zeroGravityToSpace
         let exit8 = './assets/images/zeroGravityRoom/spaceDoor.jpg';
-        this.#createExit([(this.#zeroGravityRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit8, rooms[1], rooms[2]);
+        this.#createExit([(this.#zeroGravityRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit8, rooms[1], rooms[2]);
 
         // motionToZeroGravity
         let exit9 = './assets/images/motionRoom/zeroGravityDoor.png';
@@ -517,15 +566,15 @@ export class GameInit {
 
         // motionToEntry
         let exit10 = './assets/images/motionRoom/entryDoor.jpg';
-        this.#createExit([-(this.#motionRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit10, rooms[3], rooms[0]);
+        this.#createExit([-(this.#motionRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit10, rooms[3], rooms[0]);
 
         // motionToSpace
         let exit11 = './assets/images/motionRoom/spaceDoor.jpg';
-        this.#createExit([(this.#motionRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit11, rooms[3], rooms[2]);
+        this.#createExit([(this.#motionRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit11, rooms[3], rooms[2]);
 
         // spaceToMotion
         let exit12 = './assets/images/spaceRoom/motionDoor.gif';
-        this.#createExit([-(this.#spaceRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 3, 4, 0.5, true, true, exit12, rooms[2], rooms[3]);
+        this.#createExit([-(this.#spaceRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit12, rooms[2], rooms[3]);
 
         // spaceToZeroGravity
         let exit13 = './assets/images/spaceRoom/zeroGravityDoor.png';
