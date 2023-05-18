@@ -66,12 +66,12 @@ export class GameInit {
         room.addObject3D(box);
     }
 
-    #createExit(pos, rot, width, height, depth, castShadow, recvShadow, image, currRoom, newRoom){
+    #createExit(pos, rot, width, height, depth, castShadow, recvShadow, image, currRoom, newRoom, playerPos){
         let exitTexture = new THREE.TextureLoader().load(image);
         let exitMaterial =  new THREE.MeshStandardMaterial({map: exitTexture});
         //let exitObject = this.#getExit(pos, rot, width, height, depth, exitMaterial, castShadow, recvShadow);
         let exitGeometry = new THREE.BoxGeometry(width, height, depth)
-        let exit = new Exit(pos, rot, 10, exitGeometry, exitMaterial, castShadow, recvShadow, newRoom);
+        let exit = new Exit(pos, rot, 10, exitGeometry, exitMaterial, castShadow, recvShadow, newRoom, playerPos);
         // let action = currRoom.getPhysicsWorld().contactPairTest(
         //     this.#gameWorld.getPlayer(),
         //     exit,
@@ -84,7 +84,7 @@ export class GameInit {
     }
 
     // Absolutely scuffed
-    changeRoom(currRoom, newRoom){
+    /*changeRoom(currRoom, newRoom){
         this.#gameWorld.setCurrentRoom(newRoom);
         let rooms = this.#gameWorld.getRooms();
         if(currRoom ===  rooms[0] && newRoom === rooms[5]){
@@ -124,7 +124,7 @@ export class GameInit {
         }else if(currRoom ===  rooms[7] && newRoom === rooms[0]) {
             this.#gameWorld.getPlayer().setPosition(this.#entryRoomDimensions[0]/2,0, -(this.#entryRoomDimensions[1]/2)+1.5);
         }
-    }
+    }*/
 
     #getExit(pos, rot, width, height, depth, material, castShadow, recvShadow) {
         var exitGeometry = new THREE.BoxGeometry(width, height, depth);
@@ -530,75 +530,93 @@ export class GameInit {
 
         // entryToSphere
         let exit1 = './assets/images/entryRoom/sphereDoor.png';
-        this.#createExit([0, 2, (this.#entryRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit1, rooms[0], rooms[5]);
+        let playerPos1 = [this.#sphereRoomDimensions[0]/2,0, -(this.#sphereRoomDimensions[1]/2)+1.5];
+        this.#createExit([0, 2, (this.#entryRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit1, rooms[0], rooms[5], playerPos1);
 
         // sphereToEntry
         let exit2 = './assets/images/sphereRoom/entryDoor.jpg';
-        this.#createExit([0, 2, -(this.#sphereRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit2, rooms[5], rooms[0]);
+        let playerPos2 = [this.#entryRoomDimensions[0]/2,0, (this.#entryRoomDimensions[1]/2)-1.5];
+        this.#createExit([0, 2, -(this.#sphereRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit2, rooms[5], rooms[0], playerPos2);
 
         // sphereToMystery
         let exit3 = './assets/images/sphereRoom/mysteryDoor.png';
-        this.#createExit([-(this.#sphereRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit3, rooms[5], rooms[6]);
+        let playerPos3 = [(this.#mysteryRoomDimensions[0]/2)-1.5,0, this.#mysteryRoomDimensions[1]/2];
+        this.#createExit([-(this.#sphereRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit3, rooms[5], rooms[6], playerPos3);
 
         // sphereToZeroGravity
         let exit4 = './assets/images/sphereRoom/zeroGravityDoor.png';
-        this.#createExit([(this.#sphereRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit4, rooms[5], rooms[1]);
+        let playerPos4 = [-(this.#zeroGravityRoomDimensions[0]/2)+1.5,0, this.#zeroGravityRoomDimensions[1]/2];
+        this.#createExit([(this.#sphereRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit4, rooms[5], rooms[1], playerPos4);
 
         // mysteryToEntry
         let exit5 = './assets/images/mysteryRoom/entryDoor.jpg';
-        this.#createExit([(this.#mysteryRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit5, rooms[6], rooms[0]);
+        let playerPos5 = [-(this.#entryRoomDimensions[0]/2)+1.5,0, this.#entryRoomDimensions[1]/2];
+        this.#createExit([(this.#mysteryRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit5, rooms[6], rooms[0], playerPos5);
 
         // zeroGravityToSphere
         let exit6 = './assets/images/zeroGravityRoom/sphereDoor.png';
-        this.#createExit([-(this.#zeroGravityRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit6, rooms[1], rooms[5]);
+        let playerPos6 = [-(this.#sphereRoomDimensions[0]/2)+1.5,0, this.#sphereRoomDimensions[1]/2];
+        this.#createExit([-(this.#zeroGravityRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit6, rooms[1], rooms[5], playerPos6);
 
         // zeroGravityToMotion
         let exit7 = './assets/images/zeroGravityRoom/motionDoor.gif';
-        this.#createExit([0, 2, -(this.#zeroGravityRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit7, rooms[1], rooms[3]);
+        let playerPos7 = [this.#motionRoomDimensions[0]/2,0, (this.#motionRoomDimensions[1]/2)-1.5];
+        this.#createExit([0, 2, -(this.#zeroGravityRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit7, rooms[1], rooms[3], playerPos7);
 
         // zeroGravityToSpace
         let exit8 = './assets/images/zeroGravityRoom/spaceDoor.jpg';
-        this.#createExit([(this.#zeroGravityRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit8, rooms[1], rooms[2]);
+        let playerPos8 = [this.#spaceRoomDimensions[0]/2,0, -(this.#spaceRoomDimensions[1]/2)+1.5];
+        this.#createExit([(this.#zeroGravityRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit8, rooms[1], rooms[2], playerPos8);
 
         // motionToZeroGravity
         let exit9 = './assets/images/motionRoom/zeroGravityDoor.png';
-        this.#createExit([0, 2, (this.#motionRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit9, rooms[3], rooms[1]);
+        let playerPos9 = [this.#zeroGravityRoomDimensions[0]/2,0, (this.#zeroGravityRoomDimensions[1]/2)-1.5];
+        this.#createExit([0, 2, (this.#motionRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit9, rooms[3], rooms[1], playerPos9);
 
         // motionToEntry
         let exit10 = './assets/images/motionRoom/entryDoor.jpg';
-        this.#createExit([-(this.#motionRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit10, rooms[3], rooms[0]);
+        let playerPos10 = [(this.#entryRoomDimensions[0]/2)-1.5,0, this.#entryRoomDimensions[1]/2];
+        this.#createExit([-(this.#motionRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit10, rooms[3], rooms[0], playerPos10);
 
         // motionToSpace
         let exit11 = './assets/images/motionRoom/spaceDoor.jpg';
-        this.#createExit([(this.#motionRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit11, rooms[3], rooms[2]);
+        let playerPos11 = [-(this.#spaceRoomDimensions[0]/2)+1.5,0, this.#spaceRoomDimensions[1]/2];
+        this.#createExit([(this.#motionRoomDimensions[0]/2)-0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit11, rooms[3], rooms[2], playerPos11);
 
         // spaceToMotion
         let exit12 = './assets/images/spaceRoom/motionDoor.gif';
-        this.#createExit([-(this.#spaceRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit12, rooms[2], rooms[3]);
+        let playerPos12 = [(this.#motionRoomDimensions[0]/2)-1.5,0, this.#motionRoomDimensions[1]/2];
+        this.#createExit([-(this.#spaceRoomDimensions[0]/2)+0.25, 2, 0], [0,0,0], 0.5, 4, 3, true, true, exit12, rooms[2], rooms[3], playerPos12);
 
         // spaceToZeroGravity
         let exit13 = './assets/images/spaceRoom/zeroGravityDoor.png';
-        this.#createExit([0, 2, -(this.#spaceRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit13, rooms[2], rooms[1]);
+        let playerPos13 = [(this.#zeroGravityRoomDimensions[0]/2)-1.5,0, this.#zeroGravityRoomDimensions[1]/2];
+        this.#createExit([0, 2, -(this.#spaceRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit13, rooms[2], rooms[1], playerPos13);
 
         // spaceToCube
         let exit14 = './assets/images/spaceRoom/cubeDoor.png';
-        this.#createExit([0, 2, (this.#spaceRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit14, rooms[2], rooms[4]);
+        let playerPos14 = [this.#cubeRoomDimensions[0]/2,0, -(this.#cubeRoomDimensions[1]/2)+1.5];
+        this.#createExit([0, 2, (this.#spaceRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit14, rooms[2], rooms[4], playerPos14);
 
         // cubeToSpace
         let exit15 = './assets/images/cubeRoom/spaceDoor.jpg';
-        this.#createExit([0, 2, -(this.#cubeRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit15, rooms[4], rooms[2]);
+        let playerPos15 = [this.#spaceRoomDimensions[0]/2,0, (this.#spaceRoomDimensions[1]/2)-1.5];
+        this.#createExit([0, 2, -(this.#cubeRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit15, rooms[4], rooms[2], playerPos15);
 
         // cubeToFinal
         let exit16 = './assets/images/cubeRoom/victoryDoor.png';
-        this.#createExit([0, 2, (this.#cubeRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit16, rooms[4], rooms[7]);
+        let playerPos16 = [this.#finalRoomDimensions[0]/2,0, -(this.#finalRoomDimensions[1]/2)+1.5];
+        this.#createExit([0, 2, (this.#cubeRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit16, rooms[4], rooms[7], playerPos16);
 
         // finalToCube
         let exit17 = './assets/images/finalRoom/cubeDoor.png';
-        this.#createExit([0, 2, -(this.#finalRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit17, rooms[7], rooms[4]);
+        let playerPos17 = [this.#cubeRoomDimensions[0]/2,0, (this.#cubeRoomDimensions[1]/2)-1.5];
+        this.#createExit([0, 2, -(this.#finalRoomDimensions[1]/2)+0.25], [0,0,0], 3, 4, 0.5, true, true, exit17, rooms[7], rooms[4], playerPos17);
 
         // finalToEntry
         let exit18 = './assets/images/finalRoom/entryDoor.jpg';
-        this.#createExit([0, 2, (this.#finalRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit18, rooms[7], rooms[0]);
+        let playerPos18 = [this.#entryRoomDimensions[0]/2,0, -(this.#entryRoomDimensions[1]/2)+1.5];
+        this.#createExit([0, 2, (this.#finalRoomDimensions[1]/2)-0.25], [0,0,0], 3, 4, 0.5, true, true, exit18, rooms[7], rooms[0], playerPos18);
 
         //this.#createExit(pos, rot, width, height, depth, true, true, image, currRoom, newRoom);
 
